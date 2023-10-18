@@ -1,6 +1,8 @@
-package Screens;
+package screens;
 
 import constant.Constants;
+import model.ASymmetricEncryption;
+import model.DES;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -178,6 +180,11 @@ public class HomeApp extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        new CipherScreen(e.getActionCommand());
+        switch (e.getActionCommand()){
+            case Constants.Cipher.DES:
+                ASymmetricEncryption aSymmetricEncryption = new DES();
+                new CipherScreen(aSymmetricEncryption, Constants.Cipher.DES);
+                break;
+        }
     }
 }
