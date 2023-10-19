@@ -242,7 +242,7 @@ public class CipherScreen extends JFrame {
                     if (temp.equals("Encrypt")) {
                         SecretKey key = symmetricEncryption.convertKey(keyTextField.getText());
                         try {
-                            cipherText = symmetricEncryption.encrypt(inputTextArea.getText(), key);
+                            cipherText = symmetricEncryption.encrypt(inputTextArea.getText());
                         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
                                  UnsupportedEncodingException | IllegalBlockSizeException | BadPaddingException ex) {
                             throw new RuntimeException(ex);
@@ -250,7 +250,7 @@ public class CipherScreen extends JFrame {
                     } else {
                         SecretKey key = symmetricEncryption.convertKey(keyTextField.getText());
                         try {
-                            cipherText = symmetricEncryption.decrypt(inputTextArea.getText(), key);
+                            cipherText = symmetricEncryption.decrypt(inputTextArea.getText());
                         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
                                  IllegalBlockSizeException | BadPaddingException ex) {
                             throw new RuntimeException(ex);

@@ -9,7 +9,7 @@ import java.util.Base64;
 
 public class DES extends ASymmetricEncryption{
     @Override
-    public String encrypt(String plainText, SecretKey secretKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException {
+    public String encrypt(String plainText) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException {
         if(this.secretKey == null) throw new NoSuchAlgorithmException();
         Cipher cipher = Cipher.getInstance("DES");
         cipher.init(Cipher.ENCRYPT_MODE , this.secretKey);
@@ -19,7 +19,7 @@ public class DES extends ASymmetricEncryption{
     }
 
     @Override
-    public String decrypt(String cipherText, SecretKey secretKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public String decrypt(String cipherText) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
         if(this.secretKey == null) throw new NoSuchAlgorithmException();
         Cipher cipher = Cipher.getInstance("DES");
         cipher.init(Cipher.DECRYPT_MODE, this.secretKey);
