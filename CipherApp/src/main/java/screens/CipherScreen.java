@@ -27,14 +27,17 @@ public class CipherScreen extends JFrame {
     JTextArea inputTextArea, outputTextArea;
     JButton clickButton, pasteButton, clearButton, copyButton, pasteKeyButton, createKeyButton, clearKeyButton, copyKeyButton;
     Dimension textDimension;
-    JPanel inputPanel, selectPanel, buttonPanel, outputPanel;
+    JPanel inputPanel, selectPanel, buttonPanel, outputPanel, controlPanel;
+    JLabel nameCipherLabel;
     JTextField keyTextField;
     Color buttonColor = Color.RED;
     ASymmetricEncryption symmetricEncryption;
-
+    JComboBox modesComboBox, paddingsComboBox;
+    String cipherType;
     public CipherScreen(ASymmetricEncryption symmetricEncryption, String cipherType){
         this.symmetricEncryption = symmetricEncryption;
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.cipherType = cipherType;
         this.setTitle(cipherType);
 
         Image icon = Toolkit.getDefaultToolkit().getImage("assets/images/icon.png");
@@ -44,6 +47,8 @@ public class CipherScreen extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
+        //Control
+        renderControl(panel);
         //Select
         renderSelect(panel);
         //input
@@ -86,7 +91,7 @@ public class CipherScreen extends JFrame {
         JPanel panelKey = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         keyTextField = new JTextField();
-        keyTextField.setPreferredSize(new Dimension(500, 45));
+        keyTextField.setPreferredSize(new Dimension(550, 45));
         TitledBorder keyTitledBorder = BorderFactory.createTitledBorder(null, "Key", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
         keyTitledBorder.setBorder(new LineBorder(Color.BLACK, 1));
         keyTextField.setBorder(keyTitledBorder);
@@ -309,6 +314,41 @@ public class CipherScreen extends JFrame {
             }
         });
         panel.add(copyButton);
+
+
+    }
+
+    private void renderControl(JPanel panel){
+        controlPanel = new JPanel();
+        controlPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        JLabel nameLabel = new JLabel("Algorithm :");
+        controlPanel.add(nameLabel);
+
+        nameCipherLabel = new JLabel(cipherType);
+        Font font = new Font("Serif", Font.BOLD, 20);
+        nameCipherLabel.setFont(font);
+        controlPanel.add(nameCipherLabel);
+
+        JLabel spaceLabel1 = new JLabel("      ");
+        controlPanel.add(spaceLabel1);
+
+        JLabel modeLabel = new JLabel("Mode: ");
+        controlPanel.add(modeLabel);
+
+        modesComboBox = new JComboBox(symmetricEncryption.modes);
+        controlPanel.add(modesComboBox);
+
+        JLabel spaceLabel2 = new JLabel("      ");
+        controlPanel.add(spaceLabel2);
+
+        JLabel paddingLabel = new JLabel("Padding: ");
+        controlPanel.add(paddingLabel);
+
+        paddingsComboBox = new JComboBox(symmetricEncryption.paddings);
+        controlPanel.add(paddingsComboBox);
+
+        panel.add(controlPanel);
 
 
     }

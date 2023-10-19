@@ -1,5 +1,7 @@
 package model;
 
+import constant.Constants;
+
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
@@ -8,6 +10,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class DES extends ASymmetricEncryption{
+    public DES(){
+        this.modes = Constants.List_Mode.DES_MODES;
+        this.paddings = Constants.List_Padding.PADDINGS;
+    }
     @Override
     public String encrypt(String plainText) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException {
         if(this.secretKey == null) throw new NoSuchAlgorithmException();

@@ -6,10 +6,30 @@ public class Constants {
         String SHA_256 = "SHA-256";
         String DES = "DES";
         String AES = "AES";
-        String TRIPLE_DES = "TRIPLE_DES";
+        String TRIPLE_DES = "TRIPLE-DES";
 
         String BLOWFISH = "BLOWFISH";
         String RC4 = "RC4";
         String TWOFISH = "TWOFISH";
+    }
+    public interface Mode{
+        String ECB = "ECB";
+        String CBC = "CBC";
+        String CFB = "CFB";
+        String OFB = "OFB";
+        String CTR = "CTR";
+    }
+
+    public interface List_Mode{
+        String[] DES_MODES = {Mode.ECB, Mode.CBC, Mode.CFB, Mode.OFB, Mode.CTR};
+    }
+
+    public interface Padding{
+        String NOPADDING = "NoPadding";
+        String PKCS5PADDING = "PKCS7Padding";
+        String ZEROPADDING = "ZeroPadding";
+    }
+    public interface List_Padding{
+        String[] PADDINGS = {Padding.NOPADDING, Padding.PKCS5PADDING, Padding.ZEROPADDING};
     }
 }
