@@ -1,21 +1,23 @@
 package screens;
 
+import constant.Constants;
 import model.ASymmetricEncryption;
+import structure.Structure;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -23,22 +25,25 @@ import java.security.NoSuchAlgorithmException;
 public class CipherScreen extends JFrame {
     JRadioButton encryptRadioButton, decryptRadioButton;
     ButtonGroup selectButtonGroup;
-    String headerInput = "PlantText", headerOutput="CipherText", temp = "Encrypt";
+    String headerInput = Constants.Description.PLAINTEXT, headerOutput=Constants.Description.CIPHERTEXT, temp = Constants.Description.ENCRYPT;
     JTextArea inputTextArea, outputTextArea;
-    JButton clickButton, pasteButton, clearButton, copyButton, pasteKeyButton, createKeyButton, clearKeyButton, copyKeyButton;
+    JButton clickButton, pasteButton, clearButton, copyButton, pasteKeyButton, createKeyButton, clearKeyButton, copyKeyButton
+            ,pasteIvButton, createIvButton, clearIvButton, copyIvButton;
     Dimension textDimension;
-    JPanel inputPanel, selectPanel, buttonPanel, outputPanel, controlPanel;
+    JPanel inputPanel, selectPanel, buttonPanel, outputPanel, controlPanel, ivPanel;
     JLabel nameCipherLabel;
-    JTextField keyTextField;
+    JTextField keyTextField, ivTextField;
     Color buttonColor = Color.RED;
     ASymmetricEncryption symmetricEncryption;
     JComboBox modesComboBox, paddingsComboBox;
-    String cipherType;
-    public CipherScreen(ASymmetricEncryption symmetricEncryption, String cipherType){
+    Structure structure;
+    public CipherScreen(ASymmetricEncryption symmetricEncryption, Structure structure){
         this.symmetricEncryption = symmetricEncryption;
+        this.structure = structure;
+
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.cipherType = cipherType;
-        this.setTitle(cipherType);
+
+        this.setTitle(structure.getName());
 
         Image icon = Toolkit.getDefaultToolkit().getImage("assets/images/icon.png");
         this.setIconImage(icon);
@@ -55,6 +60,8 @@ public class CipherScreen extends JFrame {
         renderInput(panel);
         //key
         renderKey(panel);
+        //renderInitVector
+        renderIv(panel);
         //button
         renderButton(panel);
         //output
@@ -67,17 +74,120 @@ public class CipherScreen extends JFrame {
         this.setLocationRelativeTo(null);
     }
 
+    private void renderIv(JPanel panel) {
+        ivPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+        ivTextField = new JTextField();
+        ivTextField.setPreferredSize(new Dimension(550, 45));
+        TitledBorder keyTitledBorder = BorderFactory.createTitledBorder(null, Constants.Description.IV, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
+        keyTitledBorder.setBorder(new LineBorder(Color.BLACK, 1));
+        ivTextField.setBorder(keyTitledBorder);
+
+        ivTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                checkLength();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                checkLength();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                checkLength();
+            }
+
+            private void checkLength() {
+                if (ivTextField.getText().length() > 8) {
+                    EventQueue.invokeLater(() -> {
+                        String text = ivTextField.getText().substring(0, 8);
+                        ivTextField.setText(text);
+                    });
+                }
+            }
+        });
+
+        ivPanel.add(ivTextField);
+
+        renderButtonOfIv(ivPanel);
+
+        panel.add(ivPanel);
+        ivPanel.setVisible(false);
+    }
+
+    private void renderButtonOfIv(JPanel panel) {
+        ImageIcon pasteIcon = new ImageIcon("assets/Images/paste.png");
+        pasteIvButton = new JButton(new ImageIcon(pasteIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH)));
+        pasteIvButton.setToolTipText("Paste InitVector");
+        pasteIvButton.setPreferredSize(new Dimension(35, 35));
+        //action paste key
+        pasteIvButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ivTextField.paste();
+            }
+        });
+        panel.add(pasteIvButton);
+
+        ImageIcon clearIcon = new ImageIcon("assets/Images/clear.png");
+        clearIvButton = new JButton(new ImageIcon(clearIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH)));
+        clearIvButton.setToolTipText("Clear InitVector");
+        clearIvButton.setPreferredSize(new Dimension(35, 35));
+        //action clear key
+        clearIvButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { ivTextField.setText("");
+            }
+        });
+        panel.add(clearIvButton);
+
+        ImageIcon createIcon = new ImageIcon("assets/Images/create.png");
+        createIvButton = new JButton(new ImageIcon(createIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH)));
+        createIvButton.setToolTipText("Create InitVector");
+        createIvButton.setPreferredSize(new Dimension(35, 35));
+        createIvButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                    String key = symmetricEncryption.createIv();
+                    ivTextField.setText(key);
+
+            }
+        });
+        panel.add(createIvButton);
+
+        ImageIcon copyIcon = new ImageIcon("assets/Images/copy.png");
+        copyIvButton = new JButton(new ImageIcon(copyIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH)));
+        copyIvButton.setToolTipText("Copy InitVector");
+        copyIvButton.setPreferredSize(new Dimension(35, 35));
+        //action copy key
+        copyIvButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String textToCopy = ivTextField.getText();
+
+                // Copy the text to the clipboard
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                StringSelection selection = new StringSelection(textToCopy);
+                clipboard.setContents(selection, null);
+            }
+        });
+        panel.add(copyIvButton);
+    }
+
     private void renderSelect(JPanel panel){
         selectPanel = new JPanel();
 
         selectButtonGroup = new ButtonGroup();
 
-        encryptRadioButton = new JRadioButton("Encrypt");
+        encryptRadioButton = new JRadioButton(Constants.Description.ENCRYPT);
         encryptRadioButton.setSelected(true);
         selectPanel.add(encryptRadioButton);
         selectButtonGroup.add(encryptRadioButton);
 
-        decryptRadioButton = new JRadioButton("Decrypt");
+        decryptRadioButton = new JRadioButton(Constants.Description.DECRYPT);
         selectPanel.add(decryptRadioButton);
         selectButtonGroup.add(decryptRadioButton);
 
@@ -92,9 +202,35 @@ public class CipherScreen extends JFrame {
 
         keyTextField = new JTextField();
         keyTextField.setPreferredSize(new Dimension(550, 45));
-        TitledBorder keyTitledBorder = BorderFactory.createTitledBorder(null, "Key", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
+        TitledBorder keyTitledBorder = BorderFactory.createTitledBorder(null, Constants.Description.KEY, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
         keyTitledBorder.setBorder(new LineBorder(Color.BLACK, 1));
         keyTextField.setBorder(keyTitledBorder);
+
+        keyTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                checkLength();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                checkLength();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                checkLength();
+            }
+
+            private void checkLength() {
+                if (keyTextField.getText().length() > 8) {
+                    EventQueue.invokeLater(() -> {
+                        String text = keyTextField.getText().substring(0, 8);
+                        keyTextField.setText(text);
+                    });
+                }
+            }
+        });
 
         panelKey.add(keyTextField);
 
@@ -137,12 +273,8 @@ public class CipherScreen extends JFrame {
         createKeyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    String key = symmetricEncryption.createKey();
-                    keyTextField.setText(key);
-                } catch (NoSuchAlgorithmException ex) {
-                    throw new RuntimeException(ex);
-                }
+                String key = symmetricEncryption.createKey();
+                keyTextField.setText(key);
             }
         });
         panel.add(createKeyButton);
@@ -244,22 +376,14 @@ public class CipherScreen extends JFrame {
                 }
                 else {
                     String cipherText;
-                    if (temp.equals("Encrypt")) {
-                        SecretKey key = symmetricEncryption.convertKey(keyTextField.getText());
-                        try {
+                    symmetricEncryption.instance(structure.getName(), (String)modesComboBox.getSelectedItem(), (String)paddingsComboBox.getSelectedItem());
+                    SecretKey key = symmetricEncryption.convertKey(keyTextField.getText());
+                    IvParameterSpec iv = symmetricEncryption.convertIv(ivTextField.getText());
+                    if (temp.equals(Constants.Description.ENCRYPT)) {
                             cipherText = symmetricEncryption.encrypt(inputTextArea.getText());
-                        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
-                                 UnsupportedEncodingException | IllegalBlockSizeException | BadPaddingException ex) {
-                            throw new RuntimeException(ex);
-                        }
+
                     } else {
-                        SecretKey key = symmetricEncryption.convertKey(keyTextField.getText());
-                        try {
-                            cipherText = symmetricEncryption.decrypt(inputTextArea.getText());
-                        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
-                                 IllegalBlockSizeException | BadPaddingException ex) {
-                            throw new RuntimeException(ex);
-                        }
+                        cipherText = symmetricEncryption.decrypt(inputTextArea.getText());
                     }
                     outputTextArea.setText(cipherText);
                 }
@@ -325,7 +449,7 @@ public class CipherScreen extends JFrame {
         JLabel nameLabel = new JLabel("Algorithm :");
         controlPanel.add(nameLabel);
 
-        nameCipherLabel = new JLabel(cipherType);
+        nameCipherLabel = new JLabel(structure.getName());
         Font font = new Font("Serif", Font.BOLD, 20);
         nameCipherLabel.setFont(font);
         controlPanel.add(nameCipherLabel);
@@ -336,7 +460,19 @@ public class CipherScreen extends JFrame {
         JLabel modeLabel = new JLabel("Mode: ");
         controlPanel.add(modeLabel);
 
-        modesComboBox = new JComboBox(symmetricEncryption.modes);
+        modesComboBox = new JComboBox(structure.getModels());
+        modesComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JComboBox cb = (JComboBox) e.getSource();
+                String mode = (String)cb.getSelectedItem();
+                if(mode.equals(Constants.Mode.ECB)){
+                    ivPanel.setVisible(false);
+                }
+                else ivPanel.setVisible(true);
+                repaint();
+            }
+        });
         controlPanel.add(modesComboBox);
 
         JLabel spaceLabel2 = new JLabel("      ");
@@ -345,7 +481,7 @@ public class CipherScreen extends JFrame {
         JLabel paddingLabel = new JLabel("Padding: ");
         controlPanel.add(paddingLabel);
 
-        paddingsComboBox = new JComboBox(symmetricEncryption.paddings);
+        paddingsComboBox = new JComboBox(structure.getPaddings());
         controlPanel.add(paddingsComboBox);
 
         panel.add(controlPanel);
@@ -362,14 +498,14 @@ public class CipherScreen extends JFrame {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                     if (e.getSource() == encryptRadioButton) {
                         buttonColor = Color.RED;
-                        temp = "Encrypt";
-                        headerInput = "PlantText";
-                        headerOutput = "CipherText";
+                        temp = Constants.Description.ENCRYPT;
+                        headerInput = Constants.Description.PLAINTEXT;
+                        headerOutput = Constants.Description.CIPHERTEXT;
                     } else if (e.getSource() == decryptRadioButton) {
                         buttonColor = Color.GREEN;
-                        temp = "Decrypt";
-                        headerInput = "CipherText";
-                        headerOutput = "PlantText";
+                        temp = Constants.Description.DECRYPT;
+                        headerInput = Constants.Description.CIPHERTEXT;
+                        headerOutput = Constants.Description.PLAINTEXT;
                     }
                     inputTextArea.setBorder(BorderFactory.createTitledBorder(null, headerInput, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK));
                     clickButton.setBackground(buttonColor);

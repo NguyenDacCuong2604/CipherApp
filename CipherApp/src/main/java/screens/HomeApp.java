@@ -3,6 +3,7 @@ package screens;
 import constant.Constants;
 import model.ASymmetricEncryption;
 import model.DES;
+import structure.Structure;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -183,7 +184,8 @@ public class HomeApp extends JFrame implements ActionListener{
         switch (e.getActionCommand()){
             case Constants.Cipher.DES:
                 ASymmetricEncryption aSymmetricEncryption = new DES();
-                new CipherScreen(aSymmetricEncryption, Constants.Cipher.DES);
+                Structure structure = new Structure(Constants.Cipher.DES, Constants.List_Mode.DES_MODES, Constants.List_Padding.PADDINGS);
+                new CipherScreen(aSymmetricEncryption, structure);
                 break;
         }
     }
