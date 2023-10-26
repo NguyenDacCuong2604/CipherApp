@@ -7,7 +7,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 public interface ISymmetricEncryption {
-    public void instance(String name, String mode, String padding);
+    public void instance(String method);
     public String encrypt(String plainText);
     public String decrypt(String cipherText);
     public String createKey();

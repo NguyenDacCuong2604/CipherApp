@@ -6,10 +6,12 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
 public abstract class ASymmetricEncryption implements ISymmetricEncryption{
+
+    public String name;
+    public String method;
+    public int size;
     Cipher cipher;
     SecretKey secretKey;
     IvParameterSpec ivSpec;
-    public String mode;
-    public String padding;
 
 }

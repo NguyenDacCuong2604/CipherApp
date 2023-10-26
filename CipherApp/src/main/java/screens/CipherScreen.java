@@ -2,11 +2,7 @@ package screens;
 
 import constant.Constants;
 import model.ASymmetricEncryption;
-import structure.Structure;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.swing.*;
@@ -18,9 +14,6 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 public class CipherScreen extends JFrame {
     JRadioButton encryptRadioButton, decryptRadioButton;
@@ -35,15 +28,15 @@ public class CipherScreen extends JFrame {
     JTextField keyTextField, ivTextField;
     Color buttonColor = Color.RED;
     ASymmetricEncryption symmetricEncryption;
-    JComboBox modesComboBox, paddingsComboBox;
-    Structure structure;
-    public CipherScreen(ASymmetricEncryption symmetricEncryption, Structure structure){
+    JComboBox methodsComboBox;
+    String[] methods;
+    public CipherScreen(ASymmetricEncryption symmetricEncryption, String[] methods){
+        this.methods = methods;
         this.symmetricEncryption = symmetricEncryption;
-        this.structure = structure;
 
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        this.setTitle(structure.getName());
+        this.setTitle(symmetricEncryption.name);
 
         Image icon = Toolkit.getDefaultToolkit().getImage("assets/images/icon.png");
         this.setIconImage(icon);
@@ -66,7 +59,6 @@ public class CipherScreen extends JFrame {
         renderButton(panel);
         //output
         renderOutput(panel);
-
 
         this.getContentPane().add(panel);
         this.pack();
@@ -223,9 +215,9 @@ public class CipherScreen extends JFrame {
             }
 
             private void checkLength() {
-                if (keyTextField.getText().length() > 8) {
+                if (keyTextField.getText().length() > symmetricEncryption.size) {
                     EventQueue.invokeLater(() -> {
-                        String text = keyTextField.getText().substring(0, 8);
+                        String text = keyTextField.getText().substring(0, symmetricEncryption.size);
                         keyTextField.setText(text);
                     });
                 }
@@ -376,12 +368,11 @@ public class CipherScreen extends JFrame {
                 }
                 else {
                     String cipherText;
-                    symmetricEncryption.instance(structure.getName(), (String)modesComboBox.getSelectedItem(), (String)paddingsComboBox.getSelectedItem());
+                    symmetricEncryption.instance((String)methodsComboBox.getSelectedItem());
                     SecretKey key = symmetricEncryption.convertKey(keyTextField.getText());
                     IvParameterSpec iv = symmetricEncryption.convertIv(ivTextField.getText());
                     if (temp.equals(Constants.Description.ENCRYPT)) {
                             cipherText = symmetricEncryption.encrypt(inputTextArea.getText());
-
                     } else {
                         cipherText = symmetricEncryption.decrypt(inputTextArea.getText());
                     }
@@ -449,7 +440,7 @@ public class CipherScreen extends JFrame {
         JLabel nameLabel = new JLabel("Algorithm :");
         controlPanel.add(nameLabel);
 
-        nameCipherLabel = new JLabel(structure.getName());
+        nameCipherLabel = new JLabel(symmetricEncryption.name);
         Font font = new Font("Serif", Font.BOLD, 20);
         nameCipherLabel.setFont(font);
         controlPanel.add(nameCipherLabel);
@@ -457,32 +448,24 @@ public class CipherScreen extends JFrame {
         JLabel spaceLabel1 = new JLabel("      ");
         controlPanel.add(spaceLabel1);
 
-        JLabel modeLabel = new JLabel("Mode: ");
+        JLabel modeLabel = new JLabel("Method: ");
         controlPanel.add(modeLabel);
 
-        modesComboBox = new JComboBox(structure.getModels());
-        modesComboBox.addActionListener(new ActionListener() {
+        methodsComboBox = new JComboBox(this.methods);
+        methodsComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JComboBox cb = (JComboBox) e.getSource();
-                String mode = (String)cb.getSelectedItem();
-                if(mode.equals(Constants.Mode.ECB)){
+                String method = (String)cb.getSelectedItem();
+                if(method.contains(Constants.Mode.ECB)){
                     ivPanel.setVisible(false);
                 }
                 else ivPanel.setVisible(true);
                 repaint();
             }
         });
-        controlPanel.add(modesComboBox);
+        controlPanel.add(methodsComboBox);
 
-        JLabel spaceLabel2 = new JLabel("      ");
-        controlPanel.add(spaceLabel2);
-
-        JLabel paddingLabel = new JLabel("Padding: ");
-        controlPanel.add(paddingLabel);
-
-        paddingsComboBox = new JComboBox(structure.getPaddings());
-        controlPanel.add(paddingsComboBox);
 
         panel.add(controlPanel);
 

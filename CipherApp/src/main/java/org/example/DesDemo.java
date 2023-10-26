@@ -1,5 +1,7 @@
 package org.example;
 
+import constant.Constants;
+
 import javax.crypto.*;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
@@ -14,18 +16,16 @@ import java.security.spec.KeySpec;
 import java.util.Base64;
 
 public class DesDemo {
-    public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException, InvalidAlgorithmParameterException {
-        SecretKey key = generateDESKey();
-        String textKey = keyToString(key);
-        System.out.println(textKey);
-        SecretKey keyconvert = createDESKeyFromString("daccuong");
-        String plainText = "NguyenDacCuong Dep Trai ";
-        System.out.println(encryptBase64(plainText, keyconvert, "12345671"));
-    }
-    public static String keyToString(SecretKey key) {
-        byte[] keyBytes = key.getEncoded();
-        String keyString = bytesToHex(keyBytes).substring(0, 8); // Lấy 8 ký tự đầu
-        return keyString;
+    public static void main(String[] args) throws Exception {
+        // Create a KeyGenerator for TripleDES
+        KeyGenerator keyGen = KeyGenerator.getInstance("DESede");
+
+        // Generate a TripleDES key with a specific key size (e.g., 168 bits)
+        keyGen.init(168);
+        SecretKey tripleDesKey = keyGen.generateKey();
+
+        // The generated key can be used for encryption and decryption
+        System.out.println("Generated TripleDES Key: " + tripleDesKey.getEncoded().length);
     }
 
     public static String bytesToHex(byte[] bytes) {
@@ -35,6 +35,13 @@ public class DesDemo {
         }
         return result.toString();
     }
+    public static String keyToString(SecretKey key) {
+        byte[] keyBytes = key.getEncoded();
+        String keyString = bytesToHex(keyBytes).substring(0, 8); // Lấy 8 ký tự đầu
+        return keyString;
+    }
+
+
 
     public static String encryptBase64(String plainText, SecretKey key, String iv) throws NoSuchPaddingException, NoSuchAlgorithmException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
         byte[] messageBytes = plainText.getBytes("UTF-8");
@@ -57,7 +64,7 @@ public class DesDemo {
             messageBytes = paddedMessage;
         }
         IvParameterSpec ivParameterSpec = new IvParameterSpec(iv.getBytes("UTF-8"));
-        Cipher cipher = Cipher.getInstance("DES/CBC/NoPadding");
+        Cipher cipher = Cipher.getInstance("DES/CTR/PKCS5Padding");
         cipher.init(1 , key, ivParameterSpec);
 //        byte[] byteText = plainText.getBytes("UTF-8");
         byte[] byteEncrypt = cipher.doFinal(messageBytes);
@@ -65,7 +72,7 @@ public class DesDemo {
     }
     public static String decryptBase64(String encryptedText, SecretKey key) throws NoSuchPaddingException, NoSuchAlgorithmException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
         try {
-            Cipher cipher = Cipher.getInstance("DES/ECB/NoPadding");
+            Cipher cipher = Cipher.getInstance("DES/CTR/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, key);
 
             byte[] encryptedBytes = Base64.getDecoder().decode(encryptedText);

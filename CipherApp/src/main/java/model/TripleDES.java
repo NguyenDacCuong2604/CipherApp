@@ -1,7 +1,6 @@
 package model;
 
 import constant.Constants;
-import screens.CipherScreen;
 
 import javax.crypto.*;
 import javax.crypto.spec.DESKeySpec;
@@ -16,14 +15,14 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 
-public class DES extends ASymmetricEncryption{
-    public DES(){
-        this.size = 8;
-        this.name = Constants.Cipher.DES;
+public class TripleDES extends ASymmetricEncryption{
+    public TripleDES(){
+        this.size = 24;
+        this.name = Constants.Cipher.TRIPLE_DES;
     }
-
     @Override
     public void instance(String method) {
         try {
@@ -35,15 +34,16 @@ public class DES extends ASymmetricEncryption{
     }
 
     @Override
-    public String encrypt(String plainText){
+    public String encrypt(String plainText) {
         try {
             if(method.contains(Constants.Mode.ECB)){
                 cipher.init(Cipher.ENCRYPT_MODE, this.secretKey);
             }
             else cipher.init(Cipher.ENCRYPT_MODE , this.secretKey, this.ivSpec);
+
             byte[] messageBytes = plainText.getBytes("UTF-8");
             if(method.contains(Constants.Padding.NOPADDING)) {
-                int blockSize = 8; // DES block size is 8 bytes
+                int blockSize = 8; // TripleDES block size is 8 bytes
                 int padding = blockSize - (messageBytes.length % blockSize);
 
                 if (padding != blockSize) {
@@ -80,11 +80,10 @@ public class DES extends ASymmetricEncryption{
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return null;
         }
-
     }
 
     @Override
-    public String decrypt(String cipherText){
+    public String decrypt(String cipherText) {
         try {
             byte[] byteEncrypt = Base64.getDecoder().decode(cipherText);
             int padding = 0;
@@ -115,17 +114,32 @@ public class DES extends ASymmetricEncryption{
     @Override
     public String createKey() {
         try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("DES");
-            keyGenerator.init(56);
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("DESede");
+            keyGenerator.init(168);
             SecretKey key = keyGenerator.generateKey();
             byte[] keyBytes = key.getEncoded();
-            String keyString = bytesToHex(keyBytes).substring(0,8);
+            String keyString = bytesToHex(keyBytes).substring(0, 24);
             return keyString;
         } catch (NoSuchAlgorithmException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return null;
         }
     }
+
+    @Override
+    public SecretKey convertKey(String key) {
+        byte[] keyData = key.getBytes(StandardCharsets.UTF_8);
+        if (keyData.length != 24) {
+            byte[] paddedKeyData = new byte[24];
+            System.arraycopy(keyData, 0, paddedKeyData, 0, keyData.length);
+            keyData = paddedKeyData;
+        }
+
+        SecretKey secretKey = new SecretKeySpec(keyData, "DESede");
+        this.secretKey =  secretKey;
+        return  this.secretKey;
+    }
+
     private String bytesToHex(byte[] bytes) {
         StringBuilder result = new StringBuilder();
         for (byte b : bytes) {
@@ -133,29 +147,6 @@ public class DES extends ASymmetricEncryption{
         }
         return result.toString();
     }
-
-    @Override
-    public SecretKey convertKey(String key) {
-        byte[] keyData = key.getBytes(StandardCharsets.UTF_8);
-
-        if (keyData.length != this.size) {
-            byte[] paddedKeyData = new byte[this.size];
-            System.arraycopy(keyData, 0, paddedKeyData, 0, keyData.length);
-            keyData = paddedKeyData;
-        }
-
-        try {
-            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
-            KeySpec keySpec = new DESKeySpec(keyData);
-            this.secretKey =  keyFactory.generateSecret(keySpec);
-            return  this.secretKey;
-        }
-        catch (NoSuchAlgorithmException | InvalidKeySpecException | InvalidKeyException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            return null;
-        }
-    }
-
     @Override
     public String createIv() {
         byte[] iv = new byte[8];
