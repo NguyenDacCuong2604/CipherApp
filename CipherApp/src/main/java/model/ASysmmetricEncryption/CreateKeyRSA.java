@@ -10,10 +10,10 @@ public class CreateKeyRSA {
     public CreateKeyRSA(){
 
     }
-    public void createKey(){
+    public void createKey(int size){
         try {
             KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
-            generator.initialize(2048);
+            generator.initialize(size);
             KeyPair pair = generator.generateKeyPair();
             this.privateKey = pair.getPrivate();
             this.publicKey = pair.getPublic();

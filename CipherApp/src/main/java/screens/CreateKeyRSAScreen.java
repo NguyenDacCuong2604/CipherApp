@@ -16,6 +16,7 @@ public class CreateKeyRSAScreen extends JFrame {
     CreateKeyRSA createKeyRSA;
     JButton createKeyButton, copyPublicKeyButton, copyPrivateKeyButton;
     JTextField publicKeyText, privateKeyText;
+    JComboBox sizeComboBox;
     public CreateKeyRSAScreen(){
         createKeyRSA = new CreateKeyRSA();
 
@@ -24,6 +25,7 @@ public class CreateKeyRSAScreen extends JFrame {
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        renderSelectSize(panel);
         renderPublicKey(panel);
         renderPrivateKey(panel);
         renderButtonCreate(panel);
@@ -33,6 +35,20 @@ public class CreateKeyRSAScreen extends JFrame {
         this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+    }
+
+    private void renderSelectSize(JPanel panel) {
+        JPanel panelSelect = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        //label
+        JLabel selectLabel = new JLabel("Select RSA Key Size: ");
+        panelSelect.add(selectLabel);
+
+        //combobox
+        sizeComboBox = new JComboBox(Constants.List_Size.SIZE_RSA);
+        sizeComboBox.setSelectedItem(Constants.Size.BIT1024);
+        panelSelect.add(sizeComboBox);
+
+        panel.add(panelSelect);
     }
 
     private void renderButtonCreate(JPanel panel) {
@@ -46,7 +62,22 @@ public class CreateKeyRSAScreen extends JFrame {
         createKeyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                createKeyRSA.createKey();
+                if((sizeComboBox.getSelectedItem()).equals(Constants.Size.BIT515)){
+                    createKeyRSA.createKey(515);
+                }
+                else if((sizeComboBox.getSelectedItem()).equals(Constants.Size.BIT1024)){
+                    createKeyRSA.createKey(1024);
+                }
+                else if((sizeComboBox.getSelectedItem()).equals(Constants.Size.BIT2048)){
+                    createKeyRSA.createKey(2048);
+                }
+                else if((sizeComboBox.getSelectedItem()).equals(Constants.Size.BIT4096)){
+                    createKeyRSA.createKey(4096);
+                }
+                else if((sizeComboBox.getSelectedItem()).equals(Constants.Size.BIT3072)){
+                    createKeyRSA.createKey(3072);
+                }
+
                 publicKeyText.setText(createKeyRSA.getPublicKey());
                 privateKeyText.setText(createKeyRSA.getPrivateKey());
                 repaint();

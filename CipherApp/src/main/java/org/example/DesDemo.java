@@ -5,23 +5,45 @@ import constant.Constants;
 import javax.crypto.*;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
+import javax.swing.*;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 public class DesDemo {
     public static void main(String[] args) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
 
+        PrivateKey privateKey = (PrivateKey) convertPublicKey("MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAhkGSOyi6bTyk9LwasQ3DZZFS4VGo8o/pDZKMO8aCZdZpSCQod0XoH2BVy7uJsh9u59LdD1S1fY7ZPUhGT9zio0Pk4vh7cIll+k0wsQtpQ83rq61SPU5BV/thjeoF3jemvW3tKe7JIn60fj9yz+lk8SnJVrg0xISMyArZJMaiRdILijy+nnB1/1x/BerPgymbqKZkpv8on09IsD6aSqml69+zL1VVxprr2lSTuobeFRbQGjPI64zS/Utd/UCU2P6M60Wt4BCkwnoTUetO2IxS0hkxrpYBQvhchds1nhENcVoDVZxnpdQGw6LUaemmanbys3WeyR49xaNLI/gASAPBXBW+aiZpMtcRV18dFw2k8NwIxRGvGqs5ZY8dxTe0xUYWNXT3+AQFm5hEHGKclhdeQi+OsYmbKwlUDgBnwhTs4kVN1xMfBbCTG9cUIniVzt7tydAqdKY+29W8II2whhSQBi6tUKg3LaJ2ddMA6BlJUqH/ZJqaiEWP7Pz85TvqC6pOLzNv8G9UUKbixpc33LvNq4eFfHch/xSsQBbnYT0xRWUYYyPfyEgMH4VmnM3q1KUAuA4s03mCWEczRHvN9nJbo68PMO4VQQCHLgKy2e1WuF+GJdBqOC7+n18KiuCPTIbgD0UwjQIrpmwaJU8SujtK6P12ZBVuWnAir7JaeIvl9+kCAwEAAQ==");
 
     }
-
+    public String encrypt(String plainText, PrivateKey privateKey) {
+        try {
+            Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+            byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
+            return Base64.getEncoder().encodeToString(encryptedBytes);
+        } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        } catch (NoSuchPaddingException | NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static PublicKey convertPublicKey(String key) {
+        try {
+            byte[] publicKeyBytes = Base64.getDecoder().decode(key);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
+            return keyFactory.generatePublic(publicKeySpec);
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
     public static String bytesToHex(byte[] bytes) {
         StringBuilder result = new StringBuilder();
         for (byte b : bytes) {

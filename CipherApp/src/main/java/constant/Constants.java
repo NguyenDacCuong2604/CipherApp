@@ -26,6 +26,8 @@ public class Constants {
         String IV = "InitializationVector";
         String PUBLIC_KEY = "Public Key";
         String PRIVATE_KEY = "Private Key";
+        String ENCRYPT_OUTPUT = "Encrypted Output";
+        String DECRYPT_OUTPUT = "Decrypted Output";
     }
     public interface Method{
         //DES
@@ -62,7 +64,8 @@ public class Constants {
 
         //RSA
         String RSA_ECB_PKCS1PADDING = "RSA/ECB/PKCS1Padding";
-        String RSA_ECB_OAE = "RSA/ECB/OAEPWithSHA-256AndMGF1Padding";
+        String RSA_ECB_OAE = "RSA/ECB/OAEPWithSHA-1AndMGF1Padding";
+        String RSA = "RSA";
     }
     public interface List_Method{
         String[] METHODS_DES = {
@@ -101,6 +104,7 @@ public class Constants {
         };
 
         String[] METHODS_RSA = {
+                Method.RSA,
                 Method.RSA_ECB_PKCS1PADDING,
                 Method.RSA_ECB_OAE
         };
@@ -115,8 +119,14 @@ public class Constants {
         String BITS256 = "256bits";
         String BITS192 = "192bits";
         String BITS128 = "128bits";
+        String BIT515 = "515 bit";
+        String BIT1024 = "1024 bit";
+        String BIT2048 = "2048 bit";
+        String BIT3072 = "3072 bit";
+        String BIT4096 = "4096 bit";
     }
     public interface List_Size{
         String[] SIZE_AES = {Size.BITS128, Size.BITS192, Size.BITS256};
+        String[] SIZE_RSA = {Size.BIT515, Size.BIT1024, Size.BIT2048, Size.BIT3072, Size.BIT4096};
     }
 }

@@ -8,4 +8,5 @@ public interface IASymmetricEncryption {
     public String decrypt(String cipherText);
     public PublicKey convertPublicKey(String key);
     public PrivateKey convertPrivateKey(String key);
+    public void instance(String method);
 }
