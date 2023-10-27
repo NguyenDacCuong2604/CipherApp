@@ -17,7 +17,7 @@ import java.util.Base64;
 
 public class DesDemo {
     public static void main(String[] args) throws Exception {
-       Cipher cipher = Cipher.getInstance("Serpent");
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding");
 
 
     }

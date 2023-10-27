@@ -1,6 +1,8 @@
 package screens;
 
 import constant.Constants;
+import model.ASysmmetricEncryption.AbsASymmetricEncryption;
+import model.ASysmmetricEncryption.RSA;
 import model.SysmmetricEncryption.AES;
 import model.SysmmetricEncryption.AbsSymmetricEncryption;
 import model.SysmmetricEncryption.DES;
@@ -80,6 +82,7 @@ public class HomeApp extends JFrame implements ActionListener{
         aesButton.setPreferredSize(btnDimension);
         aesButton.setActionCommand(Constants.Cipher.AES);
         aesButton.addActionListener(this);
+        aesButton.addActionListener(this);
         maHoaDoiXungPanel.add(aesButton);
 
         tripleDesButton = new JButton("3DES");
@@ -119,7 +122,9 @@ public class HomeApp extends JFrame implements ActionListener{
         maHoaBatDoiXungPanel.setPreferredSize(new Dimension(380, 60));
         maHoaBatDoiXungPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-        rsaButton = new JButton("RSA");
+        rsaButton = new JButton(Constants.Cipher.RSA);
+        rsaButton.setActionCommand(Constants.Cipher.RSA);
+        rsaButton.addActionListener(this);
         rsaButton.setPreferredSize(btnDimension);
         maHoaBatDoiXungPanel.add(rsaButton);
 
@@ -182,20 +187,24 @@ public class HomeApp extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        AbsSymmetricEncryption aSymmetricEncryption;
         switch (e.getActionCommand()){
             case Constants.Cipher.DES:
-                aSymmetricEncryption = new DES();
-                new SymmetricEncryptScreen(aSymmetricEncryption, Constants.List_Method.METHODS_DES);
+                AbsSymmetricEncryption des = new DES();
+                new SymmetricEncryptScreen(des, Constants.List_Method.METHODS_DES);
                 break;
             case  Constants.Cipher.TRIPLE_DES:
-                aSymmetricEncryption = new TripleDES();
-                new SymmetricEncryptScreen(aSymmetricEncryption, Constants.List_Method.METHODS_TRIPLEDES);
+                AbsSymmetricEncryption tripleDes = new TripleDES();
+                new SymmetricEncryptScreen(tripleDes, Constants.List_Method.METHODS_TRIPLEDES);
                 break;
             case Constants.Cipher.AES:
-                aSymmetricEncryption = new AES();
-                new SymmetricEncryptScreen(aSymmetricEncryption, Constants.List_Method.METHODS_AES);
+                AbsSymmetricEncryption aes = new AES();
+                new SymmetricEncryptScreen(aes, Constants.List_Method.METHODS_AES);
                 break;
+            case Constants.Cipher.RSA:
+                AbsASymmetricEncryption rsa = new RSA();
+                new ASymmetricEncryptScreen(rsa, Constants.List_Method.METHODS_RSA);
+                break;
+
         }
     }
 }

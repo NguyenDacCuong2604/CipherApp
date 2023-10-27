@@ -14,6 +14,7 @@ public class Constants {
         String BLOWFISH = "BLOWFISH";
         String RC4 = "RC4";
         String TWOFISH = "TWOFISH";
+        String RSA = "RSA";
     }
     public interface Description{
         String PLAINTEXT = "PlainText";
@@ -58,6 +59,10 @@ public class Constants {
         String AES_CBC_NOPADDING = "AES/CBC/NoPadding";
         String AES_CBC_PKCS5PADDING = "AES/CBC/PKCS5Padding";
         String AES_CBC_ISO10126PADDING = "AES/CBC/ISO10126Padding";
+
+        //RSA
+        String RSA_ECB_PKCS1PADDING = "RSA/ECB/PKCS1Padding";
+        String RSA_ECB_OAE = "RSA/ECB/OAEPWithSHA-256AndMGF1Padding";
     }
     public interface List_Method{
         String[] METHODS_DES = {
@@ -93,6 +98,11 @@ public class Constants {
                 Method.AES_CBC_NOPADDING,
                 Method.AES_CBC_PKCS5PADDING,
                 Method.AES_CBC_ISO10126PADDING,
+        };
+
+        String[] METHODS_RSA = {
+                Method.RSA_ECB_PKCS1PADDING,
+                Method.RSA_ECB_OAE
         };
     }
     public interface Mode{

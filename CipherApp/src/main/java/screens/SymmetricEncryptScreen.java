@@ -28,7 +28,7 @@ public class SymmetricEncryptScreen extends JFrame {
     JTextField keyTextField, ivTextField;
     Color buttonColor = Color.RED;
     AbsSymmetricEncryption symmetricEncryption;
-    JComboBox methodsComboBox, sizesKeyCombobBox;
+    JComboBox methodsComboBox, sizesKeyComboBox;
     String[] methods;
     public SymmetricEncryptScreen(AbsSymmetricEncryption symmetricEncryption, String[] methods){
         this.methods = methods;
@@ -193,13 +193,13 @@ public class SymmetricEncryptScreen extends JFrame {
         JPanel panelKey = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         if(symmetricEncryption.name.equals(Constants.Cipher.AES)){
-            sizesKeyCombobBox = new JComboBox(Constants.List_Size.SIZE_AES);
+            sizesKeyComboBox = new JComboBox(Constants.List_Size.SIZE_AES);
             TitledBorder sizeTitledBorder = BorderFactory.createTitledBorder(null, Constants.Description.SIZE, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
             sizeTitledBorder.setBorder(new LineBorder(Color.BLACK, 1));
-            sizesKeyCombobBox.setBorder(sizeTitledBorder);
-            panelKey.add(sizesKeyCombobBox);
+            sizesKeyComboBox.setBorder(sizeTitledBorder);
+            panelKey.add(sizesKeyComboBox);
             //event
-            sizesKeyCombobBox.addActionListener(new ActionListener() {
+            sizesKeyComboBox.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     JComboBox cb = (JComboBox) e.getSource();

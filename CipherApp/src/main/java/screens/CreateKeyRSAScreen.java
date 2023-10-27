@@ -28,9 +28,6 @@ public class CreateKeyRSAScreen extends JFrame {
         renderPrivateKey(panel);
         renderButtonCreate(panel);
 
-
-
-
         this.setResizable(false);
         this.getContentPane().add(panel);
         this.pack();
@@ -50,7 +47,6 @@ public class CreateKeyRSAScreen extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 createKeyRSA.createKey();
-                System.out.println(createKeyRSA.getPrivateKey());
                 publicKeyText.setText(createKeyRSA.getPublicKey());
                 privateKeyText.setText(createKeyRSA.getPrivateKey());
                 repaint();

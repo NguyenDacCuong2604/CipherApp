@@ -7,8 +7,8 @@ import screens.HomeApp;
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
-//        HomeApp app = new HomeApp();
-        CreateKeyRSAScreen createKeyRSA = new CreateKeyRSAScreen();
+        HomeApp app = new HomeApp();
+//        CreateKeyRSAScreen createKeyRSA = new CreateKeyRSAScreen();
 
     }
 }

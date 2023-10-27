@@ -23,20 +23,11 @@ public class CreateKeyRSA {
     }
     public String getPrivateKey(){
         byte[] keyBytes = this.privateKey.getEncoded();
-        String keyString = bytesToChar(keyBytes);
-        return keyString;
+        return bytesToChar(keyBytes);
     }
     public String getPublicKey(){
         byte[] keyBytes = this.publicKey.getEncoded();
-        String keyString = bytesToChar(keyBytes);
-        return keyString;
-    }
-    private String bytesToHex(byte[] bytes) {
-        StringBuilder result = new StringBuilder();
-        for (byte b : bytes) {
-            result.append(String.format("%02X", b));
-        }
-        return result.toString();
+        return bytesToChar(keyBytes);
     }
     private String bytesToChar(byte[] bytes) {
         return Base64.getEncoder().encodeToString(bytes);
