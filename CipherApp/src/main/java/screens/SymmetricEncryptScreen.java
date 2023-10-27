@@ -1,7 +1,7 @@
 package screens;
 
 import constant.Constants;
-import model.ASymmetricEncryption;
+import model.SysmmetricEncryption.AbsSymmetricEncryption;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
@@ -15,7 +15,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 
-public class CipherScreen extends JFrame {
+public class SymmetricEncryptScreen extends JFrame {
     JRadioButton encryptRadioButton, decryptRadioButton;
     ButtonGroup selectButtonGroup;
     String headerInput = Constants.Description.PLAINTEXT, headerOutput=Constants.Description.CIPHERTEXT, temp = Constants.Description.ENCRYPT;
@@ -27,10 +27,10 @@ public class CipherScreen extends JFrame {
     JLabel nameCipherLabel;
     JTextField keyTextField, ivTextField;
     Color buttonColor = Color.RED;
-    ASymmetricEncryption symmetricEncryption;
+    AbsSymmetricEncryption symmetricEncryption;
     JComboBox methodsComboBox, sizesKeyCombobBox;
     String[] methods;
-    public CipherScreen(ASymmetricEncryption symmetricEncryption, String[] methods){
+    public SymmetricEncryptScreen(AbsSymmetricEncryption symmetricEncryption, String[] methods){
         this.methods = methods;
         this.symmetricEncryption = symmetricEncryption;
 
@@ -386,10 +386,10 @@ public class CipherScreen extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(inputTextArea.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(CipherScreen.this, "Empty Input!!!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(SymmetricEncryptScreen.this, "Empty Input!!!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 else if(keyTextField.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(CipherScreen.this, "Empty Key!!! You can create a key by clicking on the createKey button", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(SymmetricEncryptScreen.this, "Empty Key!!! You can create a key by clicking on the createKey button", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 else {
                     String cipherText;

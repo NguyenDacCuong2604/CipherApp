@@ -17,15 +17,9 @@ import java.util.Base64;
 
 public class DesDemo {
     public static void main(String[] args) throws Exception {
-        // Create a KeyGenerator for TripleDES
-        KeyGenerator keyGen = KeyGenerator.getInstance("DESede");
+       Cipher cipher = Cipher.getInstance("Serpent");
 
-        // Generate a TripleDES key with a specific key size (e.g., 168 bits)
-        keyGen.init(168);
-        SecretKey tripleDesKey = keyGen.generateKey();
 
-        // The generated key can be used for encryption and decryption
-        System.out.println("Generated TripleDES Key: " + tripleDesKey.getEncoded().length);
     }
 
     public static String bytesToHex(byte[] bytes) {

@@ -23,6 +23,8 @@ public class Constants {
         String KEY = "Key";
         String SIZE = "Size";
         String IV = "InitializationVector";
+        String PUBLIC_KEY = "Public Key";
+        String PRIVATE_KEY = "Private Key";
     }
     public interface Method{
         //DES

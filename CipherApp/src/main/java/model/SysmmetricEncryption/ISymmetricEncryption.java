@@ -1,4 +1,4 @@
-package model;
+package model.SysmmetricEncryption;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;

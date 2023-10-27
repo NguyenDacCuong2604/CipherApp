@@ -1,10 +1,10 @@
 package screens;
 
 import constant.Constants;
-import model.AES;
-import model.ASymmetricEncryption;
-import model.DES;
-import model.TripleDES;
+import model.SysmmetricEncryption.AES;
+import model.SysmmetricEncryption.AbsSymmetricEncryption;
+import model.SysmmetricEncryption.DES;
+import model.SysmmetricEncryption.TripleDES;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -182,19 +182,19 @@ public class HomeApp extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ASymmetricEncryption aSymmetricEncryption;
+        AbsSymmetricEncryption aSymmetricEncryption;
         switch (e.getActionCommand()){
             case Constants.Cipher.DES:
                 aSymmetricEncryption = new DES();
-                new CipherScreen(aSymmetricEncryption, Constants.List_Method.METHODS_DES);
+                new SymmetricEncryptScreen(aSymmetricEncryption, Constants.List_Method.METHODS_DES);
                 break;
             case  Constants.Cipher.TRIPLE_DES:
                 aSymmetricEncryption = new TripleDES();
-                new CipherScreen(aSymmetricEncryption, Constants.List_Method.METHODS_TRIPLEDES);
+                new SymmetricEncryptScreen(aSymmetricEncryption, Constants.List_Method.METHODS_TRIPLEDES);
                 break;
             case Constants.Cipher.AES:
                 aSymmetricEncryption = new AES();
-                new CipherScreen(aSymmetricEncryption, Constants.List_Method.METHODS_AES);
+                new SymmetricEncryptScreen(aSymmetricEncryption, Constants.List_Method.METHODS_AES);
                 break;
         }
     }

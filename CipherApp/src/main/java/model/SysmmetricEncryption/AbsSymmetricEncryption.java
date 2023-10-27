@@ -1,11 +1,10 @@
-package model;
+package model.SysmmetricEncryption;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
-public abstract class ASymmetricEncryption implements ISymmetricEncryption{
+public abstract class AbsSymmetricEncryption implements ISymmetricEncryption{
 
     public String name;
     public String method;

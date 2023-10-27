@@ -1,4 +1,4 @@
-package model;
+package model.SysmmetricEncryption;
 
 import constant.Constants;
 
@@ -14,11 +14,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-public class TripleDES extends ASymmetricEncryption{
-    public TripleDES(){
-        this.size = 24;
-        this.iv = 8;
-        this.name = Constants.Cipher.TRIPLE_DES;
+public class AES extends AbsSymmetricEncryption {
+    public AES(){
+        this.size = 16;
+        this.iv = 16;
+        this.name = Constants.Cipher.AES;
     }
     @Override
     public void instance(String method) {
@@ -37,10 +37,9 @@ public class TripleDES extends ASymmetricEncryption{
                 cipher.init(Cipher.ENCRYPT_MODE, this.secretKey);
             }
             else cipher.init(Cipher.ENCRYPT_MODE , this.secretKey, this.ivSpec);
-
             byte[] messageBytes = plainText.getBytes("UTF-8");
             if(method.contains(Constants.Padding.NOPADDING)) {
-                int blockSize = 8; // TripleDES block size is 8 bytes
+                int blockSize = 16; // AES block size is 16 bytes
                 int padding = blockSize - (messageBytes.length % blockSize);
 
                 if (padding != blockSize) {
@@ -111,11 +110,11 @@ public class TripleDES extends ASymmetricEncryption{
     @Override
     public String createKey() {
         try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("DESede");
-            keyGenerator.init(168);
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            keyGenerator.init(this.size*8);
             SecretKey key = keyGenerator.generateKey();
             byte[] keyBytes = key.getEncoded();
-            String keyString = bytesToHex(keyBytes).substring(0, 24);
+            String keyString = bytesToHex(keyBytes).substring(0,this.size);
             return keyString;
         } catch (NoSuchAlgorithmException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -126,13 +125,14 @@ public class TripleDES extends ASymmetricEncryption{
     @Override
     public SecretKey convertKey(String key) {
         byte[] keyData = key.getBytes(StandardCharsets.UTF_8);
-        if (keyData.length != 24) {
-            byte[] paddedKeyData = new byte[24];
+
+        if (keyData.length != this.size) {
+            byte[] paddedKeyData = new byte[this.size];
             System.arraycopy(keyData, 0, paddedKeyData, 0, keyData.length);
             keyData = paddedKeyData;
         }
 
-        SecretKey secretKey = new SecretKeySpec(keyData, "DESede");
+        SecretKey secretKey = new SecretKeySpec(keyData, "AES");
         this.secretKey =  secretKey;
         return  this.secretKey;
     }
@@ -144,20 +144,21 @@ public class TripleDES extends ASymmetricEncryption{
         }
         return result.toString();
     }
+
     @Override
     public String createIv() {
-        byte[] iv = new byte[8];
+        byte[] iv = new byte[16];
         SecureRandom random = new SecureRandom();
         random.nextBytes(iv);
-        return bytesToHex(iv).substring(0, 8);
+        return bytesToHex(iv).substring(0, 16);
     }
 
     @Override
     public IvParameterSpec convertIv(String ivSpec) {
         byte[] ivData = ivSpec.getBytes(StandardCharsets.UTF_8);
 
-        if (ivData.length != 8) {
-            byte[] paddedIvData = new byte[8];
+        if (ivData.length != 16) {
+            byte[] paddedIvData = new byte[16];
             System.arraycopy(ivData, 0, paddedIvData, 0, ivData.length);
             ivData = paddedIvData;
         }

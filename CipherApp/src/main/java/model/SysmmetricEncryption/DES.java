@@ -1,9 +1,8 @@
-package model;
+package model.SysmmetricEncryption;
 
 import constant.Constants;
 
 import javax.crypto.*;
-import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.*;
@@ -13,16 +12,15 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 import java.util.Base64;
 
-public class AES extends ASymmetricEncryption{
-    public AES(){
-        this.size = 16;
-        this.iv = 16;
-        this.name = Constants.Cipher.AES;
+public class DES extends AbsSymmetricEncryption {
+    public DES(){
+        this.size = 8;
+        this.iv = 8;
+        this.name = Constants.Cipher.DES;
     }
+
     @Override
     public void instance(String method) {
         try {
@@ -34,7 +32,7 @@ public class AES extends ASymmetricEncryption{
     }
 
     @Override
-    public String encrypt(String plainText) {
+    public String encrypt(String plainText){
         try {
             if(method.contains(Constants.Mode.ECB)){
                 cipher.init(Cipher.ENCRYPT_MODE, this.secretKey);
@@ -42,7 +40,7 @@ public class AES extends ASymmetricEncryption{
             else cipher.init(Cipher.ENCRYPT_MODE , this.secretKey, this.ivSpec);
             byte[] messageBytes = plainText.getBytes("UTF-8");
             if(method.contains(Constants.Padding.NOPADDING)) {
-                int blockSize = 16; // AES block size is 16 bytes
+                int blockSize = 8; // DES block size is 8 bytes
                 int padding = blockSize - (messageBytes.length % blockSize);
 
                 if (padding != blockSize) {
@@ -79,10 +77,11 @@ public class AES extends ASymmetricEncryption{
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return null;
         }
+
     }
 
     @Override
-    public String decrypt(String cipherText) {
+    public String decrypt(String cipherText){
         try {
             byte[] byteEncrypt = Base64.getDecoder().decode(cipherText);
             int padding = 0;
@@ -113,16 +112,23 @@ public class AES extends ASymmetricEncryption{
     @Override
     public String createKey() {
         try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(this.size*8);
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("DES");
+            keyGenerator.init(56);
             SecretKey key = keyGenerator.generateKey();
             byte[] keyBytes = key.getEncoded();
-            String keyString = bytesToHex(keyBytes).substring(0,this.size);
+            String keyString = bytesToHex(keyBytes).substring(0,8);
             return keyString;
         } catch (NoSuchAlgorithmException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return null;
         }
+    }
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder result = new StringBuilder();
+        for (byte b : bytes) {
+            result.append(String.format("%02X", b));
+        }
+        return result.toString();
     }
 
     @Override
@@ -135,33 +141,25 @@ public class AES extends ASymmetricEncryption{
             keyData = paddedKeyData;
         }
 
-        SecretKey secretKey = new SecretKeySpec(keyData, "AES");
+        SecretKey secretKey = new SecretKeySpec(keyData, "DES");
         this.secretKey =  secretKey;
         return  this.secretKey;
     }
 
-    private String bytesToHex(byte[] bytes) {
-        StringBuilder result = new StringBuilder();
-        for (byte b : bytes) {
-            result.append(String.format("%02X", b));
-        }
-        return result.toString();
-    }
-
     @Override
     public String createIv() {
-        byte[] iv = new byte[16];
+        byte[] iv = new byte[8];
         SecureRandom random = new SecureRandom();
         random.nextBytes(iv);
-        return bytesToHex(iv).substring(0, 16);
+        return bytesToHex(iv).substring(0, 8);
     }
 
     @Override
     public IvParameterSpec convertIv(String ivSpec) {
         byte[] ivData = ivSpec.getBytes(StandardCharsets.UTF_8);
 
-        if (ivData.length != 16) {
-            byte[] paddedIvData = new byte[16];
+        if (ivData.length != 8) {
+            byte[] paddedIvData = new byte[8];
             System.arraycopy(ivData, 0, paddedIvData, 0, ivData.length);
             ivData = paddedIvData;
         }
