@@ -3,6 +3,8 @@ package screens;
 import constant.Constants;
 import model.ASysmmetricEncryption.AbsASymmetricEncryption;
 import model.ASysmmetricEncryption.RSA;
+import model.Hash.AbsHash;
+import model.Hash.SHA1;
 import model.SysmmetricEncryption.AES;
 import model.SysmmetricEncryption.AbsSymmetricEncryption;
 import model.SysmmetricEncryption.DES;
@@ -152,6 +154,8 @@ public class HomeApp extends JFrame implements ActionListener{
         sha1Button = new JButton("SHA1");
         sha1Button.setPreferredSize(btnDimension);
         hashAlgorithmPanel.add(sha1Button);
+        sha1Button.setActionCommand(Constants.Cipher.SHA1);
+        sha1Button.addActionListener(this);
 
         sha256Button = new JButton("SHA256");
         sha256Button.setPreferredSize(btnDimension);
@@ -203,6 +207,10 @@ public class HomeApp extends JFrame implements ActionListener{
             case Constants.Cipher.RSA:
                 AbsASymmetricEncryption rsa = new RSA();
                 new ASymmetricEncryptScreen(rsa, Constants.List_Method.METHODS_RSA);
+                break;
+            case Constants.Cipher.SHA1:
+                AbsHash sha1 = new SHA1();
+                new HashScreen(sha1);
                 break;
 
         }

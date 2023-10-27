@@ -7,6 +7,7 @@ public class Constants {
 
     public interface Cipher{
         String SHA_256 = "SHA-256";
+        String SHA1 = "SHA-1";
         String DES = "DES";
         String AES = "AES";
         String TRIPLE_DES = "TRIPLE-DES";
@@ -28,6 +29,8 @@ public class Constants {
         String PRIVATE_KEY = "Private Key";
         String ENCRYPT_OUTPUT = "Encrypted Output";
         String DECRYPT_OUTPUT = "Decrypted Output";
+        String INPUT = "Input";
+        String OUTPUT = "Output";
     }
     public interface Method{
         //DES
