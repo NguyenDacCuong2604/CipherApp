@@ -1,7 +1,6 @@
 package model;
 
 import constant.Constants;
-import screens.CipherScreen;
 
 import javax.crypto.*;
 import javax.crypto.spec.DESKeySpec;
@@ -18,13 +17,12 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
-public class DES extends ASymmetricEncryption{
-    public DES(){
-        this.size = 8;
-        this.iv = 8;
-        this.name = Constants.Cipher.DES;
+public class AES extends ASymmetricEncryption{
+    public AES(){
+        this.size = 16;
+        this.iv = 16;
+        this.name = Constants.Cipher.AES;
     }
-
     @Override
     public void instance(String method) {
         try {
@@ -36,7 +34,7 @@ public class DES extends ASymmetricEncryption{
     }
 
     @Override
-    public String encrypt(String plainText){
+    public String encrypt(String plainText) {
         try {
             if(method.contains(Constants.Mode.ECB)){
                 cipher.init(Cipher.ENCRYPT_MODE, this.secretKey);
@@ -44,7 +42,7 @@ public class DES extends ASymmetricEncryption{
             else cipher.init(Cipher.ENCRYPT_MODE , this.secretKey, this.ivSpec);
             byte[] messageBytes = plainText.getBytes("UTF-8");
             if(method.contains(Constants.Padding.NOPADDING)) {
-                int blockSize = 8; // DES block size is 8 bytes
+                int blockSize = 16; // AES block size is 16 bytes
                 int padding = blockSize - (messageBytes.length % blockSize);
 
                 if (padding != blockSize) {
@@ -81,11 +79,10 @@ public class DES extends ASymmetricEncryption{
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return null;
         }
-
     }
 
     @Override
-    public String decrypt(String cipherText){
+    public String decrypt(String cipherText) {
         try {
             byte[] byteEncrypt = Base64.getDecoder().decode(cipherText);
             int padding = 0;
@@ -116,23 +113,16 @@ public class DES extends ASymmetricEncryption{
     @Override
     public String createKey() {
         try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("DES");
-            keyGenerator.init(56);
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            keyGenerator.init(this.size*8);
             SecretKey key = keyGenerator.generateKey();
             byte[] keyBytes = key.getEncoded();
-            String keyString = bytesToHex(keyBytes).substring(0,8);
+            String keyString = bytesToHex(keyBytes).substring(0,this.size);
             return keyString;
         } catch (NoSuchAlgorithmException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return null;
         }
-    }
-    private String bytesToHex(byte[] bytes) {
-        StringBuilder result = new StringBuilder();
-        for (byte b : bytes) {
-            result.append(String.format("%02X", b));
-        }
-        return result.toString();
     }
 
     @Override
@@ -145,25 +135,33 @@ public class DES extends ASymmetricEncryption{
             keyData = paddedKeyData;
         }
 
-        SecretKey secretKey = new SecretKeySpec(keyData, "DES");
+        SecretKey secretKey = new SecretKeySpec(keyData, "AES");
         this.secretKey =  secretKey;
         return  this.secretKey;
     }
 
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder result = new StringBuilder();
+        for (byte b : bytes) {
+            result.append(String.format("%02X", b));
+        }
+        return result.toString();
+    }
+
     @Override
     public String createIv() {
-        byte[] iv = new byte[8];
+        byte[] iv = new byte[16];
         SecureRandom random = new SecureRandom();
         random.nextBytes(iv);
-        return bytesToHex(iv).substring(0, 8);
+        return bytesToHex(iv).substring(0, 16);
     }
 
     @Override
     public IvParameterSpec convertIv(String ivSpec) {
         byte[] ivData = ivSpec.getBytes(StandardCharsets.UTF_8);
 
-        if (ivData.length != 8) {
-            byte[] paddedIvData = new byte[8];
+        if (ivData.length != 16) {
+            byte[] paddedIvData = new byte[16];
             System.arraycopy(ivData, 0, paddedIvData, 0, ivData.length);
             ivData = paddedIvData;
         }

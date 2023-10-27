@@ -21,6 +21,7 @@ public class Constants {
         String ENCRYPT = "Encrypt";
         String DECRYPT = "Decrypt";
         String KEY = "Key";
+        String SIZE = "Size";
         String IV = "InitializationVector";
     }
     public interface Method{
@@ -47,6 +48,14 @@ public class Constants {
         String TRIPDES_CBC_NOPADDING = "DESede/CBC/NoPadding";
         String TRIPDES_CBC_PKCS5PADDING = "DESede/CBC/PKCS5Padding";
         String TRIPDES_CBC_ISO10126PADDING = "DESede/CBC/ISO10126Padding";
+
+        //AES
+        String AES_ECB_NOPADDING = "AES/ECB/NoPadding";
+        String AES_ECB_PKCS5PADDING = "AES/ECB/PKCS5Padding";
+        String AES_ECB_ISO10126PADDING = "AES/ECB/ISO10126Padding";
+        String AES_CBC_NOPADDING = "AES/CBC/NoPadding";
+        String AES_CBC_PKCS5PADDING = "AES/CBC/PKCS5Padding";
+        String AES_CBC_ISO10126PADDING = "AES/CBC/ISO10126Padding";
     }
     public interface List_Method{
         String[] METHODS_DES = {
@@ -74,11 +83,28 @@ public class Constants {
                 Method.TRIPDES_CBC_PKCS5PADDING,
                 Method.TRIPDES_CBC_ISO10126PADDING,
         };
+
+        String[] METHODS_AES = {
+                Method.AES_ECB_NOPADDING,
+                Method.AES_ECB_PKCS5PADDING,
+                Method.AES_ECB_ISO10126PADDING,
+                Method.AES_CBC_NOPADDING,
+                Method.AES_CBC_PKCS5PADDING,
+                Method.AES_CBC_ISO10126PADDING,
+        };
     }
     public interface Mode{
         String ECB = "ECB";
     }
     public interface Padding{
         String NOPADDING = "NoPadding";
+    }
+    public interface Size{
+        String BITS256 = "256bits";
+        String BITS192 = "192bits";
+        String BITS128 = "128bits";
+    }
+    public interface List_Size{
+        String[] SIZE_AES = {Size.BITS128, Size.BITS192, Size.BITS256};
     }
 }

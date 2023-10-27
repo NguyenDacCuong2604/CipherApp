@@ -3,7 +3,6 @@ package model;
 import constant.Constants;
 
 import javax.crypto.*;
-import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.*;
@@ -13,14 +12,12 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
-import java.util.Arrays;
 import java.util.Base64;
 
 public class TripleDES extends ASymmetricEncryption{
     public TripleDES(){
         this.size = 24;
+        this.iv = 8;
         this.name = Constants.Cipher.TRIPLE_DES;
     }
     @Override

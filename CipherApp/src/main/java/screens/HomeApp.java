@@ -1,6 +1,7 @@
 package screens;
 
 import constant.Constants;
+import model.AES;
 import model.ASymmetricEncryption;
 import model.DES;
 import model.TripleDES;
@@ -190,6 +191,10 @@ public class HomeApp extends JFrame implements ActionListener{
             case  Constants.Cipher.TRIPLE_DES:
                 aSymmetricEncryption = new TripleDES();
                 new CipherScreen(aSymmetricEncryption, Constants.List_Method.METHODS_TRIPLEDES);
+                break;
+            case Constants.Cipher.AES:
+                aSymmetricEncryption = new AES();
+                new CipherScreen(aSymmetricEncryption, Constants.List_Method.METHODS_AES);
                 break;
         }
     }

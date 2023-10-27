@@ -10,6 +10,7 @@ public abstract class ASymmetricEncryption implements ISymmetricEncryption{
     public String name;
     public String method;
     public int size;
+    public int iv;
     Cipher cipher;
     SecretKey secretKey;
     IvParameterSpec ivSpec;
