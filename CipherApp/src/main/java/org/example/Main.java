@@ -8,7 +8,5 @@ import screens.HomeApp;
 public class Main {
     public static void main(String[] args) {
         HomeApp app = new HomeApp();
-//        CreateKeyRSAScreen createKeyRSA = new CreateKeyRSAScreen();
-
     }
 }

@@ -1,7 +1,6 @@
 package org.example;
 
 import constant.Constants;
-import model.Github.Gost;
 import org.bouncycastle.crypto.digests.SHAKEDigest;
 import org.bouncycastle.jcajce.provider.symmetric.CAST5;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -22,7 +21,8 @@ import java.util.Base64;
 
 public class DesDemo {
     public static void main(String[] args) throws Exception {
-
+        Security.addProvider(new BouncyCastleProvider());
+        KeyGenerator keyGen = KeyGenerator.getInstance("CAST5");
     }
 
     public String encrypt(String plainText, PrivateKey privateKey) {

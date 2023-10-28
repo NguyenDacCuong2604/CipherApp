@@ -14,12 +14,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-public class TripleDES extends AbsSymmetricEncryption {
-    public TripleDES(){
-        this.size = 24;
+public class Blowfish extends AbsSymmetricEncryption {
+    public Blowfish(){
+        this.size = 8;
         this.iv = 8;
-        this.name = Constants.Cipher.TRIPLE_DES;
+        this.name = Constants.Cipher.BLOWFISH;
     }
+
     @Override
     public void instance(String method) {
         try {
@@ -41,10 +42,9 @@ public class TripleDES extends AbsSymmetricEncryption {
                 cipher.init(Cipher.ENCRYPT_MODE, this.secretKey);
             }
             else cipher.init(Cipher.ENCRYPT_MODE , this.secretKey, this.ivSpec);
-
             byte[] messageBytes = plainText.getBytes("UTF-8");
             if(method.contains(Constants.Padding.ZEROPADDING)) {
-                int blockSize = 8; // TripleDES block size is 8 bytes
+                int blockSize = 8; // Blowfish block size is 8 bytes
                 int padding = blockSize - (messageBytes.length % blockSize);
 
                 if (padding != blockSize) {
@@ -87,6 +87,7 @@ public class TripleDES extends AbsSymmetricEncryption {
     public String decrypt(String cipherText) {
         try {
             byte[] byteEncrypt = Base64.getDecoder().decode(cipherText);
+
             int padding = 0;
             for (int i = byteEncrypt.length - 1; i >= 0; i--) {
                 if (byteEncrypt[i] == 0) {
@@ -115,11 +116,11 @@ public class TripleDES extends AbsSymmetricEncryption {
     @Override
     public String createKey() {
         try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("DESede");
-            keyGenerator.init(168);
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("Blowfish");
+            keyGenerator.init(128);
             SecretKey key = keyGenerator.generateKey();
             byte[] keyBytes = key.getEncoded();
-            String keyString = bytesToHex(keyBytes).substring(0, 24);
+            String keyString = bytesToHex(keyBytes).substring(0,8);
             return keyString;
         } catch (NoSuchAlgorithmException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -130,13 +131,13 @@ public class TripleDES extends AbsSymmetricEncryption {
     @Override
     public SecretKey convertKey(String key) {
         byte[] keyData = key.getBytes(StandardCharsets.UTF_8);
-        if (keyData.length != 24) {
-            byte[] paddedKeyData = new byte[24];
+        if (keyData.length != 8) {
+            byte[] paddedKeyData = new byte[8];
             System.arraycopy(keyData, 0, paddedKeyData, 0, keyData.length);
             keyData = paddedKeyData;
         }
 
-        SecretKey secretKey = new SecretKeySpec(keyData, "DESede");
+        SecretKey secretKey = new SecretKeySpec(keyData, "Blowfish");
         this.secretKey =  secretKey;
         return  this.secretKey;
     }
@@ -148,6 +149,7 @@ public class TripleDES extends AbsSymmetricEncryption {
         }
         return result.toString();
     }
+
     @Override
     public String createIv() {
         byte[] iv = new byte[8];

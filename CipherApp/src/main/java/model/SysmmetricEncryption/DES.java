@@ -25,7 +25,11 @@ public class DES extends AbsSymmetricEncryption {
     public void instance(String method) {
         try {
             this.method = method;
-            this.cipher = Cipher.getInstance(method);
+            if(method.contains(Constants.Padding.ZEROPADDING)){
+                String type = method;
+                this.cipher = Cipher.getInstance(type.replace(Constants.Padding.ZEROPADDING, Constants.Padding.NOPADDING));
+            }
+            else this.cipher = Cipher.getInstance(method);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -39,7 +43,7 @@ public class DES extends AbsSymmetricEncryption {
             }
             else cipher.init(Cipher.ENCRYPT_MODE , this.secretKey, this.ivSpec);
             byte[] messageBytes = plainText.getBytes("UTF-8");
-            if(method.contains(Constants.Padding.NOPADDING)) {
+            if(method.contains(Constants.Padding.ZEROPADDING)) {
                 int blockSize = 8; // DES block size is 8 bytes
                 int padding = blockSize - (messageBytes.length % blockSize);
 
@@ -84,6 +88,7 @@ public class DES extends AbsSymmetricEncryption {
     public String decrypt(String cipherText){
         try {
             byte[] byteEncrypt = Base64.getDecoder().decode(cipherText);
+
             int padding = 0;
             for (int i = byteEncrypt.length - 1; i >= 0; i--) {
                 if (byteEncrypt[i] == 0) {
@@ -157,13 +162,23 @@ public class DES extends AbsSymmetricEncryption {
     @Override
     public IvParameterSpec convertIv(String ivSpec) {
         byte[] ivData = ivSpec.getBytes(StandardCharsets.UTF_8);
-
-        if (ivData.length != 8) {
+        if(ivData.length == 0){
+            ivData = ivGenerate();
+        }
+        else if (ivData.length != 8) {
             byte[] paddedIvData = new byte[8];
             System.arraycopy(ivData, 0, paddedIvData, 0, ivData.length);
             ivData = paddedIvData;
         }
         this.ivSpec = new IvParameterSpec(ivData);
         return this.ivSpec;
+    }
+    private byte[] ivGenerate(){
+        byte[] data = new byte[8];
+        for(int i=0; i<data.length; i++){
+            //char 0
+            data[i] = 48;
+        }
+        return data;
     }
 }

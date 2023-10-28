@@ -24,7 +24,11 @@ public class AES extends AbsSymmetricEncryption {
     public void instance(String method) {
         try {
             this.method = method;
-            this.cipher = Cipher.getInstance(method);
+            if(method.contains(Constants.Padding.ZEROPADDING)){
+                String type = method;
+                this.cipher = Cipher.getInstance(type.replace(Constants.Padding.ZEROPADDING, Constants.Padding.NOPADDING));
+            }
+            else this.cipher = Cipher.getInstance(method);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -38,7 +42,7 @@ public class AES extends AbsSymmetricEncryption {
             }
             else cipher.init(Cipher.ENCRYPT_MODE , this.secretKey, this.ivSpec);
             byte[] messageBytes = plainText.getBytes("UTF-8");
-            if(method.contains(Constants.Padding.NOPADDING)) {
+            if(method.contains(Constants.Padding.ZEROPADDING)) {
                 int blockSize = 16; // AES block size is 16 bytes
                 int padding = blockSize - (messageBytes.length % blockSize);
 
@@ -156,13 +160,24 @@ public class AES extends AbsSymmetricEncryption {
     @Override
     public IvParameterSpec convertIv(String ivSpec) {
         byte[] ivData = ivSpec.getBytes(StandardCharsets.UTF_8);
-
-        if (ivData.length != 16) {
+        if(ivData.length == 0){
+            ivData = ivGenerate();
+        }
+        else if (ivData.length != 16) {
             byte[] paddedIvData = new byte[16];
             System.arraycopy(ivData, 0, paddedIvData, 0, ivData.length);
             ivData = paddedIvData;
         }
         this.ivSpec = new IvParameterSpec(ivData);
         return this.ivSpec;
+    }
+
+    private byte[] ivGenerate(){
+        byte[] data = new byte[16];
+        for(int i=0; i<data.length; i++){
+            //char 0
+            data[i] = 48;
+        }
+        return data;
     }
 }

@@ -5,10 +5,7 @@ import model.ASysmmetricEncryption.AbsASymmetricEncryption;
 import model.ASysmmetricEncryption.RSA;
 import model.ElectronicSignature.ElectronicSignature;
 import model.Hash.*;
-import model.SysmmetricEncryption.AES;
-import model.SysmmetricEncryption.AbsSymmetricEncryption;
-import model.SysmmetricEncryption.DES;
-import model.SysmmetricEncryption.TripleDES;
+import model.SysmmetricEncryption.*;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -19,7 +16,7 @@ import java.awt.event.ActionListener;
 
 public class HomeApp extends JFrame implements ActionListener{
     JPanel maHoaDoiXungPanel, maHoaBatDoiXungPanel, hashAlgorithmPanel, chuKyDienTuPanel;
-    JButton aesButton, desButton, tripleDesButton, blowfishButton, rivestCipher4Button, twofishButton,
+    JButton aesButton, desButton, tripleDesButton, blowfishButton, cast_6Button, twofishButton,
             rsaButton,
             md4Button, md5Button, sha1Button, sha256Button, sha512Button, sha3_224Button, ripemd_256Button, crc_32Button, shake_256Button,
             chuKyDienTuButton;
@@ -100,11 +97,11 @@ public class HomeApp extends JFrame implements ActionListener{
         blowfishButton.addActionListener(this);
         maHoaDoiXungPanel.add(blowfishButton);
 
-        rivestCipher4Button = new JButton(Constants.Cipher.RC4);
-        rivestCipher4Button.setPreferredSize(btnDimension);
-        rivestCipher4Button.setActionCommand(Constants.Cipher.RC4);
-        rivestCipher4Button.addActionListener(this);
-        maHoaDoiXungPanel.add(rivestCipher4Button);
+        cast_6Button = new JButton(Constants.Cipher.CAST_6);
+        cast_6Button.setPreferredSize(btnDimension);
+        cast_6Button.setActionCommand(Constants.Cipher.CAST_6);
+        cast_6Button.addActionListener(this);
+        maHoaDoiXungPanel.add(cast_6Button);
 
         twofishButton = new JButton(Constants.Cipher.TWOFISH);
         twofishButton.setPreferredSize(btnDimension);
@@ -220,6 +217,18 @@ public class HomeApp extends JFrame implements ActionListener{
             case Constants.Cipher.AES:
                 AbsSymmetricEncryption aes = new AES();
                 new SymmetricEncryptScreen(aes, Constants.List_Method.METHODS_AES);
+                break;
+            case Constants.Cipher.BLOWFISH:
+                AbsSymmetricEncryption blowFish = new Blowfish();
+                new SymmetricEncryptScreen(blowFish, Constants.List_Method.METHODS_BLOWFISH);
+                break;
+            case Constants.Cipher.TWOFISH:
+                AbsSymmetricEncryption twoFish = new Twofish();
+                new SymmetricEncryptScreen(twoFish, Constants.List_Method.METHODS_TWOFISH);
+                break;
+            case Constants.Cipher.CAST_6:
+                AbsSymmetricEncryption cast6 = new Cast6();
+                new SymmetricEncryptScreen(cast6, Constants.List_Method.METHODS_CAST6);
                 break;
             case Constants.Cipher.RSA:
                 AbsASymmetricEncryption rsa = new RSA();
