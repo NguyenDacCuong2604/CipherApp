@@ -6,8 +6,15 @@ import java.util.Map;
 public class Constants {
 
     public interface Cipher{
+        String MD4 = "MD4";
+        String MD5 = "MD5";
         String SHA_256 = "SHA-256";
-        String SHA1 = "SHA-1";
+        String SHA_1 = "SHA-1";
+        String SHA_512 = "SHA-512";
+        String SHA3_224 = "SHA3-224";
+        String CRC_32 = "CRC-32";
+        String SHAKE_256 = "SHAKE256";
+        String RIPEMD_256 = "RIPEMD256";
         String DES = "DES";
         String AES = "AES";
         String TRIPLE_DES = "TRIPLE-DES";
@@ -31,6 +38,9 @@ public class Constants {
         String DECRYPT_OUTPUT = "Decrypted Output";
         String INPUT = "Input";
         String OUTPUT = "Output";
+        String E_SIGNATURE = "E_Signature";
+        String VERIFY = "Verify";
+        String OPEN_FILE = "Open File";
     }
     public interface Method{
         //DES

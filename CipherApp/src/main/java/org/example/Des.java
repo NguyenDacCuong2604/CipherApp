@@ -4,8 +4,9 @@ import javax.crypto.*;
 import javax.crypto.spec.DESKeySpec;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
@@ -142,25 +143,33 @@ public class Des {
 
 
     public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, IOException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
-        Des des = new Des();
-        System.out.println(des.createKey().toString());
-        String plainText = "N";
-        System.out.println(plainText);
-        System.out.println();
-        des.setKey(des.convertKey("cuong"));
-        byte[] keyByte = des.key.getEncoded();
-        System.out.println(Arrays.toString(keyByte));
+        try {
+            // Get instance and initialize a KeyPairGenerator object.
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA", "SUN");
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG", "SUN");
+            keyGen.initialize(1024, random);
 
-        String encryptText = des.encryptBase64(plainText);
-        System.out.println(encryptText);
-        String decryptText = des.decrypt(encryptText);
-        System.out.println(decryptText);
-        System.out.println();
-        String encryptTextNoPadding = des.encryptBase64NoPadding(plainText);
-        System.out.println(encryptTextNoPadding);
-        String decryptTextNoPadding = des.decryptNoPadding(encryptTextNoPadding);
-        System.out.println(decryptTextNoPadding);
-        System.out.println();
+            // Get a PrivateKey from the generated key pair.
+            KeyPair keyPair = keyGen.generateKeyPair();
+            PrivateKey privateKey = keyPair.getPrivate();
+
+            // Get an instance of Signature object and initialize it.
+            Signature signature = Signature.getInstance("SHA1withDSA", "SUN");
+            signature.initSign(privateKey);
+
+            // Supply the data to be signed to the Signature object
+            // using the update() method and generate the digital
+            // signature.
+            byte[] bytes = Files.readAllBytes(Paths.get("D:\\Download\\Thu (signed).pdf"));
+            signature.update(bytes);
+            byte[] digitalSignature = signature.sign();
+
+            // Save digital signature and the public key to a file.
+            Files.write(Paths.get("signature"), digitalSignature);
+            Files.write(Paths.get("publickey"), keyPair.getPublic().getEncoded());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
