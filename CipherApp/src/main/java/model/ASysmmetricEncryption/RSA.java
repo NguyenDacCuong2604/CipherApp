@@ -19,9 +19,18 @@ public class RSA extends AbsASymmetricEncryption{
         this.name = Constants.Cipher.RSA;
     }
     @Override
-    public String encrypt(String plainText) {
+    public String encrypt(String plainText, String type, String key) {
         try {
-            cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
+            //convert key
+            if(type.equals(Constants.Description.PRIVATE_KEY)){
+                convertPrivateKey(key);
+                cipher.init(Cipher.ENCRYPT_MODE, this.privateKey);
+            }
+            else {
+                convertPublicKey(key);
+                cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
+            }
+            //encrypt
             byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
             return Base64.getEncoder().encodeToString(encryptedBytes);
         } catch (IllegalBlockSizeException | BadPaddingException | InvalidKeyException e) {
@@ -31,9 +40,18 @@ public class RSA extends AbsASymmetricEncryption{
     }
 
     @Override
-    public String decrypt(String cipherText) {
+    public String decrypt(String cipherText, String type, String key) {
         try{
-            cipher.init(Cipher.DECRYPT_MODE, this.privateKey);
+            //convert key
+            if(type.equals(Constants.Description.PRIVATE_KEY)){
+                convertPrivateKey(key);
+                cipher.init(Cipher.DECRYPT_MODE, this.privateKey);
+            }
+            else {
+                convertPublicKey(key);
+                cipher.init(Cipher.DECRYPT_MODE, this.publicKey);
+            }
+            //decrypt
             byte[] cipherBytes = Base64.getDecoder().decode(cipherText);
             byte[] decryptedBytes = cipher.doFinal(cipherBytes);
             return new String(decryptedBytes, "UTF-8");

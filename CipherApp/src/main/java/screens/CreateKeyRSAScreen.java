@@ -30,6 +30,9 @@ public class CreateKeyRSAScreen extends JFrame {
         renderPrivateKey(panel);
         renderButtonCreate(panel);
 
+        setFocusable(true);
+        requestFocus();
+
         this.setResizable(false);
         this.getContentPane().add(panel);
         this.pack();
@@ -46,6 +49,7 @@ public class CreateKeyRSAScreen extends JFrame {
         //combobox
         sizeComboBox = new JComboBox(Constants.List_Size.SIZE_RSA);
         sizeComboBox.setSelectedItem(Constants.Size.BIT1024);
+        sizeComboBox.setFocusable(false);
         panelSelect.add(sizeComboBox);
 
         panel.add(panelSelect);
@@ -56,6 +60,7 @@ public class CreateKeyRSAScreen extends JFrame {
         panelButton.setPreferredSize(new Dimension(200, 50));
         createKeyButton = new JButton("CREATE");
         createKeyButton.setPreferredSize(new Dimension(180, 30));
+        createKeyButton.setFocusable(false);
         panelButton.add(createKeyButton);
         panel.add(panelButton);
 
@@ -89,17 +94,21 @@ public class CreateKeyRSAScreen extends JFrame {
         JPanel panelPrivateKey = new JPanel();
         panelPrivateKey.setLayout(new FlowLayout(FlowLayout.LEFT));
         privateKeyText = new JTextField();
-        privateKeyText.setPreferredSize(new Dimension(450, 45));
+        privateKeyText.setFont( new Font("TimesRoman", Font.PLAIN, 16));
+        privateKeyText.setPreferredSize(new Dimension(450, 60));
         TitledBorder privateTitledBorder = BorderFactory.createTitledBorder(null, Constants.Description.PRIVATE_KEY, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
         privateTitledBorder.setBorder(new LineBorder(Color.BLACK, 1));
         privateKeyText.setBorder(privateTitledBorder);
         privateKeyText.setEditable(false);
-        panelPrivateKey.add(privateKeyText);
+        JScrollPane scrollPane = new JScrollPane(privateKeyText);
+
+        panelPrivateKey.add(scrollPane);
 
         ImageIcon copyIcon = new ImageIcon("assets/Images/copy.png");
         copyPrivateKeyButton = new JButton(new ImageIcon(copyIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH)));
-        copyPrivateKeyButton.setToolTipText("Copy PrivateKey");
+        copyPrivateKeyButton.setToolTipText("Copy PublicKey");
         copyPrivateKeyButton.setPreferredSize(new Dimension(35, 35));
+
         panelPrivateKey.add(copyPrivateKeyButton);
         //event
         copyPrivateKeyButton.addActionListener(new ActionListener() {
@@ -121,12 +130,16 @@ public class CreateKeyRSAScreen extends JFrame {
         JPanel panelPublicKey = new JPanel();
         panelPublicKey.setLayout(new FlowLayout(FlowLayout.LEFT));
         publicKeyText = new JTextField();
-        publicKeyText.setPreferredSize(new Dimension(450, 45));
+        publicKeyText.setFont( new Font("TimesRoman", Font.PLAIN, 16));
+        publicKeyText.setPreferredSize(new Dimension(450, 60));
         TitledBorder publicTitledBorder = BorderFactory.createTitledBorder(null, Constants.Description.PUBLIC_KEY, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
         publicTitledBorder.setBorder(new LineBorder(Color.BLACK, 1));
         publicKeyText.setBorder(publicTitledBorder);
         publicKeyText.setEditable(false);
-        panelPublicKey.add(publicKeyText);
+
+        JScrollPane scrollPane = new JScrollPane(publicKeyText);
+
+        panelPublicKey.add(scrollPane);
 
 
         ImageIcon copyIcon = new ImageIcon("assets/Images/copy.png");

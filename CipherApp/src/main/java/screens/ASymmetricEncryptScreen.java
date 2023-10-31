@@ -7,18 +7,22 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ASymmetricEncryptScreen extends JFrame {
     AbsASymmetricEncryption aSymmetricEncryption;
     JPanel controlPanel;
     JLabel nameCipherLabel;
-    JButton createKeyButton, encryptButton, decryptButton, pasteButtonEncrypt, pasteButtonDecrypt, clearButtonEncrypt, clearButtonDecrypt;
+    JButton createKeyButton, encryptButton, decryptButton;
     String[] methods;
-    JComboBox methodsComboBoxEncrypt, methodsComboBoxDecrypt;
+    JComboBox methodsComboBoxEncrypt, methodsComboBoxDecrypt, typeKeyEncryptComboBox, typeKeyDecryptComboBox;
     JTextArea plainTextAreaEncrypt, cipherTextAreaEncrypt, plainTextAreaDecrypt, cipherTextAreaDecrypt, publicKeyText, privateKeyText;
-
+    Font font;
     public ASymmetricEncryptScreen(AbsASymmetricEncryption aSymmetricEncryption, String[] methods){
         this.methods = methods;
         this.aSymmetricEncryption = aSymmetricEncryption;
@@ -26,7 +30,7 @@ public class ASymmetricEncryptScreen extends JFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         Image icon = Toolkit.getDefaultToolkit().getImage("assets/images/icon.png");
         this.setIconImage(icon);
-
+        font = new Font("TimesRoman", Font.PLAIN, 14);
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         //Control
@@ -49,6 +53,7 @@ public class ASymmetricEncryptScreen extends JFrame {
 
         panel.add(body);
 
+        this.setResizable(false);
         this.getContentPane().add(panel);
         this.pack();
         this.setVisible(true);
@@ -58,22 +63,85 @@ public class ASymmetricEncryptScreen extends JFrame {
     private void renderDecrypt(JPanel body) {
         JPanel panelDecrypt = new JPanel();
         panelDecrypt.setLayout(new BoxLayout(panelDecrypt, BoxLayout.Y_AXIS));
+        panelDecrypt.setPreferredSize(new Dimension(450,650));
 
         //CipherText
-        cipherTextAreaDecrypt = new JTextArea();
-        cipherTextAreaDecrypt.setPreferredSize(new Dimension(400,200));
+        cipherTextAreaDecrypt = new JTextArea(10, 35);
+        cipherTextAreaDecrypt.setFont(font);
+        cipherTextAreaDecrypt.setLineWrap(true);
+        cipherTextAreaDecrypt.setWrapStyleWord(true);
         TitledBorder cipherTextTitledBorder = BorderFactory.createTitledBorder(null, Constants.Description.CIPHERTEXT, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
         cipherTextTitledBorder.setBorder(new LineBorder(Color.BLACK, 1));
-        cipherTextAreaDecrypt.setBorder(cipherTextTitledBorder);
-        panelDecrypt.add(cipherTextAreaDecrypt);
+        JScrollPane scrollPaneCipherText = new JScrollPane(cipherTextAreaDecrypt);
+        scrollPaneCipherText.setBorder(cipherTextTitledBorder);
 
-        //PrivateKey
-        privateKeyText = new JTextArea();
-        privateKeyText.setPreferredSize(new Dimension(400, 100));
-        TitledBorder privateKeyTitledBorder = BorderFactory.createTitledBorder(null, Constants.Description.PRIVATE_KEY, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
+        //popup input
+        JPopupMenu popupMenuInputEncrypt = new JPopupMenu();
+        JMenuItem pasteInputText = new JMenuItem("Paste");
+        JMenuItem clearInputText = new JMenuItem("Clear");
+        popupMenuInputEncrypt.add(pasteInputText);
+        popupMenuInputEncrypt.add(clearInputText);
+        //event click
+        cipherTextAreaDecrypt.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    popupMenuInputEncrypt.show(cipherTextAreaDecrypt, e.getX(), e.getY());
+                }
+            }
+        });
+        pasteInputText.addActionListener(e -> {
+            cipherTextAreaDecrypt.paste();
+        });
+        clearInputText.addActionListener(e -> {
+            cipherTextAreaDecrypt.setText("");
+        });
+
+        panelDecrypt.add(scrollPaneCipherText);
+
+
+        //Type Key
+        JPanel panelTypeKey = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel typeLabelKey = new JLabel("Select Type Key:");
+        panelTypeKey.add(typeLabelKey);
+        typeKeyDecryptComboBox = new JComboBox(Constants.Type.TYPE_KEY);
+        typeKeyDecryptComboBox.setSelectedItem(Constants.Description.PRIVATE_KEY);
+        panelTypeKey.add(typeKeyDecryptComboBox);
+        panelDecrypt.add(panelTypeKey);
+
+        //Key
+        privateKeyText = new JTextArea(3, 35);
+        privateKeyText.setFont(font);
+        privateKeyText.setWrapStyleWord(true);
+        privateKeyText.setLineWrap(true);
+        TitledBorder privateKeyTitledBorder = BorderFactory.createTitledBorder(null, Constants.Description.KEY, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
         privateKeyTitledBorder.setBorder(new LineBorder(Color.BLACK, 1));
-        privateKeyText.setBorder(privateKeyTitledBorder);
-        panelDecrypt.add(privateKeyText);
+        JScrollPane scrollPanePrivateKey = new JScrollPane(privateKeyText);
+        scrollPanePrivateKey.setBorder(privateKeyTitledBorder);
+
+        //popup key
+        JPopupMenu popupMenuKeyEncrypt = new JPopupMenu();
+        JMenuItem pasteKeyText = new JMenuItem("Paste");
+        JMenuItem clearKeyText = new JMenuItem("Clear");
+        popupMenuKeyEncrypt.add(pasteKeyText);
+        popupMenuKeyEncrypt.add(clearKeyText);
+        //event click
+        privateKeyText.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    popupMenuKeyEncrypt.show(privateKeyText, e.getX(), e.getY());
+                }
+            }
+        });
+        pasteKeyText.addActionListener(e -> {
+            privateKeyText.paste();
+        });
+        clearKeyText.addActionListener(e -> {
+            privateKeyText.setText("");
+        });
+
+        panelDecrypt.add(scrollPanePrivateKey);
 
         //Type
         JPanel panelType = new JPanel(new FlowLayout());
@@ -88,17 +156,44 @@ public class ASymmetricEncryptScreen extends JFrame {
         decryptButton = new JButton("Decrypt");
         decryptButton.setBackground(Color.GREEN);
         decryptButton.setFont(new Font("Arial", Font.BOLD, 16));
-        decryptButton.setPreferredSize(new Dimension(120, 40));
+        decryptButton.setPreferredSize(new Dimension(140, 40));
         panelButton.add(decryptButton);
         panelDecrypt.add(panelButton);
 
         //Encrypt Output
-        plainTextAreaDecrypt = new JTextArea();
-        plainTextAreaDecrypt.setPreferredSize(new Dimension(400,200));
+        plainTextAreaDecrypt = new JTextArea(10, 35);
+        plainTextAreaDecrypt.setFont(font);
+        plainTextAreaDecrypt.setLineWrap(true);
+        plainTextAreaDecrypt.setWrapStyleWord(true);
+        plainTextAreaDecrypt.setEditable(false);
         TitledBorder plainTextTitledBorder = BorderFactory.createTitledBorder(null, Constants.Description.DECRYPT_OUTPUT, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
         plainTextTitledBorder.setBorder(new LineBorder(Color.BLACK, 1));
-        plainTextAreaDecrypt.setBorder(plainTextTitledBorder);
-        panelDecrypt.add(plainTextAreaDecrypt);
+        JScrollPane scrollPanePlainText = new JScrollPane(plainTextAreaDecrypt);
+        scrollPanePlainText.setBorder(plainTextTitledBorder);
+
+        //popup output
+        JPopupMenu popupMenuOutputEncrypt = new JPopupMenu();
+        JMenuItem copyOutputText = new JMenuItem("Copy All");
+        popupMenuOutputEncrypt.add(copyOutputText);
+        //event click
+        plainTextAreaDecrypt.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    popupMenuOutputEncrypt.show(plainTextAreaDecrypt, e.getX(), e.getY());
+                }
+            }
+        });
+        copyOutputText.addActionListener(e -> {
+            String textToCopy = plainTextAreaDecrypt.getText();
+
+            // Copy the text to the clipboard
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            StringSelection selection = new StringSelection(textToCopy);
+            clipboard.setContents(selection, null);
+        });
+
+        panelDecrypt.add(scrollPanePlainText);
 
         //event
         decryptButton.addActionListener(new ActionListener() {
@@ -112,8 +207,7 @@ public class ASymmetricEncryptScreen extends JFrame {
                 }
                 else{
                     aSymmetricEncryption.instance((String)methodsComboBoxDecrypt.getSelectedItem());
-                    aSymmetricEncryption.convertPrivateKey(privateKeyText.getText());
-                    String decrypt = aSymmetricEncryption.decrypt(cipherTextAreaDecrypt.getText());
+                    String decrypt = aSymmetricEncryption.decrypt(cipherTextAreaDecrypt.getText(), (String)typeKeyDecryptComboBox.getSelectedItem(), privateKeyText.getText());
                     plainTextAreaDecrypt.setText(decrypt);
                 }
             }
@@ -124,23 +218,85 @@ public class ASymmetricEncryptScreen extends JFrame {
 
     private void renderEncrypt(JPanel body) {
         JPanel panelEncrypt = new JPanel();
+        panelEncrypt.setPreferredSize(new Dimension(450,650));
         panelEncrypt.setLayout(new BoxLayout(panelEncrypt, BoxLayout.Y_AXIS));
 
         //PlainText
-        plainTextAreaEncrypt = new JTextArea();
-        plainTextAreaEncrypt.setPreferredSize(new Dimension(400,200));
+        plainTextAreaEncrypt = new JTextArea(10, 35);
+        plainTextAreaEncrypt.setFont(font);
+        plainTextAreaEncrypt.setLineWrap(true);
+        plainTextAreaEncrypt.setWrapStyleWord(true);
         TitledBorder plainTextTitledBorder = BorderFactory.createTitledBorder(null, Constants.Description.PLAINTEXT, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
         plainTextTitledBorder.setBorder(new LineBorder(Color.BLACK, 1));
-        plainTextAreaEncrypt.setBorder(plainTextTitledBorder);
-        panelEncrypt.add(plainTextAreaEncrypt);
+        JScrollPane scrollPanePlainText = new JScrollPane(plainTextAreaEncrypt);
+        scrollPanePlainText.setBorder(plainTextTitledBorder);
+        panelEncrypt.add(scrollPanePlainText);
 
-        //PublicKey
-        publicKeyText = new JTextArea();
-        publicKeyText.setPreferredSize(new Dimension(400, 100));
-        TitledBorder publicKeyTitledBorder = BorderFactory.createTitledBorder(null, Constants.Description.PUBLIC_KEY, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
+        //popup input
+        JPopupMenu popupMenuInputEncrypt = new JPopupMenu();
+        JMenuItem pasteInputText = new JMenuItem("Paste");
+        JMenuItem clearInputText = new JMenuItem("Clear");
+        popupMenuInputEncrypt.add(pasteInputText);
+        popupMenuInputEncrypt.add(clearInputText);
+        //event click
+        plainTextAreaEncrypt.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    popupMenuInputEncrypt.show(plainTextAreaEncrypt, e.getX(), e.getY());
+                }
+            }
+        });
+        pasteInputText.addActionListener(e -> {
+            plainTextAreaEncrypt.paste();
+        });
+        clearInputText.addActionListener(e -> {
+            plainTextAreaEncrypt.setText("");
+        });
+
+
+        //Type Key
+        JPanel panelTypeKey = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel typeLabelKey = new JLabel("Select Type Key:");
+        panelTypeKey.add(typeLabelKey);
+        typeKeyEncryptComboBox = new JComboBox(Constants.Type.TYPE_KEY);
+        panelTypeKey.add(typeKeyEncryptComboBox);
+        panelEncrypt.add(panelTypeKey);
+
+
+        //Key
+        publicKeyText = new JTextArea(3, 35);
+        publicKeyText.setFont(font);
+        publicKeyText.setLineWrap(true);
+        publicKeyText.setWrapStyleWord(true);
+        TitledBorder publicKeyTitledBorder = BorderFactory.createTitledBorder(null, Constants.Description.KEY, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
         publicKeyTitledBorder.setBorder(new LineBorder(Color.BLACK, 1));
-        publicKeyText.setBorder(publicKeyTitledBorder);
-        panelEncrypt.add(publicKeyText);
+        JScrollPane scrollPaneKey = new JScrollPane(publicKeyText);
+        scrollPaneKey.setBorder(publicKeyTitledBorder);
+
+        //popup key
+        JPopupMenu popupMenuKeyEncrypt = new JPopupMenu();
+        JMenuItem pasteKeyText = new JMenuItem("Paste");
+        JMenuItem clearKeyText = new JMenuItem("Clear");
+        popupMenuKeyEncrypt.add(pasteKeyText);
+        popupMenuKeyEncrypt.add(clearKeyText);
+        //event click
+        publicKeyText.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    popupMenuKeyEncrypt.show(publicKeyText, e.getX(), e.getY());
+                }
+            }
+        });
+        pasteKeyText.addActionListener(e -> {
+            publicKeyText.paste();
+        });
+        clearKeyText.addActionListener(e -> {
+            publicKeyText.setText("");
+        });
+
+        panelEncrypt.add(scrollPaneKey);
 
         //Type
         JPanel panelType = new JPanel(new FlowLayout());
@@ -155,17 +311,44 @@ public class ASymmetricEncryptScreen extends JFrame {
         encryptButton = new JButton("Encrypt");
         encryptButton.setBackground(Color.RED);
         encryptButton.setFont(new Font("Arial", Font.BOLD, 16));
-        encryptButton.setPreferredSize(new Dimension(120, 40));
+        encryptButton.setPreferredSize(new Dimension(140, 40));
         panelButton.add(encryptButton);
         panelEncrypt.add(panelButton);
 
         //Encrypt Output
-        cipherTextAreaEncrypt = new JTextArea();
-        cipherTextAreaEncrypt.setPreferredSize(new Dimension(400,200));
+        cipherTextAreaEncrypt = new JTextArea(10, 35);
+        cipherTextAreaEncrypt.setFont(font);
+        cipherTextAreaEncrypt.setWrapStyleWord(true);
+        cipherTextAreaEncrypt.setLineWrap(true);
+        cipherTextAreaEncrypt.setEditable(false);
         TitledBorder cipherTextTitledBorder = BorderFactory.createTitledBorder(null, Constants.Description.ENCRYPT_OUTPUT, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
         cipherTextTitledBorder.setBorder(new LineBorder(Color.BLACK, 1));
-        cipherTextAreaEncrypt.setBorder(cipherTextTitledBorder);
-        panelEncrypt.add(cipherTextAreaEncrypt);
+        JScrollPane scrollPaneCipherText = new JScrollPane(cipherTextAreaEncrypt);
+        scrollPaneCipherText.setBorder(cipherTextTitledBorder);
+
+        //popup output
+        JPopupMenu popupMenuOutputEncrypt = new JPopupMenu();
+        JMenuItem copyOutputText = new JMenuItem("Copy All");
+        popupMenuOutputEncrypt.add(copyOutputText);
+        //event click
+        cipherTextAreaEncrypt.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    popupMenuOutputEncrypt.show(cipherTextAreaEncrypt, e.getX(), e.getY());
+                }
+            }
+        });
+        copyOutputText.addActionListener(e -> {
+            String textToCopy = cipherTextAreaEncrypt.getText();
+
+            // Copy the text to the clipboard
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            StringSelection selection = new StringSelection(textToCopy);
+            clipboard.setContents(selection, null);
+        });
+
+        panelEncrypt.add(scrollPaneCipherText);
 
         //event
         encryptButton.addActionListener(new ActionListener() {
@@ -179,8 +362,7 @@ public class ASymmetricEncryptScreen extends JFrame {
                 }
                 else {
                     aSymmetricEncryption.instance((String)methodsComboBoxEncrypt.getSelectedItem());
-                    aSymmetricEncryption.convertPublicKey(publicKeyText.getText());
-                    String encrypt = aSymmetricEncryption.encrypt(plainTextAreaEncrypt.getText());
+                    String encrypt = aSymmetricEncryption.encrypt(plainTextAreaEncrypt.getText(), (String)typeKeyEncryptComboBox.getSelectedItem(), publicKeyText.getText());
                     cipherTextAreaEncrypt.setText(encrypt);
                 }
             }
@@ -210,6 +392,7 @@ public class ASymmetricEncryptScreen extends JFrame {
         controlPanel.add(createKeyLabel);
 
         createKeyButton = new JButton("Create Key");
+        createKeyButton.setFocusable(false);
         controlPanel.add(createKeyButton);
         //event
         createKeyButton.addActionListener(new ActionListener() {

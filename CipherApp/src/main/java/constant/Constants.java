@@ -110,6 +110,9 @@ public class Constants {
         String RSA_ECB_OAE = "RSA/ECB/OAEPWithSHA-1AndMGF1Padding";
         String RSA = "RSA";
     }
+    public interface Type{
+        String[] TYPE_KEY = {Description.PUBLIC_KEY, Description.PRIVATE_KEY};
+    }
     public interface List_Method{
         String[] METHODS_DES = {
                 Method.DES_ECB_NOPADDING,

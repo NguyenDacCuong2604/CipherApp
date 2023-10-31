@@ -9,6 +9,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.io.File;
 
@@ -19,7 +21,6 @@ public class HashScreen extends JFrame {
     JRadioButton radioButtonText, radioButtonFile;
     ButtonGroup buttonGroup;
     JTextArea inputTextArea, outputTextArea;
-    JFileChooser fileChooser;
     JButton openButton;
 
     public HashScreen(AbsHash absHash){
@@ -65,6 +66,32 @@ public class HashScreen extends JFrame {
         inputTextArea.setLineWrap(true);
         inputTextArea.setWrapStyleWord(true);
         JScrollPane scrollPane = new JScrollPane(inputTextArea);
+
+
+        //popup
+        JPopupMenu popupMenuInput = new JPopupMenu();
+        JMenuItem pasteItem = new JMenuItem("Paste");
+        JMenuItem clearItem = new JMenuItem("Clear");
+        popupMenuInput.add(pasteItem);
+        popupMenuInput.add(clearItem);
+        inputTextArea.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    popupMenuInput.show(inputTextArea, e.getX(), e.getY());
+                }
+            }
+        });
+        pasteItem.addActionListener(e -> {
+            inputTextArea.paste();
+        });
+
+        clearItem.addActionListener(e -> {
+            inputTextArea.setText("");
+            outputTextArea.setText("");
+        });
+
+
         textPanel.add(scrollPane);
 
         //event inputtext
@@ -115,18 +142,19 @@ public class HashScreen extends JFrame {
 
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
-                    fileNameLabel.setText(selectedFile.getName());
-                    String textHash = absHash.hashFile(selectedFile.getPath());
-                    outputTextArea.setText(textHash);
+                    if(selectedFile.exists()) {
+                        fileNameLabel.setText(selectedFile.getName());
+                        String textHash = absHash.hashFile(selectedFile.getPath());
+                        outputTextArea.setText(textHash);
+                    }
+                    else JOptionPane.showMessageDialog(null, "File is not exists!!!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
         inputPanel.add(filePanel);
-
         //unvisible
         filePanel.setVisible(false);
-
         panel.add(inputPanel);
 
     }
@@ -143,6 +171,30 @@ public class HashScreen extends JFrame {
         outputTextArea.setWrapStyleWord(true);
         outputTextArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(outputTextArea);
+
+        JPopupMenu popupMenuOutput = new JPopupMenu();
+        JMenuItem copyAllItem = new JMenuItem("Copy All");
+        popupMenuOutput.add(copyAllItem);
+
+        //event
+        outputTextArea.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    popupMenuOutput.show(outputTextArea, e.getX(), e.getY());
+                }
+            }
+        });
+
+        copyAllItem.addActionListener(e -> {
+            String textToCopy = outputTextArea.getText();
+
+            // Copy the text to the clipboard
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            StringSelection selection = new StringSelection(textToCopy);
+            clipboard.setContents(selection, null);
+        });
+
         outputPanel.add(scrollPane);
 
         panel.add(outputPanel);
@@ -154,7 +206,7 @@ public class HashScreen extends JFrame {
 
         Font font = new Font("Serif", Font.BOLD, 25);
 
-        JLabel nameLabel = new JLabel("Algorithm :");
+        JLabel nameLabel = new JLabel("Hash Algorithm :");
         nameLabel.setFont(font);
         controlPanel.add(nameLabel);
 
