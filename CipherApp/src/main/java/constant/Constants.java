@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Constants {
-
+    public interface Alphabet{
+        char[] ENG_ALPHABET = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+        char[] VIE_ALPHABET = "aáàảãạăắằẳẵặâấầẩẫậbcdđeéèẻẽẹêếềểễệghiíìỉĩịklmnoóòỏõọôốồổỗộơớờởỡợpqrstuúùủũụưứừửữựvxyýỳỷỹỵ".toCharArray();
+    }
     public interface Cipher{
         String MD4 = "MD4";
         String MD5 = "MD5";
@@ -23,10 +26,21 @@ public class Constants {
         String CAST_6 = "CAST6";
         String TWOFISH = "TWOFISH";
         String RSA = "RSA";
+        String HILL = "Hill";
+        String VIGENERE = "Vigenere";
+    }
+    public interface Matrix{
+        String MATRIX_3x3 = "3x3";
+        String MATRIX_2x2 = "2x2";
+    }
+    public interface Language{
+        String VIE = "Vie";
+        String ENG = "Eng";
     }
     public interface Description{
         String PLAINTEXT = "PlainText";
         String CIPHERTEXT = "CipherText";
+
         String ENCRYPT = "Encrypt";
         String DECRYPT = "Decrypt";
         String KEY = "Key";
@@ -105,6 +119,12 @@ public class Constants {
         String CAST6_CBC_PKCS5PADDING = "CAST6/CBC/PKCS5Padding";
         String CAST6_CBC_ISO10126PADDING = "CAST6/CBC/ISO10126Padding";
 
+        //Hill
+        String HILL_ENG_3X3 = "Hill/Eng/3x3";
+        String HILL_VIE_3x3 = "Hill/Vie/3x3";
+        String HILL_ENG_2X2 = "Hill/Eng/2x2";
+        String HILL_VIE_2X2 = "Hill/Vie/2x2";
+
         //RSA
         String RSA_ECB_PKCS1PADDING = "RSA/ECB/PKCS1Padding";
         String RSA_ECB_OAE = "RSA/ECB/OAEPWithSHA-1AndMGF1Padding";
@@ -180,6 +200,13 @@ public class Constants {
                 Method.AES_CBC_ZEROPADDING,
                 Method.AES_CBC_PKCS5PADDING,
                 Method.AES_CBC_ISO10126PADDING
+        };
+
+        String[] METHODS_HILL = {
+                Method.HILL_ENG_3X3,
+                Method.HILL_VIE_3x3,
+                Method.HILL_ENG_2X2,
+                Method.HILL_VIE_2X2
         };
 
 

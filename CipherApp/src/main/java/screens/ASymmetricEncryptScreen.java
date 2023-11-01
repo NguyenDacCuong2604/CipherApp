@@ -9,8 +9,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -23,7 +21,8 @@ public class ASymmetricEncryptScreen extends JFrame {
     JComboBox methodsComboBoxEncrypt, methodsComboBoxDecrypt, typeKeyEncryptComboBox, typeKeyDecryptComboBox;
     JTextArea plainTextAreaEncrypt, cipherTextAreaEncrypt, plainTextAreaDecrypt, cipherTextAreaDecrypt, publicKeyText, privateKeyText;
     Font font;
-    public ASymmetricEncryptScreen(AbsASymmetricEncryption aSymmetricEncryption, String[] methods){
+
+    public ASymmetricEncryptScreen(AbsASymmetricEncryption aSymmetricEncryption, String[] methods) {
         this.methods = methods;
         this.aSymmetricEncryption = aSymmetricEncryption;
         this.setTitle(aSymmetricEncryption.name);
@@ -63,7 +62,7 @@ public class ASymmetricEncryptScreen extends JFrame {
     private void renderDecrypt(JPanel body) {
         JPanel panelDecrypt = new JPanel();
         panelDecrypt.setLayout(new BoxLayout(panelDecrypt, BoxLayout.Y_AXIS));
-        panelDecrypt.setPreferredSize(new Dimension(450,650));
+        panelDecrypt.setPreferredSize(new Dimension(450, 650));
 
         //CipherText
         cipherTextAreaDecrypt = new JTextArea(10, 35);
@@ -105,6 +104,7 @@ public class ASymmetricEncryptScreen extends JFrame {
         JLabel typeLabelKey = new JLabel("Select Type Key:");
         panelTypeKey.add(typeLabelKey);
         typeKeyDecryptComboBox = new JComboBox(Constants.Type.TYPE_KEY);
+        typeKeyDecryptComboBox.setFocusable(false);
         typeKeyDecryptComboBox.setSelectedItem(Constants.Description.PRIVATE_KEY);
         panelTypeKey.add(typeKeyDecryptComboBox);
         panelDecrypt.add(panelTypeKey);
@@ -148,12 +148,14 @@ public class ASymmetricEncryptScreen extends JFrame {
         JLabel typeLabel = new JLabel("Select Cipher Type");
         panelType.add(typeLabel);
         methodsComboBoxDecrypt = new JComboBox(this.methods);
+        methodsComboBoxDecrypt.setFocusable(false);
         panelType.add(methodsComboBoxDecrypt);
         panelDecrypt.add(panelType);
 
         //Button
         JPanel panelButton = new JPanel(new FlowLayout(FlowLayout.CENTER));
         decryptButton = new JButton("Decrypt");
+        decryptButton.setFocusable(false);
         decryptButton.setBackground(Color.GREEN);
         decryptButton.setFont(new Font("Arial", Font.BOLD, 16));
         decryptButton.setPreferredSize(new Dimension(140, 40));
@@ -196,21 +198,17 @@ public class ASymmetricEncryptScreen extends JFrame {
         panelDecrypt.add(scrollPanePlainText);
 
         //event
-        decryptButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(cipherTextAreaDecrypt.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Enter Encrypted Text to Decrypt", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-                else if(privateKeyText.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Enter Private key", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-                else{
-                    aSymmetricEncryption.instance((String)methodsComboBoxDecrypt.getSelectedItem());
-                    String decrypt = aSymmetricEncryption.decrypt(cipherTextAreaDecrypt.getText(), (String)typeKeyDecryptComboBox.getSelectedItem(), privateKeyText.getText());
-                    plainTextAreaDecrypt.setText(decrypt);
-                }
+        decryptButton.addActionListener(e -> {
+            if (cipherTextAreaDecrypt.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Enter Encrypted Text to Decrypt", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (privateKeyText.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Enter Private key", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                aSymmetricEncryption.instance((String) methodsComboBoxDecrypt.getSelectedItem());
+                String decrypt = aSymmetricEncryption.decrypt(cipherTextAreaDecrypt.getText(), (String) typeKeyDecryptComboBox.getSelectedItem(), privateKeyText.getText());
+                plainTextAreaDecrypt.setText(decrypt);
             }
+
         });
 
         body.add(panelDecrypt);
@@ -218,7 +216,7 @@ public class ASymmetricEncryptScreen extends JFrame {
 
     private void renderEncrypt(JPanel body) {
         JPanel panelEncrypt = new JPanel();
-        panelEncrypt.setPreferredSize(new Dimension(450,650));
+        panelEncrypt.setPreferredSize(new Dimension(450, 650));
         panelEncrypt.setLayout(new BoxLayout(panelEncrypt, BoxLayout.Y_AXIS));
 
         //PlainText
@@ -260,6 +258,7 @@ public class ASymmetricEncryptScreen extends JFrame {
         JLabel typeLabelKey = new JLabel("Select Type Key:");
         panelTypeKey.add(typeLabelKey);
         typeKeyEncryptComboBox = new JComboBox(Constants.Type.TYPE_KEY);
+        typeKeyEncryptComboBox.setFocusable(false);
         panelTypeKey.add(typeKeyEncryptComboBox);
         panelEncrypt.add(panelTypeKey);
 
@@ -303,12 +302,14 @@ public class ASymmetricEncryptScreen extends JFrame {
         JLabel typeLabel = new JLabel("Select Cipher Type");
         panelType.add(typeLabel);
         methodsComboBoxEncrypt = new JComboBox(this.methods);
+        methodsComboBoxEncrypt.setFocusable(false);
         panelType.add(methodsComboBoxEncrypt);
         panelEncrypt.add(panelType);
 
         //Button
         JPanel panelButton = new JPanel(new FlowLayout(FlowLayout.CENTER));
         encryptButton = new JButton("Encrypt");
+        encryptButton.setFocusable(false);
         encryptButton.setBackground(Color.RED);
         encryptButton.setFont(new Font("Arial", Font.BOLD, 16));
         encryptButton.setPreferredSize(new Dimension(140, 40));
@@ -351,21 +352,17 @@ public class ASymmetricEncryptScreen extends JFrame {
         panelEncrypt.add(scrollPaneCipherText);
 
         //event
-        encryptButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(plainTextAreaEncrypt.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Enter Plain Text to Encrypt", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-                else if(publicKeyText.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Enter Public key", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-                else {
-                    aSymmetricEncryption.instance((String)methodsComboBoxEncrypt.getSelectedItem());
-                    String encrypt = aSymmetricEncryption.encrypt(plainTextAreaEncrypt.getText(), (String)typeKeyEncryptComboBox.getSelectedItem(), publicKeyText.getText());
-                    cipherTextAreaEncrypt.setText(encrypt);
-                }
+        encryptButton.addActionListener(e -> {
+            if (plainTextAreaEncrypt.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Enter Plain Text to Encrypt", "Error", JOptionPane.ERROR_MESSAGE);
+            } else if (publicKeyText.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Enter Public key", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                aSymmetricEncryption.instance((String) methodsComboBoxEncrypt.getSelectedItem());
+                String encrypt = aSymmetricEncryption.encrypt(plainTextAreaEncrypt.getText(), (String) typeKeyEncryptComboBox.getSelectedItem(), publicKeyText.getText());
+                cipherTextAreaEncrypt.setText(encrypt);
             }
+
         });
 
         body.add(panelEncrypt);
@@ -395,11 +392,9 @@ public class ASymmetricEncryptScreen extends JFrame {
         createKeyButton.setFocusable(false);
         controlPanel.add(createKeyButton);
         //event
-        createKeyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new CreateKeyRSAScreen();
-            }
+        createKeyButton.addActionListener(e -> {
+            new CreateKeyRSAScreen();
+
         });
 
 

@@ -18,7 +18,7 @@ import java.awt.event.KeyEvent;
 
 public class HomeApp extends JFrame implements ActionListener{
     JPanel maHoaDoiXungPanel, maHoaBatDoiXungPanel, hashAlgorithmPanel, chuKyDienTuPanel;
-    JButton aesButton, desButton, tripleDesButton, blowfishButton, cast_6Button, twofishButton,
+    JButton aesButton, desButton, tripleDesButton, blowfishButton, cast_6Button, twofishButton, hillButton, vigenereButton,
             rsaButton,
             md4Button, md5Button, sha1Button, sha256Button, sha512Button, sha3_224Button, ripemd_256Button, crc_32Button, shake_256Button,
             chuKyDienTuButton;
@@ -97,7 +97,7 @@ public class HomeApp extends JFrame implements ActionListener{
     private void renderMaHoaDoiXung(JPanel panel){
         maHoaDoiXungPanel = new JPanel();
         maHoaDoiXungPanel.setBackground(Color.WHITE);
-        maHoaDoiXungPanel.setPreferredSize(new Dimension(480, 130));
+        maHoaDoiXungPanel.setPreferredSize(new Dimension(480, 180));
         maHoaDoiXungPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10,10));
 
         desButton = new JButton(Constants.Cipher.DES);
@@ -153,6 +153,24 @@ public class HomeApp extends JFrame implements ActionListener{
         twofishButton.setActionCommand(Constants.Cipher.TWOFISH);
         twofishButton.addActionListener(this);
         maHoaDoiXungPanel.add(twofishButton);
+
+        hillButton = new JButton(Constants.Cipher.HILL);
+        hillButton.setMnemonic(KeyEvent.VK_L);
+        hillButton.setFont(font);
+        hillButton.setFocusable(false);
+        hillButton.setPreferredSize(btnDimension);
+        hillButton.setActionCommand(Constants.Cipher.HILL);
+        hillButton.addActionListener(this);
+        maHoaDoiXungPanel.add(hillButton);
+
+        vigenereButton = new JButton(Constants.Cipher.VIGENERE);
+        vigenereButton.setMnemonic(KeyEvent.VK_V);
+        vigenereButton.setFont(font);
+        vigenereButton.setFocusable(false);
+        vigenereButton.setPreferredSize(btnDimension);
+        vigenereButton.setActionCommand(Constants.Cipher.VIGENERE);
+        vigenereButton.addActionListener(this);
+        maHoaDoiXungPanel.add(vigenereButton);
 
         //border
         TitledBorder titledBorder = BorderFactory.createTitledBorder(null, "Ma hoa doi xung", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 16), Color.BLACK);
@@ -282,75 +300,79 @@ public class HomeApp extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        switch (e.getActionCommand()){
-            case Constants.Cipher.DES:
+        switch (e.getActionCommand()) {
+            case Constants.Cipher.DES -> {
                 AbsSymmetricEncryption des = new DES();
                 new SymmetricEncryptScreen(des, Constants.List_Method.METHODS_DES);
-                break;
-            case  Constants.Cipher.TRIPLE_DES:
+            }
+            case Constants.Cipher.TRIPLE_DES -> {
                 AbsSymmetricEncryption tripleDes = new TripleDES();
                 new SymmetricEncryptScreen(tripleDes, Constants.List_Method.METHODS_TRIPLEDES);
-                break;
-            case Constants.Cipher.AES:
+            }
+            case Constants.Cipher.AES -> {
                 AbsSymmetricEncryption aes = new AES();
                 new SymmetricEncryptScreen(aes, Constants.List_Method.METHODS_AES);
-                break;
-            case Constants.Cipher.BLOWFISH:
+            }
+            case Constants.Cipher.BLOWFISH -> {
                 AbsSymmetricEncryption blowFish = new Blowfish();
                 new SymmetricEncryptScreen(blowFish, Constants.List_Method.METHODS_BLOWFISH);
-                break;
-            case Constants.Cipher.TWOFISH:
+            }
+            case Constants.Cipher.TWOFISH -> {
                 AbsSymmetricEncryption twoFish = new Twofish();
                 new SymmetricEncryptScreen(twoFish, Constants.List_Method.METHODS_TWOFISH);
-                break;
-            case Constants.Cipher.CAST_6:
+            }
+            case Constants.Cipher.CAST_6 -> {
                 AbsSymmetricEncryption cast6 = new Cast6();
                 new SymmetricEncryptScreen(cast6, Constants.List_Method.METHODS_CAST6);
-                break;
-            case Constants.Cipher.RSA:
+            }
+            case Constants.Cipher.HILL -> {
+                AbsSymmetricEncryption hill = new Hill();
+                new SymmetricEncryptScreen(hill, Constants.List_Method.METHODS_HILL);
+            }
+            case Constants.Cipher.RSA -> {
                 AbsASymmetricEncryption rsa = new RSA();
                 new ASymmetricEncryptScreen(rsa, Constants.List_Method.METHODS_RSA);
-                break;
-            case Constants.Cipher.SHA_1:
+            }
+            case Constants.Cipher.SHA_1 -> {
                 AbsHash sha1 = new SHA1();
                 new HashScreen(sha1);
-                break;
-            case Constants.Cipher.SHA_256:
+            }
+            case Constants.Cipher.SHA_256 -> {
                 AbsHash sha256 = new SHA256();
                 new HashScreen(sha256);
-                break;
-            case Constants.Cipher.SHA_512:
+            }
+            case Constants.Cipher.SHA_512 -> {
                 AbsHash sha512 = new SHA512();
                 new HashScreen(sha512);
-                break;
-            case Constants.Cipher.SHA3_224:
+            }
+            case Constants.Cipher.SHA3_224 -> {
                 AbsHash sha3_224 = new SHA3_224();
                 new HashScreen(sha3_224);
-                break;
-            case Constants.Cipher.MD4:
+            }
+            case Constants.Cipher.MD4 -> {
                 AbsHash md4 = new MD4();
                 new HashScreen(md4);
-                break;
-            case Constants.Cipher.MD5:
+            }
+            case Constants.Cipher.MD5 -> {
                 AbsHash md5 = new MD5();
                 new HashScreen(md5);
-                break;
-            case Constants.Cipher.CRC_32:
+            }
+            case Constants.Cipher.CRC_32 -> {
                 AbsHash crc32 = new CRC_32();
                 new HashScreen(crc32);
-                break;
-            case Constants.Cipher.SHAKE_256:
+            }
+            case Constants.Cipher.SHAKE_256 -> {
                 AbsHash shake256 = new SHAKE256();
                 new HashScreen(shake256);
-                break;
-            case Constants.Cipher.RIPEMD_256:
+            }
+            case Constants.Cipher.RIPEMD_256 -> {
                 AbsHash ripemd256 = new RIPEMD_256();
                 new HashScreen(ripemd256);
-                break;
-            case Constants.Description.E_SIGNATURE:
+            }
+            case Constants.Description.E_SIGNATURE -> {
                 ElectronicSignature electronicSignature = new ElectronicSignature();
                 new ElectronicSignatureScreen(electronicSignature);
-                break;
+            }
         }
     }
 }

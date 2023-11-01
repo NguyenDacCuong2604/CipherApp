@@ -106,6 +106,7 @@ public class CreateKeyRSAScreen extends JFrame {
 
         ImageIcon copyIcon = new ImageIcon("assets/Images/copy.png");
         copyPrivateKeyButton = new JButton(new ImageIcon(copyIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH)));
+        copyPrivateKeyButton.setFocusable(false);
         copyPrivateKeyButton.setToolTipText("Copy PublicKey");
         copyPrivateKeyButton.setPreferredSize(new Dimension(35, 35));
 
@@ -144,6 +145,7 @@ public class CreateKeyRSAScreen extends JFrame {
 
         ImageIcon copyIcon = new ImageIcon("assets/Images/copy.png");
         copyPublicKeyButton = new JButton(new ImageIcon(copyIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH)));
+        copyPublicKeyButton.setFocusable(false);
         copyPublicKeyButton.setToolTipText("Copy PrivateKey");
         copyPublicKeyButton.setPreferredSize(new Dimension(35, 35));
         panelPublicKey.add(copyPublicKeyButton);

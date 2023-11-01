@@ -15,15 +15,16 @@ import java.awt.event.*;
 import java.io.File;
 
 public class HashScreen extends JFrame {
-    JPanel controlPanel, inputPanel, outputPanel, textPanel, filePanel;
+    JPanel controlPanel, inputPanel, outputPanel, filePanel;
     JLabel nameCipherLabel, fileNameLabel;
     AbsHash absHash;
     JRadioButton radioButtonText, radioButtonFile;
     ButtonGroup buttonGroup;
     JTextArea inputTextArea, outputTextArea;
     JButton openButton;
+    JScrollPane scrollPaneInput;
 
-    public HashScreen(AbsHash absHash){
+    public HashScreen(AbsHash absHash) {
         this.absHash = absHash;
 
 
@@ -34,6 +35,7 @@ public class HashScreen extends JFrame {
         this.setIconImage(icon);
 
         JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         //control
@@ -41,7 +43,7 @@ public class HashScreen extends JFrame {
 
         //input
         renderInput(panel);
-        
+
         //output
         renderOutput(panel);
 
@@ -60,12 +62,11 @@ public class HashScreen extends JFrame {
         inputBorder.setBorder(new LineBorder(Color.BLACK, 2));
         inputPanel.setBorder(inputBorder);
         //Text
-        textPanel = new JPanel();
         inputTextArea = new JTextArea(12, 40);
         inputTextArea.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-        inputTextArea.setLineWrap(true);
         inputTextArea.setWrapStyleWord(true);
-        JScrollPane scrollPane = new JScrollPane(inputTextArea);
+        inputTextArea.setLineWrap(true);
+        scrollPaneInput = new JScrollPane(inputTextArea);
 
 
         //popup
@@ -92,8 +93,6 @@ public class HashScreen extends JFrame {
         });
 
 
-        textPanel.add(scrollPane);
-
         //event inputtext
         inputTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -117,7 +116,7 @@ public class HashScreen extends JFrame {
             }
         });
 
-        inputPanel.add(textPanel);
+        inputPanel.add(scrollPaneInput);
 
         //File
         filePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -134,22 +133,19 @@ public class HashScreen extends JFrame {
         filePanel.add(openButton);
 
         //event button
-        openButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser fileChooser = new JFileChooser();
-                int returnValue = fileChooser.showOpenDialog(null);
+        openButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int returnValue = fileChooser.showOpenDialog(null);
 
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    if(selectedFile.exists()) {
-                        fileNameLabel.setText(selectedFile.getName());
-                        String textHash = absHash.hashFile(selectedFile.getPath());
-                        outputTextArea.setText(textHash);
-                    }
-                    else JOptionPane.showMessageDialog(null, "File is not exists!!!", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                if (selectedFile.exists()) {
+                    fileNameLabel.setText(selectedFile.getName());
+                    String textHash = absHash.hashFile(selectedFile.getPath());
+                    outputTextArea.setText(textHash);
+                } else JOptionPane.showMessageDialog(null, "File is not exists!!!", "Error", JOptionPane.ERROR_MESSAGE);
             }
+
         });
 
         inputPanel.add(filePanel);
@@ -165,10 +161,10 @@ public class HashScreen extends JFrame {
         outputBorder.setBorder(new LineBorder(Color.BLACK, 2));
         outputPanel.setBorder(outputBorder);
         //output
-        outputTextArea = new JTextArea(4, 40);
+        outputTextArea = new JTextArea(4, 35);
         outputTextArea.setFont(new Font("TimesRoman", Font.PLAIN, 20));
         outputTextArea.setLineWrap(true);
-        outputTextArea.setWrapStyleWord(true);
+        outputTextArea.setWrapStyleWord(true);;
         outputTextArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(outputTextArea);
 
@@ -245,24 +241,20 @@ public class HashScreen extends JFrame {
         buttonGroup.add(radioButtonFile);
 
         //event
-        radioButtonFile.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                textPanel.setVisible(false);
-                filePanel.setVisible(true);
-                fileNameLabel.setText("Choose File...");
-                outputTextArea.setText("");
-            }
+        radioButtonFile.addItemListener(e -> {
+            scrollPaneInput.setVisible(false);
+            filePanel.setVisible(true);
+            fileNameLabel.setText("Choose File...");
+            outputTextArea.setText("");
+
         });
 
-        radioButtonText.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                textPanel.setVisible(true);
-                inputTextArea.setText("");
-                outputTextArea.setText("");
-                filePanel.setVisible(false);
-            }
+        radioButtonText.addItemListener(e -> {
+            scrollPaneInput.setVisible(true);
+            inputTextArea.setText("");
+            outputTextArea.setText("");
+            filePanel.setVisible(false);
+
         });
 
         panel.add(controlPanel);
