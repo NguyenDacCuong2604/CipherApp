@@ -21,8 +21,7 @@ import java.util.Base64;
 
 public class DesDemo {
     public static void main(String[] args) throws Exception {
-        Security.addProvider(new BouncyCastleProvider());
-        KeyGenerator keyGen = KeyGenerator.getInstance("CAST5");
+        System.out.println((-25)%26);
     }
 
     public String encrypt(String plainText, PrivateKey privateKey) {

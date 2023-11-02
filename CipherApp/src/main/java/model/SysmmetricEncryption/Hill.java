@@ -47,15 +47,29 @@ public class Hill extends AbsSymmetricEncryption {
     @Override
     public String encrypt(String plainText) {
         StringBuilder cipherText = new StringBuilder();
-        String pharseText = pharse(plainText);
-        while (pharseText.length() % sizeMatrix != 0) {
-            pharseText = pharseText.concat(alphaBet[alphaBet.length - 1] + "");
+        char[] charText = plainText.toCharArray();
+        char[] exceptionText = new char[charText.length];
+        char[] upperCase = new char[charText.length];
+
+        StringBuilder phraseText = new StringBuilder();
+        for(int index=0 ; index<charText.length; index++){
+            if(isContain(charText[index], alphaBet)){
+                if(Character.isLowerCase(charText[index])){
+                    upperCase[index] = 1;
+                }
+                phraseText.append(Character.toUpperCase(charText[index]));
+            }
+            else exceptionText[index] = charText[index];
+        }
+
+        while (phraseText.length() % sizeMatrix != 0) {
+            phraseText.append(alphaBet[alphaBet.length - 1]);
         }
         int[] input = new int[sizeMatrix];
 
-        for (int i = 0; i < pharseText.length() / sizeMatrix; i++) {
+        for (int i = 0; i < phraseText.length() / sizeMatrix; i++) {
             for (int j = 0; j < sizeMatrix; j++) {
-                input[j] = indexText(pharseText.charAt(i * sizeMatrix + j), alphaBet);
+                input[j] = indexText(phraseText.charAt(i * sizeMatrix + j), alphaBet);
             }
             for (int row = 0; row < sizeMatrix; row++) {
                 int value = 0;
@@ -66,6 +80,18 @@ public class Hill extends AbsSymmetricEncryption {
                     value += length;
                 }
                 cipherText.append(alphaBet[value % length]);
+            }
+        }
+        //exception
+        for(int i=0; i< exceptionText.length; i++){
+            if(exceptionText[i]!=0){
+                cipherText.insert(i, exceptionText[i]);
+            }
+        }
+        //uppercase
+        for(int i=0; i< upperCase.length; i++){
+            if(upperCase[i]!=0){
+                cipherText.setCharAt(i, Character.toLowerCase(cipherText.charAt(i)));
             }
         }
         return cipherText.toString();
@@ -89,35 +115,41 @@ public class Hill extends AbsSymmetricEncryption {
 
     private boolean isContain(char character, char[] alphabet) {
         for (int i = 0; i < alphabet.length; i++) {
-            if (character == alphabet[i]) return true;
+            if (Character.toUpperCase(character) == alphabet[i]) return true;
         }
         return false;
     }
-    private void printMatrix(int[][] matrix){
-        for(int i=0; i<matrix.length; i++){
-            for(int j=0; j<matrix[i].length; j++){
-                System.out.print(matrix[i][j]+" ");
-            }
-            System.out.println();
-        }
-    }
+
     @Override
     public String decrypt(String cipherText) {
         StringBuilder decryptText = new StringBuilder();
-        String pharseText = pharse(cipherText);
-        while (pharseText.length() % sizeMatrix != 0) {
-            pharseText = pharseText.concat(alphaBet[alphaBet.length - 1] + "");
+        char[] charText = cipherText.toCharArray();
+        char[] exceptionText = new char[charText.length];
+        char[] upperCase = new char[charText.length];
+
+        StringBuilder phraseText = new StringBuilder();
+        for(int index=0 ; index<charText.length; index++){
+            if(isContain(charText[index], alphaBet)){
+                if(Character.isLowerCase(charText[index])){
+                    upperCase[index] = 1;
+                }
+                phraseText.append(Character.toUpperCase(charText[index]));
+            }
+            else exceptionText[index] = charText[index];
+        }
+
+        while (phraseText.length() % sizeMatrix != 0) {
+            phraseText.append(alphaBet[alphaBet.length - 1]);
         }
         int[][] inverseMatrix = inverse(keyMatrix);
-        printMatrix(inverseMatrix);
         if (inverseMatrix == null) {
             JOptionPane.showMessageDialog(null, "Does not exist in the inverted matrix", "Error", JOptionPane.ERROR_MESSAGE);
             return null;
         }
         int[] input = new int[sizeMatrix];
-        for (int i = 0; i < pharseText.length() / sizeMatrix; i++) {
+        for (int i = 0; i < phraseText.length() / sizeMatrix; i++) {
             for (int j = 0; j < sizeMatrix; j++) {
-                input[j] = indexText(pharseText.charAt(i * sizeMatrix + j), alphaBet);
+                input[j] = indexText(phraseText.charAt(i * sizeMatrix + j), alphaBet);
             }
             for (int row = 0; row < sizeMatrix; row++) {
                 int value = 0;
@@ -128,6 +160,18 @@ public class Hill extends AbsSymmetricEncryption {
                     value += length;
                 }
                 decryptText.append(alphaBet[value % length]);
+            }
+        }
+        //exception
+        for(int i=0; i< exceptionText.length; i++){
+            if(exceptionText[i]!=0){
+                decryptText.insert(i, exceptionText[i]);
+            }
+        }
+        //uppercase
+        for(int i=0; i< upperCase.length; i++){
+            if(upperCase[i]!=0){
+                decryptText.setCharAt(i, Character.toLowerCase(decryptText.charAt(i)));
             }
         }
         return decryptText.toString();
@@ -149,14 +193,20 @@ public class Hill extends AbsSymmetricEncryption {
         // Kiểm tra tính nghịch đảo của ma trận
         SingularValueDecomposition svd = new SingularValueDecomposition(matrix);
         RealMatrix inverseMatrix = svd.getSolver().getInverse();
+        if(inverseMatrix==null) return null;
         // Create an LU decomposition of the inverseMatrix
         LUDecomposition luDecomposition = new LUDecomposition(matrix);
 
         // Get the determinant of the inverseMatrix
         double determinant = luDecomposition.getDeterminant();
-        int intDeterminant = (int) determinant;
+        int intDeterminant = (int)(Math.round(determinant)) % length;
+        while (intDeterminant<0){
+            intDeterminant+=length;
+        }
+        int modDeterminant = intDeterminant % length;
         int k=1;
-        while((intDeterminant*k)%length!=1){
+        if(modDeterminant==0) modDeterminant+=length;
+        while(((modDeterminant*k)%length)!=1){
             k++;
         }
 
@@ -167,9 +217,8 @@ public class Hill extends AbsSymmetricEncryption {
                 while (entry <0){
                     entry+=length;
                 }
-                int value = (int) (entry%length);
-                inverseIntMatrix[i][j] = (value * k)% length;
-                System.out.println(inverseIntMatrix[i][j]);
+                int value = (int) Math.round(entry%length);
+                inverseIntMatrix[i][j] = (value*k)%length;
             }
         }
         return inverseIntMatrix;

@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class Constants {
     public interface Alphabet{
-        char[] ENG_ALPHABET = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-        char[] VIE_ALPHABET = "aáàảãạăắằẳẵặâấầẩẫậbcdđeéèẻẽẹêếềểễệghiíìỉĩịklmnoóòỏõọôốồổỗộơớờởỡợpqrstuúùủũụưứừửữựvxyýỳỷỹỵ".toCharArray();
+        char[] ENG_ALPHABET = "abcdefghijklmnopqrstuvwxyz".toUpperCase().toCharArray();
+        char[] VIE_ALPHABET = "aáàảãạăắằẳẵặâấầẩẫậbcdđeéèẻẽẹêếềểễệghiíìỉĩịklmnoóòỏõọôốồổỗộơớờởỡợpqrstuúùủũụưứừửữựvxyýỳỷỹỵ".toUpperCase().toCharArray();
     }
     public interface Cipher{
         String MD4 = "MD4";
