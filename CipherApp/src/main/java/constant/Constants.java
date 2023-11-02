@@ -125,6 +125,10 @@ public class Constants {
         String HILL_ENG_2X2 = "Hill/Eng/2x2";
         String HILL_VIE_2X2 = "Hill/Vie/2x2";
 
+        //Vigenere
+        String VIGENERE_ENG = "Vigenere/Eng";
+        String VIGENERE_VIE = "Vigenere/Vie";
+
         //RSA
         String RSA_ECB_PKCS1PADDING = "RSA/ECB/PKCS1Padding";
         String RSA_ECB_OAE = "RSA/ECB/OAEPWithSHA-1AndMGF1Padding";
@@ -207,6 +211,11 @@ public class Constants {
                 Method.HILL_VIE_3x3,
                 Method.HILL_ENG_2X2,
                 Method.HILL_VIE_2X2
+        };
+
+        String[] METHODS_VIGENERE = {
+                Method.VIGENERE_ENG,
+                Method.VIGENERE_VIE
         };
 
 

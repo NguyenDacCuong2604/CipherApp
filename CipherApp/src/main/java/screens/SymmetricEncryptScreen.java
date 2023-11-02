@@ -252,9 +252,10 @@ public class SymmetricEncryptScreen extends JFrame {
         });
         //event create
         createKeyItem.addActionListener(e -> {
-            if(symmetricEncryption.name.equals(Constants.Cipher.HILL)){
+            if(symmetricEncryption.name.equals(Constants.Cipher.HILL) || symmetricEncryption.name.equals(Constants.Cipher.VIGENERE)){
                 symmetricEncryption.instance((String)methodsComboBox.getSelectedItem());
             }
+
             String key = symmetricEncryption.createKey();
             keyTextField.setText(key);
         });
@@ -316,7 +317,7 @@ public class SymmetricEncryptScreen extends JFrame {
         createKeyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(symmetricEncryption.name.equals(Constants.Cipher.HILL)){
+                if(symmetricEncryption.name.equals(Constants.Cipher.HILL) || symmetricEncryption.name.equals(Constants.Cipher.VIGENERE)){
                     symmetricEncryption.instance((String)methodsComboBox.getSelectedItem());
                 }
                 String key = symmetricEncryption.createKey();
@@ -463,7 +464,7 @@ public class SymmetricEncryptScreen extends JFrame {
         methodsComboBox.addActionListener(e -> {
                 JComboBox cb = (JComboBox) e.getSource();
                 String method = (String)cb.getSelectedItem();
-                if(method.contains(Constants.Mode.ECB)||method.contains(Constants.Cipher.HILL)){
+                if(method.contains(Constants.Mode.ECB)||method.contains(Constants.Cipher.HILL)||method.contains(Constants.Cipher.VIGENERE)){
                     ivPanel.setVisible(false);
                 }
                 else ivPanel.setVisible(true);

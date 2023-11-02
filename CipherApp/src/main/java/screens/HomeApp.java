@@ -329,6 +329,10 @@ public class HomeApp extends JFrame implements ActionListener{
                 AbsSymmetricEncryption hill = new Hill();
                 new SymmetricEncryptScreen(hill, Constants.List_Method.METHODS_HILL);
             }
+            case Constants.Cipher.VIGENERE -> {
+                AbsSymmetricEncryption vigenere = new Vigenere();
+                new SymmetricEncryptScreen(vigenere, Constants.List_Method.METHODS_VIGENERE);
+            }
             case Constants.Cipher.RSA -> {
                 AbsASymmetricEncryption rsa = new RSA();
                 new ASymmetricEncryptScreen(rsa, Constants.List_Method.METHODS_RSA);

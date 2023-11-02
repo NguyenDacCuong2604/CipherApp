@@ -12,7 +12,6 @@ import javax.swing.*;
 import java.util.Random;
 
 public class Hill extends AbsSymmetricEncryption {
-    String lang;
     char[] alphaBet;
     int[][] keyMatrix;
     int length;
@@ -34,10 +33,8 @@ public class Hill extends AbsSymmetricEncryption {
         keyMatrix = new int[this.sizeMatrix][this.sizeMatrix];
 
         if (method.contains(Constants.Language.VIE)) {
-            this.lang = Constants.Language.VIE;
             alphaBet = Constants.Alphabet.VIE_ALPHABET;
         } else {
-            this.lang = Constants.Language.ENG;
             alphaBet = Constants.Alphabet.ENG_ALPHABET;
         }
         this.length = alphaBet.length;
@@ -102,15 +99,6 @@ public class Hill extends AbsSymmetricEncryption {
             if (character == alphaBet[i]) return i;
         }
         return -1;
-    }
-
-    private String pharse(String plainText) {
-        plainText = plainText.toLowerCase();
-        StringBuilder text = new StringBuilder();
-        for (char character : plainText.toCharArray()) {
-            if (isContain(character, alphaBet)) text.append(character);
-        }
-        return text.toString();
     }
 
     private boolean isContain(char character, char[] alphabet) {
