@@ -21,7 +21,7 @@ import java.util.Base64;
 
 public class DesDemo {
     public static void main(String[] args) throws Exception {
-        System.out.println((-25)%26);
+        System.out.print("aáàảãạăắằẳẵặâấầẩẫậbcdđeéèẻẽẹêếềểễệghiíìỉĩịklmnoóòỏõọôốồổỗộơớờởỡợpqrstuúùủũụưứừửữựvxyýỳỷỹỵ".length());
     }
 
     public String encrypt(String plainText, PrivateKey privateKey) {

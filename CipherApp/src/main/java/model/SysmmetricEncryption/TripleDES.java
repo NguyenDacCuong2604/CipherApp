@@ -37,6 +37,7 @@ public class TripleDES extends AbsSymmetricEncryption {
     @Override
     public String encrypt(String plainText) {
         try {
+            if(secretKey==null) return null;
             if(method.contains(Constants.Mode.ECB)){
                 cipher.init(Cipher.ENCRYPT_MODE, this.secretKey);
             }
@@ -86,6 +87,7 @@ public class TripleDES extends AbsSymmetricEncryption {
     @Override
     public String decrypt(String cipherText) {
         try {
+            if(secretKey==null) return null;
             byte[] byteEncrypt = Base64.getDecoder().decode(cipherText);
             int padding = 0;
             for (int i = byteEncrypt.length - 1; i >= 0; i--) {

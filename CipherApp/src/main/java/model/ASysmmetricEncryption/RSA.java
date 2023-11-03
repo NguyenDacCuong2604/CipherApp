@@ -24,10 +24,12 @@ public class RSA extends AbsASymmetricEncryption{
             //convert key
             if(type.equals(Constants.Description.PRIVATE_KEY)){
                 convertPrivateKey(key);
+                if(privateKey==null) return null;
                 cipher.init(Cipher.ENCRYPT_MODE, this.privateKey);
             }
             else {
                 convertPublicKey(key);
+                if(publicKey==null) return null;
                 cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
             }
             //encrypt
@@ -45,10 +47,12 @@ public class RSA extends AbsASymmetricEncryption{
             //convert key
             if(type.equals(Constants.Description.PRIVATE_KEY)){
                 convertPrivateKey(key);
+                if(privateKey==null) return null;
                 cipher.init(Cipher.DECRYPT_MODE, this.privateKey);
             }
             else {
                 convertPublicKey(key);
+                if(publicKey==null) return null;
                 cipher.init(Cipher.DECRYPT_MODE, this.publicKey);
             }
             //decrypt

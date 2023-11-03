@@ -36,6 +36,7 @@ public class Twofish extends AbsSymmetricEncryption{
     @Override
     public String encrypt(String plainText) {
         try {
+            if(secretKey==null) return null;
             if(method.contains(Constants.Mode.ECB)){
                 cipher.init(Cipher.ENCRYPT_MODE, this.secretKey);
             }
@@ -84,6 +85,7 @@ public class Twofish extends AbsSymmetricEncryption{
     @Override
     public String decrypt(String cipherText) {
         try {
+            if(secretKey==null) return null;
             byte[] byteEncrypt = Base64.getDecoder().decode(cipherText);
 
             int padding = 0;

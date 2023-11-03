@@ -16,9 +16,8 @@ public class SHA256 {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(plainText.getBytes());
-            String hashHex = bytesToHex(hash);
 
-            return hashHex;
+            return bytesToHex(hash);
         } catch (NoSuchAlgorithmException e) {
             System.err.println("SHA-256 algorithm not available.");
             return null;
@@ -38,9 +37,8 @@ public class SHA256 {
             fis.close();
 
             byte[] hash = digest.digest();
-            String hashHex = bytesToHex(hash);
 
-            return hashHex;
+            return bytesToHex(hash);
 
          } catch (IOException | NoSuchAlgorithmException e) {
             throw new RuntimeException(e);

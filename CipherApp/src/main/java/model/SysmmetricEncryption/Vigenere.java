@@ -6,7 +6,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
 
 public class Vigenere extends AbsSymmetricEncryption{
@@ -37,6 +36,7 @@ public class Vigenere extends AbsSymmetricEncryption{
     }
     @Override
     public String encrypt(String plainText) {
+        if(this.key==null)return null;
         StringBuilder ciphertext = new StringBuilder();
         char[] charText = plainText.toCharArray();
         char[] exceptionText = new char[charText.length];
@@ -84,6 +84,7 @@ public class Vigenere extends AbsSymmetricEncryption{
 
     @Override
     public String decrypt(String cipherText) {
+        if(this.key==null) return null;
         StringBuilder plaintext = new StringBuilder();
 
         char[] charText = cipherText.toCharArray();

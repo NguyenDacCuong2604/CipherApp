@@ -43,6 +43,9 @@ public class Hill extends AbsSymmetricEncryption {
 
     @Override
     public String encrypt(String plainText) {
+        if(keyMatrix==null){
+            return null;
+        }
         StringBuilder cipherText = new StringBuilder();
         char[] charText = plainText.toCharArray();
         char[] exceptionText = new char[charText.length];
@@ -110,6 +113,9 @@ public class Hill extends AbsSymmetricEncryption {
 
     @Override
     public String decrypt(String cipherText) {
+        if(keyMatrix==null){
+            return null;
+        }
         StringBuilder decryptText = new StringBuilder();
         char[] charText = cipherText.toCharArray();
         char[] exceptionText = new char[charText.length];
