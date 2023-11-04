@@ -1,15 +1,16 @@
 package GUI;
 
+import GUI.Component.ImageButton;
 import constant.Constants;
+import model.Hash.*;
+import screens.HashScreen;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 
 public class HomeGUI extends JFrame implements ActionListener {
@@ -19,12 +20,14 @@ public class HomeGUI extends JFrame implements ActionListener {
             chuKyDienTuButton;
     Font font;
     Dimension btnDimension;
-    JPanel maHoaDoiXungPanel, maHoaBatDoiXungPanel, hashAlgorithmPanel, chuKyDienTuPanel;
+    JPanel maHoaDoiXungPanel, maHoaBatDoiXungPanel, hashAlgorithmPanel, chuKyDienTuPanel, customTitleBar;
+    private Point mouseDownCompCoords = null;
     public HomeGUI(){
-        this.setResizable(false);
-        this.setTitle("CipherApp_NDCopyright");
         this.setLayout(new FlowLayout());
-        this.setResizable(false);
+        this.setUndecorated(true);
+        this.setLayout(new BorderLayout());
+        //render custom title bar
+        renderCustomTitleBar();
 
         btnDimension = new Dimension(140, 35);
         font = new Font("Arial", Font.BOLD, 16);
@@ -46,13 +49,53 @@ public class HomeGUI extends JFrame implements ActionListener {
         setFocusable(true);
         requestFocus();
 
-        this.getContentPane().add(panel);
+        this.add(panel, BorderLayout.CENTER);
         this.pack();
         //UI
         renderUI();
 
         this.setVisible(true);
         this.setLocationRelativeTo(null);
+    }
+
+    private void renderCustomTitleBar() {
+        customTitleBar = new JPanel(new BorderLayout());
+        customTitleBar.setBackground(new Color(50, 27, 140));
+
+        ImageButton minimizeButton = new ImageButton(new ImageIcon("assets/Images/minimize-sign.png"), 25, 25);
+        minimizeButton.setToolTipText("Minimize");
+        ImageButton closeButton = new ImageButton(new ImageIcon("assets/Images/close.png"), 25, 25);
+        closeButton.setToolTipText("Close");
+        //event
+        minimizeButton.addActionListener(e -> setState(Frame.ICONIFIED));
+        closeButton.addActionListener(e -> System.exit(0));
+        // Add title text
+        JLabel titleText = new JLabel("   CipherApp");
+        titleText.setForeground(Color.WHITE);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+        buttonPanel.setBackground(new Color(50, 27, 140));
+        buttonPanel.add(minimizeButton);
+        buttonPanel.add(new JLabel(" "));
+        buttonPanel.add(closeButton);
+
+        customTitleBar.add(titleText, BorderLayout.WEST);
+        customTitleBar.add(buttonPanel, BorderLayout.EAST);
+
+        customTitleBar.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                mouseDownCompCoords = e.getPoint();
+            }
+        });
+
+        customTitleBar.addMouseMotionListener(new MouseAdapter() {
+            public void mouseDragged(MouseEvent e) {
+                Point currCoords = e.getLocationOnScreen();
+                setLocation(currCoords.x - mouseDownCompCoords.x, currCoords.y - mouseDownCompCoords.y);
+            }
+        });
+
+        this.add(customTitleBar, BorderLayout.NORTH);
     }
 
     private void renderChuKyDienTu(JPanel panel) {
@@ -328,6 +371,45 @@ public class HomeGUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        switch (e.getActionCommand()){
+            //hash
+            case Constants.Cipher.SHA_1 -> {
+                AbsHash sha1 = new SHA1();
+                new HashGUI(sha1);
+            }
+            case Constants.Cipher.SHA_256 -> {
+                AbsHash sha256 = new SHA256();
+                new HashGUI(sha256);
+            }
+            case Constants.Cipher.SHA_512 -> {
+                AbsHash sha512 = new SHA512();
+                new HashGUI(sha512);
+            }
+            case Constants.Cipher.SHA3_224 -> {
+                AbsHash sha3_224 = new SHA3_224();
+                new HashGUI(sha3_224);
+            }
+            case Constants.Cipher.MD4 -> {
+                AbsHash md4 = new MD4();
+                new HashGUI(md4);
+            }
+            case Constants.Cipher.MD5 -> {
+                AbsHash md5 = new MD5();
+                new HashGUI(md5);
+            }
+            case Constants.Cipher.CRC_32 -> {
+                AbsHash crc32 = new CRC_32();
+                new HashGUI(crc32);
+            }
+            case Constants.Cipher.SHAKE_256 -> {
+                AbsHash shake256 = new SHAKE256();
+                new HashGUI(shake256);
+            }
+            case Constants.Cipher.RIPEMD_256 -> {
+                AbsHash ripemd256 = new RIPEMD_256();
+                new HashGUI(ripemd256);
+            }
+        }
+        setState(Frame.ICONIFIED);
     }
 }
