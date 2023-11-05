@@ -29,6 +29,7 @@ public class ASymmetricEncryptGUI extends JFrame {
         this.setLayout(new BorderLayout());
         Image icon = Toolkit.getDefaultToolkit().getImage("assets/images/icon.png");
         this.setIconImage(icon);
+        //titleBar
         renderCustomTitleBar();
 
         JPanel panelBody = new JPanel();

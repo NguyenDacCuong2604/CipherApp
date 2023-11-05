@@ -3,7 +3,6 @@ package GUI;
 import GUI.Component.ImageButton;
 import constant.Constants;
 import model.Hash.*;
-import screens.HashScreen;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
