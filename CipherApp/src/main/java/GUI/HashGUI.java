@@ -34,9 +34,11 @@ public class HashGUI extends JFrame {
         this.setLayout(new BorderLayout());
         Image icon = Toolkit.getDefaultToolkit().getImage("assets/images/icon.png");
         this.setIconImage(icon);
+        //titlebar
         renderCustomTitleBar();
 
         JPanel panelBody = new JPanel();
+        panelBody.setBackground(Color.WHITE);
         panelBody.setBorder(new LineBorder(Color.WHITE, 20));
         panelBody.setLayout(new BoxLayout(panelBody, BoxLayout.Y_AXIS));
 
