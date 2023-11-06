@@ -19,10 +19,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 public class SymmetricEncryptionGUI extends JFrame {
     private Point mouseDownCompCoords = null;
@@ -198,7 +195,7 @@ public class SymmetricEncryptionGUI extends JFrame {
 
         //generate Key
         JButton generateKeyButton = new JButton("Generate Key");
-        generateKeyButton.setPreferredSize(new Dimension(130, 34));
+        generateKeyButton.setPreferredSize(new Dimension(140, 34));
         generateKeyButton.setFont(new Font("Arial", Font.BOLD, 14));
         generateKeyButton.setBackground(new Color(35, 128, 251));
         generateKeyButton.setForeground(Color.WHITE);
@@ -355,6 +352,7 @@ public class SymmetricEncryptionGUI extends JFrame {
                 ivScrollPane.setVisible(true);
             }
             this.pack();
+            this.setLocationRelativeTo(null);
             repaint();
 
         });
@@ -806,7 +804,7 @@ public class SymmetricEncryptionGUI extends JFrame {
 
             //generate Key
         JButton generateKeyButton = new JButton("Generate Key");
-        generateKeyButton.setPreferredSize(new Dimension(130, 34));
+        generateKeyButton.setPreferredSize(new Dimension(140, 34));
         generateKeyButton.setFont(new Font("Arial", Font.BOLD, 14));
         generateKeyButton.setBackground(new Color(35, 128, 251));
         generateKeyButton.setForeground(Color.WHITE);
@@ -963,6 +961,7 @@ public class SymmetricEncryptionGUI extends JFrame {
                 ivScrollPane.setVisible(true);
             }
             this.pack();
+            this.setLocationRelativeTo(null);
             repaint();
 
         });

@@ -53,7 +53,7 @@ public class ElectronicSignatureScreen extends JFrame {
                     JOptionPane.showMessageDialog(null, "Select File, Please!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 else {
-                    System.out.println(electronicSignature.verifySignature(pathFile));
+//                    System.out.println(electronicSignature.verifySignature(pathFile));
                 }
             }
         });
@@ -83,7 +83,7 @@ public class ElectronicSignatureScreen extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
                     fileNameLabel.setText(selectedFile.getName());
-                    electronicSignature.loadFileData(selectedFile.getPath());
+//                    electronicSignature.loadFileData(selectedFile.getPath());
                     isSelectFile = true;
                     pathFile = selectedFile.getPath();
                 }

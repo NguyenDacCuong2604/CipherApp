@@ -2,7 +2,10 @@ package GUI;
 
 import GUI.Component.ImageButton;
 import constant.Constants;
+import model.ASysmmetricEncryption.RSA;
+import model.ElectronicSignature.ElectronicSignature;
 import model.Hash.*;
+import model.SysmmetricEncryption.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -111,7 +114,7 @@ public class HomeGUI extends JFrame implements ActionListener {
         chuKyDienTuButton.setActionCommand(Constants.Description.E_SIGNATURE);
         chuKyDienTuButton.addActionListener(this);
 
-        TitledBorder titledBorder = BorderFactory.createTitledBorder(null, "Digital Signatures ", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 20), Color.BLACK);
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(null, "E-Signatures ", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 20), Color.BLACK);
         titledBorder.setBorder(new LineBorder(Color.BLACK, 4));
         chuKyDienTuPanel.setBorder(titledBorder);
 
@@ -371,6 +374,31 @@ public class HomeGUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()){
+            //symmetric encryption
+            case Constants.Cipher.DES -> {
+                new SymmetricEncryptionGUI(new DES(), new DES(), Constants.List_Method.METHODS_DES);
+            }
+            case Constants.Cipher.AES -> {
+                new SymmetricEncryptionGUI(new AES(), new AES(), Constants.List_Method.METHODS_AES);
+            }
+            case Constants.Cipher.TRIPLE_DES -> {
+                new SymmetricEncryptionGUI(new TripleDES(), new TripleDES(), Constants.List_Method.METHODS_TRIPLEDES);
+            }
+            case Constants.Cipher.BLOWFISH -> {
+                new SymmetricEncryptionGUI(new Blowfish(), new Blowfish(), Constants.List_Method.METHODS_BLOWFISH);
+            }
+            case Constants.Cipher.CAST_6 -> {
+                new SymmetricEncryptionGUI(new Cast6(), new Cast6(), Constants.List_Method.METHODS_CAST6);
+            }
+            case Constants.Cipher.TWOFISH -> {
+                new SymmetricEncryptionGUI(new Twofish(), new Twofish(), Constants.List_Method.METHODS_TWOFISH);
+            }
+            case Constants.Cipher.HILL -> {
+                new SymmetricEncryptionGUI(new Hill(), new Hill(), Constants.List_Method.METHODS_HILL);
+            }
+            case Constants.Cipher.VIGENERE -> {
+                new SymmetricEncryptionGUI(new Vigenere(), new Vigenere(), Constants.List_Method.METHODS_VIGENERE);
+            }
             //hash
             case Constants.Cipher.SHA_1 -> {
                 AbsHash sha1 = new SHA1();
@@ -408,7 +436,14 @@ public class HomeGUI extends JFrame implements ActionListener {
                 AbsHash ripemd256 = new RIPEMD_256();
                 new HashGUI(ripemd256);
             }
+            //asymmetric encryption
+            case Constants.Cipher.RSA -> {
+                new ASymmetricEncryptGUI(new RSA(), Constants.List_Method.METHODS_RSA);
+            }
+            //verify
+            case Constants.Description.E_SIGNATURE -> {
+                new VerifyGUI(new ElectronicSignature());
+            }
         }
-        setState(Frame.ICONIFIED);
     }
 }

@@ -52,7 +52,7 @@ public class Constants {
         String DECRYPT_OUTPUT = "Decrypted Output";
         String INPUT = "Input";
         String OUTPUT = "Output";
-        String E_SIGNATURE = "E_Signature";
+        String E_SIGNATURE = "Verify";
         String VERIFY = "Verify";
         String OPEN_FILE = "Open File";
     }
