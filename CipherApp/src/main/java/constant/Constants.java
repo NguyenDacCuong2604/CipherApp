@@ -1,5 +1,6 @@
 package constant;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,6 +8,10 @@ public class Constants {
     public interface Alphabet{
         char[] ENG_ALPHABET = "abcdefghijklmnopqrstuvwxyz".toUpperCase().toCharArray();
         char[] VIE_ALPHABET = "aáàảãạăắằẳẵặâấầẩẫậbcdđeéèẻẽẹêếềểễệghiíìỉĩịklmnoóòỏõọôốồổỗộơớờởỡợpqrstuúùủũụưứừửữựvxyýỳỷỹỵ".toUpperCase().toCharArray();
+    }
+    public interface ColorUI{
+        Color BUTTON = new Color(239, 239, 239);
+        Color TEXT_WHITE = new Color(255, 255, 255);
     }
     public interface Cipher{
         String MD4 = "MD4";

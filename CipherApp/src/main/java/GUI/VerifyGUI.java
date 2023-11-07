@@ -1,7 +1,6 @@
 package GUI;
 
-import GUI.Component.CustomScrollBarUI;
-import GUI.Component.ImageButton;
+import GUI.Component.*;
 import constant.Constants;
 import model.ElectronicSignature.ElectronicSignature;
 
@@ -9,14 +8,12 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
 public class VerifyGUI extends JFrame {
-    private Point mouseDownCompCoords = null;
     ElectronicSignature electronicSignature;
     String filePath;
     JTextArea outTextArea;
@@ -25,24 +22,24 @@ public class VerifyGUI extends JFrame {
     public VerifyGUI(ElectronicSignature electronicSignature) {
         this.electronicSignature = electronicSignature;
         this.setUndecorated(true);
-        this.setLayout(new BorderLayout());
         Image icon = Toolkit.getDefaultToolkit().getImage("assets/images/icon.png");
         this.setIconImage(icon);
+        JPanel mainPanel = new JPanel();
+        mainPanel.setBorder(new LineBorder(Color.BLACK, 1));
+        mainPanel.setLayout(new BorderLayout());
         //titleBar
-        renderCustomTitleBar();
-
+        new TitleBar(this,mainPanel, electronicSignature.name);
         JPanel panel = new JPanel();
         panel.setBorder(new LineBorder(Color.WHITE, 15));
         panel.setBackground(Color.WHITE);
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
+        //body
         JPanel panelBody = new JPanel();
         panelBody.setLayout(new BoxLayout(panelBody, BoxLayout.Y_AXIS));
         panelBody.setBackground(Color.WHITE);
         TitledBorder cipherBorder = BorderFactory.createTitledBorder(null, "Verify File ", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.PLAIN, 16), Color.BLACK);
         cipherBorder.setBorder(new LineBorder(Color.BLACK, 1));
         panelBody.setBorder(cipherBorder);
-
         //render Input
         renderFileInput(panelBody);
         //render input text
@@ -53,20 +50,15 @@ public class VerifyGUI extends JFrame {
         renderButton(panelBody);
         //render output
         renderOutput(panelBody);
-
         panel.add(panelBody);
-
-        this.add(panel, BorderLayout.CENTER);
-
+        mainPanel.add(panel, BorderLayout.CENTER);
+        this.add(mainPanel);
         setFocusable(true);
         requestFocus();
-
         this.pack();
-
         this.setVisible(true);
         this.setLocationRelativeTo(null);
     }
-
     private void renderOutput(JPanel panelBody) {
         //input name
         JPanel nameOutputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -76,7 +68,7 @@ public class VerifyGUI extends JFrame {
         nameOutputPanel.add(outputLabel);
         panelBody.add(nameOutputPanel);
 
-        outTextArea = new JTextArea() {
+        outTextArea = new CustomTextArea(new Font("Arial", Font.BOLD, 24)) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -88,13 +80,7 @@ public class VerifyGUI extends JFrame {
         };
         outTextArea.setEditable(false);
         outTextArea.setBorder(new LineBorder(Color.WHITE, 8));
-        outTextArea.setFont(new Font("Arial", Font.BOLD, 24));
-        outTextArea.setLineWrap(true);
-        outTextArea.setWrapStyleWord(true);
-
-        JScrollPane outScrollPane = new JScrollPane(outTextArea);
-        outScrollPane.setPreferredSize(new Dimension(600, 100));
-        outScrollPane.setForeground(Color.WHITE);
+        JScrollPane outScrollPane = new CustomScrollPanel(outTextArea, new Dimension(600, 100), Color.WHITE);
         outScrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI());
         panelBody.add(outScrollPane);
     }
@@ -102,19 +88,10 @@ public class VerifyGUI extends JFrame {
     private void renderButton(JPanel panelBody) {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setBackground(Color.WHITE);
-
-        JButton verifyButton = new JButton("Verify");
-        verifyButton.setPreferredSize(new Dimension(120, 40));
-        verifyButton.setFont(new Font("Arial", Font.BOLD, 20));
-        verifyButton.setBackground(new Color(35, 128, 251));
-        verifyButton.setForeground(Color.WHITE);
-        verifyButton.setFocusable(false);
-        verifyButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
+        //button
+        JButton verifyButton = new CustomButton("Verify", new Dimension(120, 40), new Font("Arial", Font.BOLD, 20), new Color(35, 128, 251), Color.WHITE);
         buttonPanel.add(verifyButton);
-
         panelBody.add(buttonPanel);
-
         //event button
         verifyButton.addActionListener(e->{
             if(filePath==null){
@@ -137,74 +114,53 @@ public class VerifyGUI extends JFrame {
 
         });
     }
-
     private void renderSelectMode(JPanel panelBody) {
         JPanel selectModePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         selectModePanel.setBackground(Color.WHITE);
-
+        //mode
         JLabel modeHashLabel = new JLabel("Type Hash: ");
         modeHashLabel.setFont(new Font("Arial", Font.BOLD, 20));
         selectModePanel.add(modeHashLabel);
-
-        JRadioButton md5RadioButton = new JRadioButton(Constants.Cipher.MD5);
-        md5RadioButton.setBackground(Color.WHITE);
-        md5RadioButton.setFont(new Font("Arial", Font.PLAIN, 16));
-        md5RadioButton.setFocusable(false);
+        //md5
+        JRadioButton md5RadioButton = new CustomRadioButton(Constants.Cipher.MD5, Color.WHITE, new Font("Arial", Font.PLAIN, 16));
         selectModePanel.add(md5RadioButton);
-
-        JRadioButton sha1RadioButton = new JRadioButton(Constants.Cipher.SHA_1);
-        sha1RadioButton.setBackground(Color.WHITE);
-        sha1RadioButton.setFont(new Font("Arial", Font.PLAIN, 16));
-        sha1RadioButton.setFocusable(false);
+        //sha1
+        JRadioButton sha1RadioButton = new CustomRadioButton(Constants.Cipher.SHA_1, Color.WHITE, new Font("Arial", Font.PLAIN, 16));
         selectModePanel.add(sha1RadioButton);
-
-        JRadioButton sha256RadioButton = new JRadioButton(Constants.Cipher.SHA_256);
+        //sha256
+        JRadioButton sha256RadioButton = new CustomRadioButton(Constants.Cipher.SHA_256, Color.WHITE, new Font("Arial", Font.PLAIN, 16));
         sha256RadioButton.setSelected(true);
-        sha256RadioButton.setBackground(Color.WHITE);
-        sha256RadioButton.setFont(new Font("Arial", Font.PLAIN, 16));
-        sha256RadioButton.setFocusable(false);
         selectModePanel.add(sha256RadioButton);
-
-        JRadioButton sha512RadioButton = new JRadioButton(Constants.Cipher.SHA_512);
-        sha512RadioButton.setBackground(Color.WHITE);
-        sha512RadioButton.setFont(new Font("Arial", Font.PLAIN, 16));
-        sha512RadioButton.setFocusable(false);
+        //sha512
+        JRadioButton sha512RadioButton = new CustomRadioButton(Constants.Cipher.SHA_512, Color.WHITE, new Font("Arial", Font.PLAIN, 16));
         selectModePanel.add(sha512RadioButton);
-
-        JRadioButton sha3RadioButton = new JRadioButton(Constants.Cipher.SHA3_224);
-        sha3RadioButton.setBackground(Color.WHITE);
-        sha3RadioButton.setFont(new Font("Arial", Font.PLAIN, 16));
-        sha3RadioButton.setFocusable(false);
+        //sha3
+        JRadioButton sha3RadioButton = new CustomRadioButton(Constants.Cipher.SHA3_224, Color.WHITE, new Font("Arial", Font.PLAIN, 16));
         selectModePanel.add(sha3RadioButton);
-
+        //button group
         ButtonGroup buttonGroup = new ButtonGroup();
         buttonGroup.add(md5RadioButton);
         buttonGroup.add(sha1RadioButton);
         buttonGroup.add(sha3RadioButton);
         buttonGroup.add(sha256RadioButton);
         buttonGroup.add(sha512RadioButton);
-
         panelBody.add(selectModePanel);
-
+        //item listener
         ItemListener itemListener = (e) -> {
             Object source = e.getItemSelectable();
-
             if (source instanceof JRadioButton) {
                 JRadioButton radioButton = (JRadioButton) source;
                 if (radioButton.isSelected()) {
-                    System.out.println("Checkbox item selected: " + radioButton.getLabel());
+                    electronicSignature.instance(radioButton.getLabel());
                 }
-
             }
         };
-
         md5RadioButton.addItemListener(itemListener);
         sha1RadioButton.addItemListener(itemListener);
         sha3RadioButton.addItemListener(itemListener);
         sha256RadioButton.addItemListener(itemListener);
         sha512RadioButton.addItemListener(itemListener);
     }
-
     private void renderTextInput(JPanel panelBody) {
         //input name
         JPanel nameInputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -213,7 +169,6 @@ public class VerifyGUI extends JFrame {
         inputLabel.setFont(new Font("Arial", Font.BOLD, 20));
         nameInputPanel.add(inputLabel);
         panelBody.add(nameInputPanel);
-
         //textfield hash
         hashTextArea = new JTextField() {
             @Override
@@ -228,17 +183,16 @@ public class VerifyGUI extends JFrame {
         hashTextArea.setBorder(new LineBorder(Color.WHITE, 8));
         hashTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
         hashTextArea.setPreferredSize(new Dimension(600, 34));
-
         JScrollPane hashScrollPane = new JScrollPane(hashTextArea);
         hashScrollPane.setForeground(Color.WHITE);
         panelBody.add(hashScrollPane);
-
+        //popup
         JPopupMenu hashPopupMenu = new JPopupMenu();
         JMenuItem pasteHashItem = new JMenuItem("Paste");
         JMenuItem clearHashItem = new JMenuItem("Clear");
         hashPopupMenu.add(pasteHashItem);
         hashPopupMenu.add(clearHashItem);
-
+        //event
         hashTextArea.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -254,7 +208,6 @@ public class VerifyGUI extends JFrame {
             hashTextArea.setText("");
         });
     }
-
     private void renderFileInput(JPanel panelBody) {
         //input name
         JPanel nameInputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -263,28 +216,20 @@ public class VerifyGUI extends JFrame {
         inputLabel.setFont(new Font("Arial", Font.BOLD, 20));
         nameInputPanel.add(inputLabel);
         panelBody.add(nameInputPanel);
-
         //load file
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         inputPanel.setBackground(Color.WHITE);
-        JButton chooseFileButton = new JButton("Choose File");
-        chooseFileButton.setPreferredSize(new Dimension(120, 40));
-        chooseFileButton.setFont(new Font("Arial", Font.BOLD, 14));
-        chooseFileButton.setBackground(new Color(239, 239, 239));
-        chooseFileButton.setForeground(Color.BLACK);
-        chooseFileButton.setFocusable(false);
-        chooseFileButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JButton chooseFileButton = new CustomButton("Choose File",new Dimension(120, 40), new Font("Arial", Font.BOLD, 14), new Color(239, 239, 239), Color.BLACK);
         inputPanel.add(chooseFileButton);
-
         //label file name
         JLabel nameFileLabel = new JLabel("No file chosen");
         nameFileLabel.setFont(new Font("Arial", Font.BOLD, 16));
         inputPanel.add(nameFileLabel);
-
+        //popup
         JPopupMenu filePopupMenu = new JPopupMenu();
         JMenuItem deleteItem = new JMenuItem("CloseFile");
         filePopupMenu.add(deleteItem);
-
+        //event
         nameFileLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -293,18 +238,15 @@ public class VerifyGUI extends JFrame {
                 }
             }
         });
-
         deleteItem.addActionListener(e -> {
             filePath = null;
             nameFileLabel.setText("No file chosen");
             outTextArea.setText("");
         });
-
         //event
         chooseFileButton.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser();
             int returnValue = fileChooser.showOpenDialog(null);
-
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
                 if (selectedFile.exists()) {
@@ -312,63 +254,7 @@ public class VerifyGUI extends JFrame {
                     filePath = selectedFile.getPath();
                 } else JOptionPane.showMessageDialog(null, "File is not exists!!!", "Error", JOptionPane.ERROR_MESSAGE);
             }
-
         });
-
         panelBody.add(inputPanel);
-    }
-
-    private void renderCustomTitleBar() {
-        JPanel customTitleBar = new JPanel(new BorderLayout());
-        customTitleBar.setBackground(Color.WHITE);
-
-        JPanel algorithmPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 0));
-        algorithmPanel.setBackground(Color.WHITE);
-//        algorithmPanel.setPreferredSize(new Dimension(600, 50));
-
-        JLabel algorithmLabel = new JLabel(electronicSignature.name);
-        algorithmLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
-        algorithmPanel.add(algorithmLabel);
-
-        customTitleBar.add(algorithmPanel, BorderLayout.WEST);
-
-
-        ImageButton minimizeButton = new ImageButton(new ImageIcon("assets/Images/minimize-sign-black.png"), 25, 25);
-        minimizeButton.setToolTipText("Minimize");
-        ImageButton closeButton = new ImageButton(new ImageIcon("assets/Images/close-black.png"), 25, 25);
-        closeButton.setToolTipText("Close");
-        //event
-        minimizeButton.addActionListener(e -> setState(Frame.ICONIFIED));
-        closeButton.addActionListener(e -> {
-            JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
-            currentFrame.dispose();
-        });
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-        buttonPanel.setBackground(Color.WHITE);
-        buttonPanel.add(minimizeButton);
-        buttonPanel.add(new JLabel(" "));
-        buttonPanel.add(closeButton);
-
-        customTitleBar.add(buttonPanel, BorderLayout.EAST);
-
-        customTitleBar.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                mouseDownCompCoords = e.getPoint();
-            }
-        });
-
-        customTitleBar.addMouseMotionListener(new MouseAdapter() {
-            public void mouseDragged(MouseEvent e) {
-                Point currCoords = e.getLocationOnScreen();
-                setLocation(currCoords.x - mouseDownCompCoords.x, currCoords.y - mouseDownCompCoords.y);
-            }
-        });
-
-        this.add(customTitleBar, BorderLayout.NORTH);
-    }
-
-    public static void main(String[] args) {
-        new VerifyGUI(new ElectronicSignature());
     }
 }

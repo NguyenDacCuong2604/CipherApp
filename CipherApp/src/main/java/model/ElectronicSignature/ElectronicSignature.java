@@ -20,7 +20,7 @@ public class ElectronicSignature {
         this.name = Constants.Description.E_SIGNATURE;
         instance(Constants.Cipher.SHA_256);
     }
-    private void instance(String method){
+    public void instance(String method){
         try {
             Security.addProvider(new BouncyCastleProvider());
             this.messageDigest = MessageDigest.getInstance(method);
