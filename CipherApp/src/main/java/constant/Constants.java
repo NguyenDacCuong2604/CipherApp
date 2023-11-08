@@ -9,6 +9,10 @@ public class Constants {
         char[] ENG_ALPHABET = "abcdefghijklmnopqrstuvwxyz".toUpperCase().toCharArray();
         char[] VIE_ALPHABET = "aáàảãạăắằẳẵặâấầẩẫậbcdđeéèẻẽẹêếềểễệghiíìỉĩịklmnoóòỏõọôốồổỗộơớờởỡợpqrstuúùủũụưứừửữựvxyýỳỷỹỵ".toUpperCase().toCharArray();
     }
+    public interface Image{
+        String ICON = "assets/images/icon.png";
+        String COPY = "assets/Images/copy_output.png";
+    }
     public interface ColorUI{
         Color BUTTON = new Color(239, 239, 239);
         Color TEXT_WHITE = new Color(255, 255, 255);
@@ -45,7 +49,6 @@ public class Constants {
     public interface Description{
         String PLAINTEXT = "PlainText";
         String CIPHERTEXT = "CipherText";
-
         String ENCRYPT = "Encrypt";
         String DECRYPT = "Decrypt";
         String KEY = "Key";
@@ -60,6 +63,43 @@ public class Constants {
         String E_SIGNATURE = "Verify";
         String VERIFY = "Verify";
         String OPEN_FILE = "Open File";
+        String RESULT_TEXT = "Result goes here";
+        String RESULT = "Result";
+        String  VERIFY_FILE ="Verify File";
+        String ERROR = "Error";
+        String CHOOSE_FILE_VERIFY = "Choose File is verify!!!";
+        String ENTER_HASHCODE = "Enter to your hashcode";
+        String VERIFIED = "Verified";
+        String UNVERIFIED = "Unverified";
+        String TYPE_HASH = "Type Hash: ";
+        String PASTE = "Paste";
+        String COPY = "Copy";
+        String CLEAR = "Clear";
+        String CLOSE_FILE = "Close File";
+        String INPUT_FILE = "Input File";
+        String EMPTY = "";
+        String NO_FILE_CHOSEN = "No file chosen";
+        String CHOOSE_FILE = "Choose file";
+        String FILE_NOT_EXIST = "File is not exists";
+        String HASH = "Hash";
+        String ASYMMETRIC = "Asymmetric-key Algorithms";
+        String SYMMETRIC = "Symmetric-key Algorithms";
+        String AUTO_UPDATE = "Auto Update";
+        String COPIED = "Copied: ";
+        String COPY_ALL = "Copy All";
+        String TEXT = "Text";
+        String FILE = "File";
+        String ENTER_TEXT = "Enter your text here!!!";
+        String ENCRYPT_DECRYPT = "Encryption and Decryption ";
+        String RSA_EN = "RSA encryption";
+        String RSA_DE = "RSA decryption";
+        String ENTER_DECRYPT = "Enter Encrypted Text to Decrypt";
+        String ENTER_ENCRYPT = "Enter Plain Text to Encrypt";
+        String ENTER_PUBLIC_PRIVATE = "Enter Public/Private key";
+        String KEY_TYPE = "Key Type: ";
+        String BLANK = "  ";
+        String TYPE_CIPHER = "Select Cipher Type";
+        String GENERATE_KEY = "Generate Keys ";
     }
     public interface Method{
         //DES

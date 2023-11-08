@@ -22,7 +22,7 @@ public class VerifyGUI extends JFrame {
     public VerifyGUI(ElectronicSignature electronicSignature) {
         this.electronicSignature = electronicSignature;
         this.setUndecorated(true);
-        Image icon = Toolkit.getDefaultToolkit().getImage("assets/images/icon.png");
+        Image icon = Toolkit.getDefaultToolkit().getImage(Constants.Image.ICON);
         this.setIconImage(icon);
         JPanel mainPanel = new JPanel();
         mainPanel.setBorder(new LineBorder(Color.BLACK, 1));
@@ -37,7 +37,7 @@ public class VerifyGUI extends JFrame {
         JPanel panelBody = new JPanel();
         panelBody.setLayout(new BoxLayout(panelBody, BoxLayout.Y_AXIS));
         panelBody.setBackground(Color.WHITE);
-        TitledBorder cipherBorder = BorderFactory.createTitledBorder(null, "Verify File ", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.PLAIN, 16), Color.BLACK);
+        TitledBorder cipherBorder = BorderFactory.createTitledBorder(null, Constants.Description.VERIFY_FILE, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.PLAIN, 16), Color.BLACK);
         cipherBorder.setBorder(new LineBorder(Color.BLACK, 1));
         panelBody.setBorder(cipherBorder);
         //render Input
@@ -63,18 +63,17 @@ public class VerifyGUI extends JFrame {
         //input name
         JPanel nameOutputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         nameOutputPanel.setBackground(Color.WHITE);
-        JLabel outputLabel = new JLabel("Result");
+        JLabel outputLabel = new JLabel(Constants.Description.RESULT);
         outputLabel.setFont(new Font("Arial", Font.BOLD, 20));
         nameOutputPanel.add(outputLabel);
         panelBody.add(nameOutputPanel);
-
         outTextArea = new CustomTextArea(new Font("Arial", Font.BOLD, 24)) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (getText().isEmpty()) {
                     g.setColor(Color.GRAY);
-                    g.drawString("Result goes here", getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
+                    g.drawString(Constants.Description.RESULT_TEXT, getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
                 }
             }
         };
@@ -84,41 +83,39 @@ public class VerifyGUI extends JFrame {
         outScrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI());
         panelBody.add(outScrollPane);
     }
-
     private void renderButton(JPanel panelBody) {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setBackground(Color.WHITE);
         //button
-        JButton verifyButton = new CustomButton("Verify", new Dimension(120, 40), new Font("Arial", Font.BOLD, 20), new Color(35, 128, 251), Color.WHITE);
+        JButton verifyButton = new CustomButton(Constants.Description.VERIFY, new Dimension(120, 40), new Font("Arial", Font.BOLD, 20), new Color(35, 128, 251), Color.WHITE);
         buttonPanel.add(verifyButton);
         panelBody.add(buttonPanel);
         //event button
         verifyButton.addActionListener(e->{
             if(filePath==null){
-                JOptionPane.showMessageDialog(null, "Choose File is verify!!!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, Constants.Description.CHOOSE_FILE_VERIFY, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if(hashTextArea.getText().isEmpty()){
-                JOptionPane.showMessageDialog(null, "Enter to your hashcode", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, Constants.Description.ENTER_HASHCODE, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
                 return;
             }
             boolean verified = electronicSignature.verify(filePath, hashTextArea.getText());
             if(verified){
-                outTextArea.setText("Verified!!!");
+                outTextArea.setText(Constants.Description.VERIFIED);
                 outTextArea.setForeground(Color.GREEN);
             }
             else {
-                outTextArea.setText("Unverified!!!");
+                outTextArea.setText(Constants.Description.UNVERIFIED);
                 outTextArea.setForeground(Color.RED);
             }
-
         });
     }
     private void renderSelectMode(JPanel panelBody) {
         JPanel selectModePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         selectModePanel.setBackground(Color.WHITE);
         //mode
-        JLabel modeHashLabel = new JLabel("Type Hash: ");
+        JLabel modeHashLabel = new JLabel(Constants.Description.TYPE_HASH);
         modeHashLabel.setFont(new Font("Arial", Font.BOLD, 20));
         selectModePanel.add(modeHashLabel);
         //md5
@@ -165,18 +162,18 @@ public class VerifyGUI extends JFrame {
         //input name
         JPanel nameInputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         nameInputPanel.setBackground(Color.WHITE);
-        JLabel inputLabel = new JLabel("Enter Your Hashcode");
+        JLabel inputLabel = new JLabel(Constants.Description.ENTER_HASHCODE);
         inputLabel.setFont(new Font("Arial", Font.BOLD, 20));
         nameInputPanel.add(inputLabel);
         panelBody.add(nameInputPanel);
-        //textfield hash
+        //text-field hash
         hashTextArea = new JTextField() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (getText().isEmpty()) {
                     g.setColor(Color.GRAY);
-                    g.drawString("Enter Your Hashcode", getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
+                    g.drawString(Constants.Description.ENTER_HASHCODE, getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
                 }
             }
         };
@@ -188,8 +185,8 @@ public class VerifyGUI extends JFrame {
         panelBody.add(hashScrollPane);
         //popup
         JPopupMenu hashPopupMenu = new JPopupMenu();
-        JMenuItem pasteHashItem = new JMenuItem("Paste");
-        JMenuItem clearHashItem = new JMenuItem("Clear");
+        JMenuItem pasteHashItem = new JMenuItem(Constants.Description.PASTE);
+        JMenuItem clearHashItem = new JMenuItem(Constants.Description.CLEAR);
         hashPopupMenu.add(pasteHashItem);
         hashPopupMenu.add(clearHashItem);
         //event
@@ -205,29 +202,29 @@ public class VerifyGUI extends JFrame {
             hashTextArea.paste();
         });
         clearHashItem.addActionListener(e -> {
-            hashTextArea.setText("");
+            hashTextArea.setText(Constants.Description.EMPTY);
         });
     }
     private void renderFileInput(JPanel panelBody) {
         //input name
         JPanel nameInputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         nameInputPanel.setBackground(Color.WHITE);
-        JLabel inputLabel = new JLabel("Input File");
+        JLabel inputLabel = new JLabel(Constants.Description.INPUT_FILE);
         inputLabel.setFont(new Font("Arial", Font.BOLD, 20));
         nameInputPanel.add(inputLabel);
         panelBody.add(nameInputPanel);
         //load file
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         inputPanel.setBackground(Color.WHITE);
-        JButton chooseFileButton = new CustomButton("Choose File",new Dimension(120, 40), new Font("Arial", Font.BOLD, 14), new Color(239, 239, 239), Color.BLACK);
+        JButton chooseFileButton = new CustomButton(Constants.Description.CHOOSE_FILE,new Dimension(120, 40), new Font("Arial", Font.BOLD, 14), new Color(239, 239, 239), Color.BLACK);
         inputPanel.add(chooseFileButton);
         //label file name
-        JLabel nameFileLabel = new JLabel("No file chosen");
+        JLabel nameFileLabel = new JLabel(Constants.Description.NO_FILE_CHOSEN);
         nameFileLabel.setFont(new Font("Arial", Font.BOLD, 16));
         inputPanel.add(nameFileLabel);
         //popup
         JPopupMenu filePopupMenu = new JPopupMenu();
-        JMenuItem deleteItem = new JMenuItem("CloseFile");
+        JMenuItem deleteItem = new JMenuItem(Constants.Description.CLOSE_FILE);
         filePopupMenu.add(deleteItem);
         //event
         nameFileLabel.addMouseListener(new MouseAdapter() {
@@ -240,8 +237,8 @@ public class VerifyGUI extends JFrame {
         });
         deleteItem.addActionListener(e -> {
             filePath = null;
-            nameFileLabel.setText("No file chosen");
-            outTextArea.setText("");
+            nameFileLabel.setText(Constants.Description.NO_FILE_CHOSEN);
+            outTextArea.setText(Constants.Description.EMPTY);
         });
         //event
         chooseFileButton.addActionListener(e -> {
@@ -252,7 +249,7 @@ public class VerifyGUI extends JFrame {
                 if (selectedFile.exists()) {
                     nameFileLabel.setText(selectedFile.getName());
                     filePath = selectedFile.getPath();
-                } else JOptionPane.showMessageDialog(null, "File is not exists!!!", "Error", JOptionPane.ERROR_MESSAGE);
+                } else JOptionPane.showMessageDialog(null, Constants.Description.FILE_NOT_EXIST, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
             }
         });
         panelBody.add(inputPanel);

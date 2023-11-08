@@ -1354,10 +1354,4 @@ public class SymmetricEncryptionGUI extends JFrame {
 
         this.add(customTitleBar, BorderLayout.NORTH);
     }
-
-    public static void main(String[] args) {
-        AbsSymmetricEncryption des = new AES();
-        AbsSymmetricEncryption des1 = new AES();
-        new SymmetricEncryptionGUI(des,des1, Constants.List_Method.METHODS_AES);
-    }
 }

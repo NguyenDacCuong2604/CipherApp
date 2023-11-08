@@ -23,7 +23,7 @@ public class HashGUI extends JFrame {
     public HashGUI(AbsHash absHash) {
         this.absHash = absHash;
         this.setUndecorated(true);
-        Image icon = Toolkit.getDefaultToolkit().getImage("assets/images/icon.png");
+        Image icon = Toolkit.getDefaultToolkit().getImage(Constants.Image.ICON);
         this.setIconImage(icon);
         JPanel mainPanel = new JPanel();
         mainPanel.setBorder(new LineBorder(Color.BLACK, 1));
@@ -53,7 +53,7 @@ public class HashGUI extends JFrame {
         panelButton.setBackground(Constants.ColorUI.TEXT_WHITE);
         panelButton.setBorder(new EmptyBorder(8, 0, 0, 0));
         //button
-        JButton hashButton = new CustomButton("Hash", new Dimension(70, 28),new Font("Arial", Font.BOLD, 14), Constants.ColorUI.BUTTON, Color.BLACK);
+        JButton hashButton = new CustomButton(Constants.Description.HASH, new Dimension(70, 28),new Font("Arial", Font.BOLD, 14), Constants.ColorUI.BUTTON, Color.BLACK);
         panelButton.add(hashButton);
         //event button
         hashButton.addActionListener(e -> {
@@ -68,7 +68,7 @@ public class HashGUI extends JFrame {
             }
         });
         //auto hash
-        JCheckBox autoUpdateCheckBox = new CustomCheckBox("Auto Update", Constants.ColorUI.TEXT_WHITE, new Font("Arial", Font.PLAIN, 14));
+        JCheckBox autoUpdateCheckBox = new CustomCheckBox(Constants.Description.AUTO_UPDATE, Constants.ColorUI.TEXT_WHITE, new Font("Arial", Font.PLAIN, 14));
         autoUpdateCheckBox.setSelected(true);
         //event
         autoUpdateCheckBox.addActionListener(e -> {
@@ -98,7 +98,7 @@ public class HashGUI extends JFrame {
         JLabel outputLabel = new JLabel(Constants.Description.OUTPUT);
         outputLabel.setFont(new Font("Arial", Font.BOLD, 22));
         titleOutputPanel.add(outputLabel);
-        ImageIcon copyIcon = new ImageIcon("assets/Images/copy_output.png");
+        ImageIcon copyIcon = new ImageIcon(Constants.Image.COPY);
         JButton copyButton = new CustomIconButton(new ImageIcon(copyIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH)), new Dimension(25, 25), Constants.ColorUI.TEXT_WHITE);
         titleOutputPanel.add(copyButton);
         //event
@@ -107,7 +107,7 @@ public class HashGUI extends JFrame {
                 String hash = outputTextArea.getText();
                 // Copy the text to the clipboard
                 model.Toolkit.copy(hash);
-                ShowToast showToast = new ShowToast(this, "Copied the hash code: " + hash);
+                ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + hash);
                 showToast.showToast(2000);
             }
         });
@@ -121,7 +121,7 @@ public class HashGUI extends JFrame {
         outputTextArea.setEditable(false);
         //popup
         JPopupMenu outputPopupMenu = new JPopupMenu();
-        JMenuItem copyAllItem = new JMenuItem("Copy All");
+        JMenuItem copyAllItem = new JMenuItem(Constants.Description.COPY_ALL);
         outputPopupMenu.add(copyAllItem);
         outputTextArea.addMouseListener(new MouseAdapter() {
             @Override
@@ -152,10 +152,10 @@ public class HashGUI extends JFrame {
         JPanel typePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         typePanel.setBackground(Constants.ColorUI.TEXT_WHITE);
         //text
-        JButton textInputButton = new CustomButton("Text", new Dimension(100, 40), new Font("Arial", Font.BOLD, 14), Color.BLACK, Constants.ColorUI.TEXT_WHITE);
+        JButton textInputButton = new CustomButton(Constants.Description.TEXT, new Dimension(100, 40), new Font("Arial", Font.BOLD, 14), Color.BLACK, Constants.ColorUI.TEXT_WHITE);
         textInputButton.setEnabled(false);
         //file
-        JButton fileInputButton = new CustomButton("File", new Dimension(100, 40), new Font("Arial", Font.BOLD, 14), Constants.ColorUI.BUTTON, Color.BLACK);
+        JButton fileInputButton = new CustomButton(Constants.Description.FILE, new Dimension(100, 40), new Font("Arial", Font.BOLD, 14), Constants.ColorUI.BUTTON, Color.BLACK);
         typePanel.add(textInputButton);
         typePanel.add(fileInputButton);
         panelBody.add(typePanel);
@@ -170,7 +170,7 @@ public class HashGUI extends JFrame {
                 super.paintComponent(g);
                 if (getText().isEmpty()) {
                     g.setColor(Color.GRAY);
-                    g.drawString("Enter your text here!!!", getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
+                    g.drawString(Constants.Description.ENTER_TEXT, getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
                 }
             }
         };
@@ -198,8 +198,8 @@ public class HashGUI extends JFrame {
         });
         //popup
         JPopupMenu inputPopupMenu = new JPopupMenu();
-        JMenuItem pasteItem = new JMenuItem("Paste");
-        JMenuItem clearItem = new JMenuItem("Clear");
+        JMenuItem pasteItem = new JMenuItem(Constants.Description.PASTE);
+        JMenuItem clearItem = new JMenuItem(Constants.Description.CLEAR);
         inputPopupMenu.add(pasteItem);
         inputPopupMenu.add(clearItem);
         inputTextArea.addMouseListener(new MouseAdapter() {
@@ -214,8 +214,8 @@ public class HashGUI extends JFrame {
             inputTextArea.paste();
         });
         clearItem.addActionListener(e -> {
-            inputTextArea.setText("");
-            outputTextArea.setText("");
+            inputTextArea.setText(Constants.Description.EMPTY);
+            outputTextArea.setText(Constants.Description.EMPTY);
         });
         JScrollPane scrollPane = new CustomScrollPanel(inputTextArea,new Dimension(600, 180),Constants.ColorUI.TEXT_WHITE);
         scrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI());
@@ -224,16 +224,16 @@ public class HashGUI extends JFrame {
         JPanel filePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
         filePanel.setBackground(Constants.ColorUI.TEXT_WHITE);
         //button choose
-        JButton chooseFileButton = new CustomButton("Choose File", new Dimension(140, 40), new Font("Arial", Font.BOLD, 14), Constants.ColorUI.BUTTON, Color.BLACK);
+        JButton chooseFileButton = new CustomButton(Constants.Description.CHOOSE_FILE, new Dimension(140, 40), new Font("Arial", Font.BOLD, 14), Constants.ColorUI.BUTTON, Color.BLACK);
         filePanel.add(chooseFileButton);
         //label file name
-        JLabel nameFileLabel = new JLabel("No file chosen");
+        JLabel nameFileLabel = new JLabel(Constants.Description.NO_FILE_CHOSEN);
         nameFileLabel.setFont(new Font("Arial", Font.BOLD, 16));
         filePanel.add(nameFileLabel);
         filePanel.setVisible(false);
         inputPanel.add(filePanel);
         JPopupMenu filePopupMenu = new JPopupMenu();
-        JMenuItem deleteItem = new JMenuItem("CloseFile");
+        JMenuItem deleteItem = new JMenuItem(Constants.Description.CLOSE_FILE);
         filePopupMenu.add(deleteItem);
         nameFileLabel.addMouseListener(new MouseAdapter() {
             @Override
@@ -245,8 +245,8 @@ public class HashGUI extends JFrame {
         });
         deleteItem.addActionListener(e -> {
             filePath = null;
-            nameFileLabel.setText("No file chosen");
-            outputTextArea.setText("");
+            nameFileLabel.setText(Constants.Description.NO_FILE_CHOSEN);
+            outputTextArea.setText(Constants.Description.EMPTY);
         });
         //event
         chooseFileButton.addActionListener(e -> {
@@ -261,7 +261,7 @@ public class HashGUI extends JFrame {
                         String textHash = absHash.hashFile(filePath);
                         outputTextArea.setText(textHash);
                     }
-                } else JOptionPane.showMessageDialog(null, "File is not exists!!!", "Error", JOptionPane.ERROR_MESSAGE);
+                } else JOptionPane.showMessageDialog(null, Constants.Description.FILE_NOT_EXIST, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
             }
         });
         panelBody.add(inputPanel);
@@ -276,7 +276,7 @@ public class HashGUI extends JFrame {
                 String text = inputTextArea.getText();
                 outputTextArea.setText(absHash.hashText(text));
             } else {
-                outputTextArea.setText("");
+                outputTextArea.setText(Constants.Description.EMPTY);
             }
             revalidate();
             repaint();
@@ -292,7 +292,7 @@ public class HashGUI extends JFrame {
                 String hashFile = absHash.hashFile(filePath);
                 outputTextArea.setText(hashFile);
             } else {
-                outputTextArea.setText("");
+                outputTextArea.setText(Constants.Description.EMPTY);
             }
             revalidate();
             repaint();

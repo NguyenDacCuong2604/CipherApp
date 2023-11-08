@@ -15,4 +15,12 @@ public class CustomButton extends JButton {
         setFocusable(false);
         setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
+    public CustomButton(String title, Dimension dimension, Font font){
+        setText(title);
+        setPreferredSize(dimension);
+        setFont(font);
+        setFocusable(false);
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
+        setActionCommand(title);
+    }
 }

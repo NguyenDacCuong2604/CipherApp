@@ -173,25 +173,17 @@ public class Hill extends AbsSymmetricEncryption {
 
     private int[][] inverse(int[][] intMatrix) {
         int n = intMatrix.length;
-
-        // Chuyển ma trận int[][] thành RealMatrix với giá trị nguyên
         double[][] doubleMatrix = new double[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 doubleMatrix[i][j] = (double) intMatrix[i][j];
             }
         }
-
         RealMatrix matrix = MatrixUtils.createRealMatrix(doubleMatrix);
-
-        // Kiểm tra tính nghịch đảo của ma trận
         SingularValueDecomposition svd = new SingularValueDecomposition(matrix);
         RealMatrix inverseMatrix = svd.getSolver().getInverse();
         if(inverseMatrix==null) return null;
-        // Create an LU decomposition of the inverseMatrix
         LUDecomposition luDecomposition = new LUDecomposition(matrix);
-
-        // Get the determinant of the inverseMatrix
         double determinant = luDecomposition.getDeterminant();
         int intDeterminant = (int)(Math.round(determinant)) % length;
         while (intDeterminant<0){
@@ -203,7 +195,6 @@ public class Hill extends AbsSymmetricEncryption {
         while(((modDeterminant*k)%length)!=1){
             k++;
         }
-
         int[][] inverseIntMatrix = new int[n][n];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
