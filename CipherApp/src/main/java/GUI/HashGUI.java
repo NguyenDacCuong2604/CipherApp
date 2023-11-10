@@ -20,6 +20,7 @@ public class HashGUI extends JFrame {
     boolean isAuto = true;
     JTextArea outputTextArea, inputTextArea;
     String filePath = null;
+
     public HashGUI(AbsHash absHash) {
         this.absHash = absHash;
         this.setUndecorated(true);
@@ -48,12 +49,13 @@ public class HashGUI extends JFrame {
         this.setVisible(true);
         this.setLocationRelativeTo(null);
     }
+
     private void renderButtonHash(JPanel panelBody) {
         JPanel panelButton = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panelButton.setBackground(Constants.ColorUI.TEXT_WHITE);
         panelButton.setBorder(new EmptyBorder(8, 0, 0, 0));
         //button
-        JButton hashButton = new CustomButton(Constants.Description.HASH, new Dimension(70, 28),new Font("Arial", Font.BOLD, 14), Constants.ColorUI.BUTTON, Color.BLACK);
+        JButton hashButton = new CustomButton(Constants.Description.HASH, new Dimension(70, 28), new Font("Arial", Font.BOLD, 14), Constants.ColorUI.BUTTON, Color.BLACK);
         panelButton.add(hashButton);
         //event button
         hashButton.addActionListener(e -> {
@@ -92,6 +94,7 @@ public class HashGUI extends JFrame {
         panelButton.add(autoUpdateCheckBox);
         panelBody.add(panelButton);
     }
+
     private void renderOutput(JPanel panelBody) {
         JPanel titleOutputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         titleOutputPanel.setBackground(Constants.ColorUI.TEXT_WHITE);
@@ -108,7 +111,7 @@ public class HashGUI extends JFrame {
                 // Copy the text to the clipboard
                 model.Toolkit.copy(hash);
                 ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + hash);
-                showToast.showToast(2000);
+                showToast.showToast(1000);
             }
         });
         panelBody.add(titleOutputPanel);
@@ -136,11 +139,12 @@ public class HashGUI extends JFrame {
             // Copy the text to the clipboard
             model.Toolkit.copy(textToCopy);
         });
-        JScrollPane scrollPane = new CustomScrollPanel(outputTextArea,new Dimension(600, 100), Constants.ColorUI.TEXT_WHITE);
+        JScrollPane scrollPane = new CustomScrollPanel(outputTextArea, new Dimension(600, 100), Constants.ColorUI.TEXT_WHITE);
         scrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI());
         outPanel.add(scrollPane);
         panelBody.add(outPanel);
     }
+
     private void renderInput(JPanel panelBody) {
         JPanel titleInputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         titleInputPanel.setBackground(Constants.ColorUI.TEXT_WHITE);
@@ -181,14 +185,17 @@ public class HashGUI extends JFrame {
             public void insertUpdate(DocumentEvent e) {
                 updateSHA1Hash();
             }
+
             @Override
             public void removeUpdate(DocumentEvent e) {
                 updateSHA1Hash();
             }
+
             @Override
             public void changedUpdate(DocumentEvent e) {
                 updateSHA1Hash();
             }
+
             private void updateSHA1Hash() {
                 if (isAuto) {
                     String text = inputTextArea.getText();
@@ -217,7 +224,7 @@ public class HashGUI extends JFrame {
             inputTextArea.setText(Constants.Description.EMPTY);
             outputTextArea.setText(Constants.Description.EMPTY);
         });
-        JScrollPane scrollPane = new CustomScrollPanel(inputTextArea,new Dimension(600, 180),Constants.ColorUI.TEXT_WHITE);
+        JScrollPane scrollPane = new CustomScrollPanel(inputTextArea, new Dimension(600, 180), Constants.ColorUI.TEXT_WHITE);
         scrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI());
         inputPanel.add(scrollPane);
         //File
@@ -261,7 +268,8 @@ public class HashGUI extends JFrame {
                         String textHash = absHash.hashFile(filePath);
                         outputTextArea.setText(textHash);
                     }
-                } else JOptionPane.showMessageDialog(null, Constants.Description.FILE_NOT_EXIST, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
+                } else
+                    JOptionPane.showMessageDialog(null, Constants.Description.FILE_NOT_EXIST, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
             }
         });
         panelBody.add(inputPanel);
@@ -299,6 +307,7 @@ public class HashGUI extends JFrame {
             this.pack();
         });
     }
+
     public void setChooseButton(JButton button, boolean isChoose) {
         if (isChoose) {
             button.setCursor(null);

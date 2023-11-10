@@ -1,208 +1,160 @@
 package GUI;
 
-import GUI.Component.CustomScrollBarUI;
-import GUI.Component.ImageButton;
+import GUI.Component.*;
 import constant.Constants;
-import model.SysmmetricEncryption.AES;
 import model.SysmmetricEncryption.AbsSymmetricEncryption;
-import model.SysmmetricEncryption.DES;
-import screens.SymmetricEncryptScreen;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 
 public class SymmetricEncryptionGUI extends JFrame {
-    private Point mouseDownCompCoords = null;
     AbsSymmetricEncryption absSymmetricEncryptionEncrypt, absSymmetricEncryptionDecrypt;
     String[] methods;
-    public SymmetricEncryptionGUI(AbsSymmetricEncryption absSymmetricEncryptionEncrypt, AbsSymmetricEncryption absSymmetricEncryptionDecrypt, String[] methods){
+
+    public SymmetricEncryptionGUI(AbsSymmetricEncryption absSymmetricEncryptionEncrypt, AbsSymmetricEncryption absSymmetricEncryptionDecrypt, String[] methods) {
         this.absSymmetricEncryptionEncrypt = absSymmetricEncryptionEncrypt;
         this.absSymmetricEncryptionDecrypt = absSymmetricEncryptionEncrypt;
         this.methods = methods;
         this.setUndecorated(true);
-        this.setLayout(new BorderLayout());
-        Image icon = Toolkit.getDefaultToolkit().getImage("assets/images/icon.png");
+        Image icon = Toolkit.getDefaultToolkit().getImage(Constants.Image.ICON);
         this.setIconImage(icon);
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setBackground(Color.WHITE);
         //titleBar
-        renderCustomTitleBar();
-
+        new TitleBar(this, mainPanel, absSymmetricEncryptionEncrypt.name);
         JPanel panel = new JPanel();
         panel.setBorder(new LineBorder(Color.WHITE, 15));
         panel.setBackground(Color.WHITE);
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
+        //body
         JPanel panelBody = new JPanel();
         panelBody.setBackground(Color.WHITE);
-        TitledBorder cipherBorder = BorderFactory.createTitledBorder(null, "Encryption and Decryption ", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.PLAIN, 16), Color.BLACK);
+        TitledBorder cipherBorder = BorderFactory.createTitledBorder(null, Constants.Description.ENCRYPT_DECRYPT, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.PLAIN, 16), Color.BLACK);
         cipherBorder.setBorder(new LineBorder(Color.BLACK, 1));
         panelBody.setBorder(cipherBorder);
-
         //renderEncryption
         renderEncryption(panelBody, absSymmetricEncryptionEncrypt);
-
-        //renderLine
+        //left
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(Color.WHITE);
         leftPanel.setPreferredSize(new Dimension(12, 600));
         panelBody.add(leftPanel);
-
+        //line
         JPanel linePanel = new JPanel();
         linePanel.setBackground(Color.BLACK);
         linePanel.setPreferredSize(new Dimension(3, 600));
         panelBody.add(linePanel);
-
+        //right
         JPanel rightPanel = new JPanel();
         rightPanel.setBackground(Color.WHITE);
         rightPanel.setPreferredSize(new Dimension(12, 600));
         panelBody.add(rightPanel);
-
         //renderDecryption
         renderDecryption(panelBody, absSymmetricEncryptionDecrypt);
-
         panel.add(panelBody);
-
-        this.add(panel, BorderLayout.CENTER);
-
+        mainPanel.add(panel, BorderLayout.CENTER);
+        this.add(mainPanel);
         setFocusable(true);
         requestFocus();
-
         this.pack();
-
         this.setVisible(true);
         this.setLocationRelativeTo(null);
     }
 
     private void renderDecryption(JPanel panel, AbsSymmetricEncryption absSymmetricEncryption) {
-        ImageIcon copyIcon = new ImageIcon("assets/Images/copy_output.png");
+        ImageIcon copyIcon = new ImageIcon(Constants.Image.COPY);
         JPanel decryptionPanel = new JPanel();
         decryptionPanel.setBackground(Color.WHITE);
         decryptionPanel.setLayout(new BoxLayout(decryptionPanel, BoxLayout.Y_AXIS));
-
         //title
-        JPanel titleNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0 ,3));
+        JPanel titleNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 3));
         titleNamePanel.setBackground(Color.WHITE);
-
-        JLabel titleNameLabel = new JLabel("Decryption");
+        JLabel titleNameLabel = new JLabel(Constants.Description.DECRYPTION);
         titleNameLabel.setFont(new Font("Arial", Font.BOLD, 22));
         titleNamePanel.add(titleNameLabel);
         decryptionPanel.add(titleNamePanel);
         //name input
         JPanel inputNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         inputNamePanel.setBackground(Color.WHITE);
-
-        JLabel inputNameLabel = new JLabel("Enter Text to Decrypted");
+        JLabel inputNameLabel = new JLabel(Constants.Description.ENTER_DECRYPT);
         inputNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
         inputNamePanel.add(inputNameLabel);
         decryptionPanel.add(inputNamePanel);
         //input
-        JTextArea inputTextArea = new JTextArea() {
+        JTextArea inputTextArea = new CustomTextArea(new Font("Arial", Font.PLAIN, 16)) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (getText().isEmpty()) {
                     g.setColor(Color.GRAY);
-                    g.drawString("Enter Text to Decrypt", getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
+                    g.drawString(Constants.Description.ENTER_DECRYPT, getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
                 }
             }
         };
         inputTextArea.setBorder(new LineBorder(Color.WHITE, 8));
-        inputTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
-        inputTextArea.setLineWrap(true);
-        inputTextArea.setWrapStyleWord(true);
-
-        JScrollPane inputScrollPane = new JScrollPane(inputTextArea);
-        inputScrollPane.setPreferredSize(new Dimension(450, 160));
-        inputScrollPane.setForeground(Color.WHITE);
+        JScrollPane inputScrollPane = new CustomScrollPanel(inputTextArea, new Dimension(450, 160), Color.WHITE);
         inputScrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI());
         decryptionPanel.add(inputScrollPane);
         //select mode
         JPanel selectModePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         selectModePanel.setBackground(Color.WHITE);
-
-        JLabel selectModeLabel = new JLabel("Select Mode");
+        JLabel selectModeLabel = new JLabel(Constants.Description.TYPE_MODE);
         selectModeLabel.setFont(new Font("Arial", Font.BOLD, 16));
         selectModePanel.add(selectModeLabel);
         decryptionPanel.add(selectModePanel);
         //mode
-        JComboBox modeComboBox = new JComboBox(methods);
-        modeComboBox.setPreferredSize(new Dimension(450, 34));
-        modeComboBox.setFont(new Font("Arial", Font.BOLD, 16));
-        modeComboBox.setBackground(Color.WHITE);
-        modeComboBox.setFocusable(false);
+        JComboBox modeComboBox = new CustomComboBox(methods, new Dimension(450, 34), new Font("Arial", Font.BOLD, 16), Color.WHITE);
         decryptionPanel.add(modeComboBox);
         //Name Key
-        JPanel keyNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0 ,5));
+        JPanel keyNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         keyNamePanel.setBackground(Color.WHITE);
         //name
-        JLabel nameKeyLabel = new JLabel("Enter Secret Key");
+        JLabel nameKeyLabel = new JLabel(Constants.Description.ENTER_SECRET);
         nameKeyLabel.setFont(new Font("Arial", Font.BOLD, 16));
         keyNamePanel.add(nameKeyLabel);
         //button copy
-        keyNamePanel.add(new JLabel(" "));
-        JButton copyKeyButton = new JButton(new ImageIcon(copyIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
-        copyKeyButton.setPreferredSize(new Dimension(22, 22));
-        copyKeyButton.setToolTipText("Copy Key");
-        copyKeyButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        copyKeyButton.setFocusable(false);
-        copyKeyButton.setBorderPainted(false);
-        copyKeyButton.setBackground(Color.WHITE);
+        keyNamePanel.add(new JLabel(Constants.Description.BLANK));
+        JButton copyKeyButton = new CustomIconButton(new ImageIcon(copyIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)), new Dimension(22, 22), Color.WHITE);
+        copyKeyButton.setToolTipText(Constants.Description.COPY);
         keyNamePanel.add(copyKeyButton);
-        keyNamePanel.add(new JLabel("  "));
+        keyNamePanel.add(new JLabel(Constants.Description.BLANK));
         //size
-        if(absSymmetricEncryption.name.equals(Constants.Cipher.AES)){
+        if (absSymmetricEncryption.name.equals(Constants.Cipher.AES)) {
             JPanel linePanel = new JPanel();
             linePanel.setBackground(Color.BLACK);
             linePanel.setPreferredSize(new Dimension(2, 22));
             keyNamePanel.add(linePanel);
-
-            JLabel sizeLabel = new JLabel(" Size ");
+            JLabel sizeLabel = new JLabel(Constants.Description.SIZE);
             sizeLabel.setFont(new Font("Arial", Font.BOLD, 16));
             keyNamePanel.add(sizeLabel);
-
-            JComboBox sizesKeyComboBox = new JComboBox(Constants.List_Size.SIZE_AES);
-            sizesKeyComboBox.setPreferredSize(new Dimension(85, 34));
-            sizesKeyComboBox.setBackground(Color.WHITE);
-            sizesKeyComboBox.setFont(new Font("Arial", Font.BOLD, 16));
-            sizesKeyComboBox.setFocusable(false);
+            keyNamePanel.add(new JLabel(Constants.Description.BLANK));
+            //combobox
+            JComboBox sizesKeyComboBox = new CustomComboBox(Constants.List_Size.SIZE_AES, new Dimension(85, 34), new Font("Arial", Font.BOLD, 16), Color.WHITE);
             keyNamePanel.add(sizesKeyComboBox);
-            keyNamePanel.add(new JLabel("  "));
+            keyNamePanel.add(new JLabel(Constants.Description.BLANK));
             //event
             sizesKeyComboBox.addActionListener(e -> {
                 JComboBox cb = (JComboBox) e.getSource();
-                String method = (String)cb.getSelectedItem();
-                if(method.contains(Constants.Size.BITS128)){
+                String method = (String) cb.getSelectedItem();
+                if (method.contains(Constants.Size.BITS128)) {
                     absSymmetricEncryption.size = 16;
-                }
-                else if (method.contains(Constants.Size.BITS192)){
+                } else if (method.contains(Constants.Size.BITS192)) {
                     absSymmetricEncryption.size = 24;
-                }
-                else if (method.contains(Constants.Size.BITS256)){
+                } else if (method.contains(Constants.Size.BITS256)) {
                     absSymmetricEncryption.size = 32;
                 }
                 revalidate();
             });
         }
-
         //generate Key
-        JButton generateKeyButton = new JButton("Generate Key");
-        generateKeyButton.setPreferredSize(new Dimension(140, 34));
-        generateKeyButton.setFont(new Font("Arial", Font.BOLD, 14));
-        generateKeyButton.setBackground(new Color(35, 128, 251));
-        generateKeyButton.setForeground(Color.WHITE);
-        generateKeyButton.setFocusable(false);
-        generateKeyButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JButton generateKeyButton = new CustomButton(Constants.Description.GENERATE_KEY, new Dimension(150, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
         keyNamePanel.add(generateKeyButton);
-
         decryptionPanel.add(keyNamePanel);
         //key
         JTextField keyTextArea = new JTextField() {
@@ -211,51 +163,34 @@ public class SymmetricEncryptionGUI extends JFrame {
                 super.paintComponent(g);
                 if (getText().isEmpty()) {
                     g.setColor(Color.GRAY);
-                    g.drawString("Enter Secret Key", getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
+                    g.drawString(Constants.Description.ENTER_SECRET, getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
                 }
             }
         };
         keyTextArea.setBorder(new LineBorder(Color.WHITE, 8));
         keyTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
         keyTextArea.setPreferredSize(new Dimension(450, 34));
-
         JScrollPane keyScrollPane = new JScrollPane(keyTextArea);
         keyScrollPane.setForeground(Color.WHITE);
         decryptionPanel.add(keyScrollPane);
-
         //Name iv
         JPanel ivPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         ivPanel.setBackground(Color.WHITE);
         //name iv
-        JLabel ivLabel = new JLabel("Enter IV (Optional)");
+        JLabel ivLabel = new JLabel(Constants.Description.ENTER_IV);
         ivLabel.setFont(new Font("Arial", Font.BOLD, 16));
         ivPanel.add(ivLabel);
-
         //button copy
-        ivPanel.add(new JLabel(" "));
-        JButton copyIvButton = new JButton(new ImageIcon(copyIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
-        copyIvButton.setPreferredSize(new Dimension(22, 22));
-        copyIvButton.setToolTipText("Copy IV");
-        copyIvButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        copyIvButton.setFocusable(false);
-        copyIvButton.setBorderPainted(false);
-        copyIvButton.setBackground(Color.WHITE);
+        ivPanel.add(new JLabel(Constants.Description.BLANK));
+        JButton copyIvButton = new CustomIconButton(new ImageIcon(copyIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)), new Dimension(22, 22), Color.WHITE);
+        copyIvButton.setToolTipText(Constants.Description.COPY);
         ivPanel.add(copyIvButton);
-        ivPanel.add(new JLabel("   "));
-
+        ivPanel.add(new JLabel(Constants.Description.BLANK));
         //generate iv
-        JButton generateIvButton = new JButton("Generate IV");
-        generateIvButton.setPreferredSize(new Dimension(120, 34));
-        generateIvButton.setFont(new Font("Arial", Font.BOLD, 14));
-        generateIvButton.setBackground(new Color(35, 128, 251));
-        generateIvButton.setForeground(Color.WHITE);
-        generateIvButton.setFocusable(false);
-        generateIvButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JButton generateIvButton = new CustomButton(Constants.Description.GENERATE_IV, new Dimension(120, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
         ivPanel.add(generateIvButton);
-
         ivPanel.setVisible(false);
         decryptionPanel.add(ivPanel);
-
         //iv
         JTextField ivTextArea = new JTextField() {
             @Override
@@ -263,100 +198,70 @@ public class SymmetricEncryptionGUI extends JFrame {
                 super.paintComponent(g);
                 if (getText().isEmpty()) {
                     g.setColor(Color.GRAY);
-                    g.drawString("Enter Initialization Vector", getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
+                    g.drawString(Constants.Description.ENTER_INIT_VECTOR, getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
                 }
             }
         };
         ivTextArea.setBorder(new LineBorder(Color.WHITE, 8));
         ivTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
         ivTextArea.setPreferredSize(new Dimension(450, 34));
-
         JScrollPane ivScrollPane = new JScrollPane(ivTextArea);
         ivScrollPane.setForeground(Color.WHITE);
         ivScrollPane.setVisible(false);
-
         decryptionPanel.add(ivScrollPane);
-
         //button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         buttonPanel.setBackground(Color.WHITE);
-        JButton decryptButton = new JButton("Decrypt");
+        JButton decryptButton = new CustomButton(Constants.Description.DECRYPT, new Dimension(100, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
         decryptButton.setPreferredSize(new Dimension(100, 34));
-        decryptButton.setFont(new Font("Arial", Font.BOLD, 14));
-        decryptButton.setBackground(new Color(35, 128, 251));
-        decryptButton.setForeground(Color.WHITE);
-        decryptButton.setFocusable(false);
-        decryptButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         buttonPanel.add(decryptButton);
         decryptionPanel.add(buttonPanel);
-
         //name output
         JPanel outputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         outputPanel.setBackground(Color.WHITE);
         //name
-        JLabel nameOutputLabel = new JLabel("Encrypted Output ");
+        JLabel nameOutputLabel = new JLabel(Constants.Description.DECRYPT_OUTPUT);
         nameOutputLabel.setFont(new Font("Arial", Font.BOLD, 16));
         outputPanel.add(nameOutputLabel);
-
-        outputPanel.add(new JLabel(" "));
-
-
-        JButton copyButton = new JButton(new ImageIcon(copyIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
-        copyButton.setPreferredSize(new Dimension(22, 22));
-        copyButton.setToolTipText("Copy Decrypted");
-        copyButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        copyButton.setFocusable(false);
-        copyButton.setBorderPainted(false);
-        copyButton.setBackground(Color.WHITE);
+        outputPanel.add(new JLabel(Constants.Description.BLANK));
+        //copy button
+        JButton copyButton = new CustomIconButton(new ImageIcon(copyIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)), new Dimension(22, 22), Color.WHITE);
+        copyButton.setToolTipText(Constants.Description.COPY);
         outputPanel.add(copyButton);
-
         decryptionPanel.add(outputPanel);
-
         //output
-        JTextArea outTextArea = new JTextArea() {
+        JTextArea outTextArea = new CustomTextArea(new Font("Arial", Font.PLAIN, 16)) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (getText().isEmpty()) {
                     g.setColor(Color.GRAY);
-                    g.drawString("Result goes here", getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
+                    g.drawString(Constants.Description.RESULT_TEXT, getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
                 }
             }
         };
         outTextArea.setEditable(false);
         outTextArea.setBorder(new LineBorder(Color.WHITE, 8));
-        outTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
-        outTextArea.setLineWrap(true);
-        outTextArea.setWrapStyleWord(true);
-
-        JScrollPane outScrollPane = new JScrollPane(outTextArea);
-        outScrollPane.setPreferredSize(new Dimension(450, 160));
-        outScrollPane.setForeground(Color.WHITE);
+        JScrollPane outScrollPane = new CustomScrollPanel(outTextArea, new Dimension(450, 160), Color.WHITE);
         outScrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI());
         decryptionPanel.add(outScrollPane);
-
         panel.add(decryptionPanel);
-
         //event
-
         //combobox
         modeComboBox.addActionListener(e -> {
             JComboBox cb = (JComboBox) e.getSource();
-            String method = (String)cb.getSelectedItem();
-            if(method.contains(Constants.Mode.ECB)||method.contains(Constants.Cipher.HILL)||method.contains(Constants.Cipher.VIGENERE)){
+            String method = (String) cb.getSelectedItem();
+            if (method.contains(Constants.Mode.ECB) || method.contains(Constants.Cipher.HILL) || method.contains(Constants.Cipher.VIGENERE)) {
                 ivPanel.setVisible(false);
                 ivScrollPane.setVisible(false);
-            }
-            else {
+            } else {
                 ivPanel.setVisible(true);
                 ivScrollPane.setVisible(true);
             }
             this.pack();
             this.setLocationRelativeTo(null);
             repaint();
-
         });
-
         //key
         keyTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -383,7 +288,6 @@ public class SymmetricEncryptionGUI extends JFrame {
                 }
             }
         });
-
         //iv
         ivTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -410,176 +314,71 @@ public class SymmetricEncryptionGUI extends JFrame {
                 }
             }
         });
-
         //create key
-        generateKeyButton.addActionListener(e->{
-            if(absSymmetricEncryption.name.equals(Constants.Cipher.HILL) || absSymmetricEncryption.name.equals(Constants.Cipher.VIGENERE)){
-                absSymmetricEncryption.instance((String)modeComboBox.getSelectedItem());
+        generateKeyButton.addActionListener(e -> {
+            if (absSymmetricEncryption.name.equals(Constants.Cipher.HILL) || absSymmetricEncryption.name.equals(Constants.Cipher.VIGENERE)) {
+                absSymmetricEncryption.instance((String) modeComboBox.getSelectedItem());
             }
             String key = absSymmetricEncryption.createKey();
             keyTextArea.setText(key);
-
         });
-
         //create iv
-        generateIvButton.addActionListener(e ->{
-
+        generateIvButton.addActionListener(e -> {
             String key = absSymmetricEncryption.createIv();
             ivTextArea.setText(key);
-
-
         });
-
-        //encrypt
+        //decrypt
         decryptButton.addActionListener(e -> {
-            if(inputTextArea.getText().isEmpty()){
-                JOptionPane.showMessageDialog(SymmetricEncryptionGUI.this, "Empty Input!!!", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            else if(keyTextArea.getText().isEmpty()){
-                JOptionPane.showMessageDialog(SymmetricEncryptionGUI.this, "Empty Key!!! You can create a key by clicking on the createKey button", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            else {
+            if (inputTextArea.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(SymmetricEncryptionGUI.this, Constants.Description.ENTER_DECRYPT, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
+            } else if (keyTextArea.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(SymmetricEncryptionGUI.this, Constants.Description.EMPTY_KEY, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
+            } else {
                 String cipherText;
-                absSymmetricEncryption.instance((String)modeComboBox.getSelectedItem());
-                SecretKey key = absSymmetricEncryption.convertKey(keyTextArea.getText());
-                IvParameterSpec iv = absSymmetricEncryption.convertIv(ivTextArea.getText());
+                absSymmetricEncryption.instance((String) modeComboBox.getSelectedItem());
+                absSymmetricEncryption.convertKey(keyTextArea.getText());
+                absSymmetricEncryption.convertIv(ivTextArea.getText());
                 cipherText = absSymmetricEncryption.decrypt(inputTextArea.getText());
                 outTextArea.setText(cipherText);
             }
         });
-
-
         //copy Key
         copyKeyButton.addActionListener(e -> {
             String textToCopy = keyTextArea.getText();
-            if(!textToCopy.isEmpty()) {
+            if (!textToCopy.isEmpty()) {
                 // Copy the text to the clipboard
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                StringSelection selection = new StringSelection(textToCopy);
-                clipboard.setContents(selection, null);
-                // Tạo một JDialog cho toast
-                JDialog toast = new JDialog();
-                toast.setUndecorated(true);
-                toast.setBackground(new Color(0, 0, 0, 0)); // Để làm cho nền trong suốt
-                toast.setLayout(new BorderLayout());
-                JLabel label = new JLabel("Copied Key: " + textToCopy);
-                label.setForeground(Color.BLACK);
-                toast.add(label, BorderLayout.CENTER);
-                toast.pack();
-                Point frameLocation = getLocationOnScreen();
-                int frameHeight = getHeight();
-                int toastWidth = 300; // Độ rộng của toast
-                int toastHeight = 25; // Độ cao của toast
-                toast.setSize(toastWidth, toastHeight);
-                int toastX = (int) (frameLocation.getX() + 30);
-                int toastY = (int) (frameLocation.getY() + frameHeight - toastHeight);
-                toast.setLocation(toastX, toastY);
-
-                // Tự động ẩn toast sau 2 giây (2000 ms)
-                Timer timer = new Timer(1000, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        toast.dispose();
-                    }
-                });
-
-                timer.setRepeats(false);
-                timer.start();
-
-                toast.setVisible(true);
+                model.Toolkit.copy(textToCopy);
+                ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + textToCopy);
+                showToast.showToast(1000);
             }
         });
-
         //copy Iv
         copyIvButton.addActionListener(e -> {
             String textToCopy = ivTextArea.getText();
-            if(!textToCopy.isEmpty()) {
+            if (!textToCopy.isEmpty()) {
                 // Copy the text to the clipboard
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                StringSelection selection = new StringSelection(textToCopy);
-                clipboard.setContents(selection, null);
-                // Tạo một JDialog cho toast
-                JDialog toast = new JDialog();
-                toast.setUndecorated(true);
-                toast.setBackground(new Color(0, 0, 0, 0)); // Để làm cho nền trong suốt
-                toast.setLayout(new BorderLayout());
-                JLabel label = new JLabel("Copied IV: " + textToCopy);
-                label.setForeground(Color.BLACK);
-                toast.add(label, BorderLayout.CENTER);
-                toast.pack();
-                Point frameLocation = getLocationOnScreen();
-                int frameHeight = getHeight();
-                int toastWidth = 300; // Độ rộng của toast
-                int toastHeight = 25; // Độ cao của toast
-                toast.setSize(toastWidth, toastHeight);
-                int toastX = (int) (frameLocation.getX() + 30);
-                int toastY = (int) (frameLocation.getY() + frameHeight - toastHeight);
-                toast.setLocation(toastX, toastY);
-
-                // Tự động ẩn toast sau 2 giây (2000 ms)
-                Timer timer = new Timer(1000, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        toast.dispose();
-                    }
-                });
-
-                timer.setRepeats(false);
-                timer.start();
-
-                toast.setVisible(true);
+                model.Toolkit.copy(textToCopy);
+                ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + textToCopy);
+                showToast.showToast(1000);
             }
         });
-
         //copy output
         copyButton.addActionListener(e -> {
             String textToCopy = outTextArea.getText();
-            if(!textToCopy.isEmpty()) {
+            if (!textToCopy.isEmpty()) {
                 // Copy the text to the clipboard
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                StringSelection selection = new StringSelection(textToCopy);
-                clipboard.setContents(selection, null);
-                // Tạo một JDialog cho toast
-                JDialog toast = new JDialog();
-                toast.setUndecorated(true);
-                toast.setBackground(new Color(0, 0, 0, 0)); // Để làm cho nền trong suốt
-                toast.setLayout(new BorderLayout());
-                JLabel label = new JLabel("Copied Output: " + textToCopy);
-                label.setForeground(Color.BLACK);
-                toast.add(label, BorderLayout.CENTER);
-                toast.pack();
-                Point frameLocation = getLocationOnScreen();
-                int frameHeight = getHeight();
-                int toastWidth = 300; // Độ rộng của toast
-                int toastHeight = 25; // Độ cao của toast
-                toast.setSize(toastWidth, toastHeight);
-                int toastX = (int) (frameLocation.getX() + 30);
-                int toastY = (int) (frameLocation.getY() + frameHeight - toastHeight);
-                toast.setLocation(toastX, toastY);
-
-                // Tự động ẩn toast sau 2 giây (2000 ms)
-                Timer timer = new Timer(1000, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        toast.dispose();
-                    }
-                });
-
-                timer.setRepeats(false);
-                timer.start();
-
-                toast.setVisible(true);
+                model.Toolkit.copy(textToCopy);
+                ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + textToCopy);
+                showToast.showToast(1000);
             }
         });
-
         //popup
         //popup input
         JPopupMenu inputPopup = new JPopupMenu();
-        JMenuItem pasteInputItem = new JMenuItem("Paste");
-        JMenuItem clearInputItem = new JMenuItem("Clear");
+        JMenuItem pasteInputItem = new JMenuItem(Constants.Description.PASTE);
+        JMenuItem clearInputItem = new JMenuItem(Constants.Description.CLEAR);
         inputPopup.add(pasteInputItem);
         inputPopup.add(clearInputItem);
-
         inputTextArea.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -591,16 +390,16 @@ public class SymmetricEncryptionGUI extends JFrame {
         pasteInputItem.addActionListener(e -> {
             inputTextArea.paste();
         });
-        clearInputItem.addActionListener(e ->{
-            inputTextArea.setText("");
-            outTextArea.setText("");
+        clearInputItem.addActionListener(e -> {
+            inputTextArea.setText(Constants.Description.EMPTY);
+            outTextArea.setText(Constants.Description.EMPTY);
         });
         //popup key
         JPopupMenu keyPopup = new JPopupMenu();
-        JMenuItem pasteKeyItem = new JMenuItem("Paste");
-        JMenuItem clearKeyItem = new JMenuItem("Clear");
-        JMenuItem generateKeyItem = new JMenuItem("GenerateKey");
-        JMenuItem copyAllKeyItem = new JMenuItem("Copy All");
+        JMenuItem pasteKeyItem = new JMenuItem(Constants.Description.PASTE);
+        JMenuItem clearKeyItem = new JMenuItem(Constants.Description.CLEAR);
+        JMenuItem generateKeyItem = new JMenuItem(Constants.Description.GENERATE_KEY);
+        JMenuItem copyAllKeyItem = new JMenuItem(Constants.Description.COPY_ALL);
         keyPopup.add(pasteKeyItem);
         keyPopup.add(clearKeyItem);
         keyPopup.add(generateKeyItem);
@@ -617,11 +416,11 @@ public class SymmetricEncryptionGUI extends JFrame {
             keyTextArea.paste();
         });
         clearKeyItem.addActionListener(e -> {
-            keyTextArea.setText("");
+            keyTextArea.setText(Constants.Description.EMPTY);
         });
-        generateKeyItem.addActionListener(e-> {
-            if(absSymmetricEncryption.name.equals(Constants.Cipher.HILL) || absSymmetricEncryption.name.equals(Constants.Cipher.VIGENERE)){
-                absSymmetricEncryption.instance((String)modeComboBox.getSelectedItem());
+        generateKeyItem.addActionListener(e -> {
+            if (absSymmetricEncryption.name.equals(Constants.Cipher.HILL) || absSymmetricEncryption.name.equals(Constants.Cipher.VIGENERE)) {
+                absSymmetricEncryption.instance((String) modeComboBox.getSelectedItem());
             }
             String key = absSymmetricEncryption.createKey();
             keyTextArea.setText(key);
@@ -629,17 +428,15 @@ public class SymmetricEncryptionGUI extends JFrame {
         copyAllKeyItem.addActionListener(e -> {
             String textToCopy = keyTextArea.getText();
             // Copy the text to the clipboard
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            StringSelection selection = new StringSelection(textToCopy);
-            clipboard.setContents(selection, null);
+            model.Toolkit.copy(textToCopy);
         });
         //popup iv
         //popup key
         JPopupMenu ivPopup = new JPopupMenu();
-        JMenuItem pasteIvItem = new JMenuItem("Paste");
-        JMenuItem clearIvItem = new JMenuItem("Clear");
-        JMenuItem generateIvItem = new JMenuItem("GenerateKey");
-        JMenuItem copyAllIvItem = new JMenuItem("Copy All");
+        JMenuItem pasteIvItem = new JMenuItem(Constants.Description.PASTE);
+        JMenuItem clearIvItem = new JMenuItem(Constants.Description.CLEAR);
+        JMenuItem generateIvItem = new JMenuItem(Constants.Description.GENERATE_IV);
+        JMenuItem copyAllIvItem = new JMenuItem(Constants.Description.COPY_ALL);
         ivPopup.add(pasteIvItem);
         ivPopup.add(clearIvItem);
         ivPopup.add(generateIvItem);
@@ -656,23 +453,20 @@ public class SymmetricEncryptionGUI extends JFrame {
             ivTextArea.paste();
         });
         clearIvItem.addActionListener(e -> {
-            ivTextArea.setText("");
+            ivTextArea.setText(Constants.Description.EMPTY);
         });
-        generateIvItem.addActionListener(e-> {
+        generateIvItem.addActionListener(e -> {
             String key = absSymmetricEncryption.createIv();
             ivTextArea.setText(key);
         });
         copyAllIvItem.addActionListener(e -> {
             String textToCopy = ivTextArea.getText();
             // Copy the text to the clipboard
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            StringSelection selection = new StringSelection(textToCopy);
-            clipboard.setContents(selection, null);
+            model.Toolkit.copy(textToCopy);
         });
-
         //popup output
         JPopupMenu outputPopupMenu = new JPopupMenu();
-        JMenuItem copyAllOutputItem = new JMenuItem("Copy All");
+        JMenuItem copyAllOutputItem = new JMenuItem(Constants.Description.COPY_ALL);
         outputPopupMenu.add(copyAllOutputItem);
         outTextArea.addMouseListener(new MouseAdapter() {
             @Override
@@ -685,133 +479,98 @@ public class SymmetricEncryptionGUI extends JFrame {
         copyAllOutputItem.addActionListener(e -> {
             String textToCopy = outTextArea.getText();
             // Copy the text to the clipboard
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            StringSelection selection = new StringSelection(textToCopy);
-            clipboard.setContents(selection, null);
+            model.Toolkit.copy(textToCopy);
         });
     }
 
     private void renderEncryption(JPanel panel, AbsSymmetricEncryption absSymmetricEncryption) {
-        ImageIcon copyIcon = new ImageIcon("assets/Images/copy_output.png");
+        ImageIcon copyIcon = new ImageIcon(Constants.Image.COPY);
         JPanel encryptionPanel = new JPanel();
         encryptionPanel.setBackground(Color.WHITE);
         encryptionPanel.setLayout(new BoxLayout(encryptionPanel, BoxLayout.Y_AXIS));
-
         //title
-        JPanel titleNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0 ,3));
+        JPanel titleNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 3));
         titleNamePanel.setBackground(Color.WHITE);
-
-        JLabel titleNameLabel = new JLabel("Encryption");
+        JLabel titleNameLabel = new JLabel(Constants.Description.ENCRYPTION);
         titleNameLabel.setFont(new Font("Arial", Font.BOLD, 22));
         titleNamePanel.add(titleNameLabel);
         encryptionPanel.add(titleNamePanel);
         //name input
         JPanel inputNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         inputNamePanel.setBackground(Color.WHITE);
-
-        JLabel inputNameLabel = new JLabel("Enter text to be Encrypted");
+        JLabel inputNameLabel = new JLabel(Constants.Description.ENTER_ENCRYPT);
         inputNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
         inputNamePanel.add(inputNameLabel);
         encryptionPanel.add(inputNamePanel);
         //input
-        JTextArea inputTextArea = new JTextArea() {
+        JTextArea inputTextArea = new CustomTextArea(new Font("Arial", Font.PLAIN, 16)) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (getText().isEmpty()) {
                     g.setColor(Color.GRAY);
-                    g.drawString("Enter Plain Text to Encrypt", getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
+                    g.drawString(Constants.Description.ENTER_ENCRYPT, getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
                 }
             }
         };
         inputTextArea.setBorder(new LineBorder(Color.WHITE, 8));
-        inputTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
-        inputTextArea.setLineWrap(true);
-        inputTextArea.setWrapStyleWord(true);
-
-        JScrollPane inputScrollPane = new JScrollPane(inputTextArea);
-        inputScrollPane.setPreferredSize(new Dimension(450, 160));
-        inputScrollPane.setForeground(Color.WHITE);
+        JScrollPane inputScrollPane = new CustomScrollPanel(inputTextArea, new Dimension(450, 160), Color.WHITE);
         inputScrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI());
         encryptionPanel.add(inputScrollPane);
         //select mode
         JPanel selectModePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         selectModePanel.setBackground(Color.WHITE);
-
-        JLabel selectModeLabel = new JLabel("Select Mode");
+        JLabel selectModeLabel = new JLabel(Constants.Description.TYPE_MODE);
         selectModeLabel.setFont(new Font("Arial", Font.BOLD, 16));
         selectModePanel.add(selectModeLabel);
         encryptionPanel.add(selectModePanel);
         //mode
-        JComboBox modeComboBox = new JComboBox(methods);
-        modeComboBox.setPreferredSize(new Dimension(450, 34));
-        modeComboBox.setFont(new Font("Arial", Font.BOLD, 16));
-        modeComboBox.setBackground(Color.WHITE);
-        modeComboBox.setFocusable(false);
+        JComboBox modeComboBox = new CustomComboBox(methods, new Dimension(450, 34), new Font("Arial", Font.BOLD, 16), Color.WHITE);
         encryptionPanel.add(modeComboBox);
         //Name Key
-        JPanel keyNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0 ,5));
+        JPanel keyNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         keyNamePanel.setBackground(Color.WHITE);
-            //name
-        JLabel nameKeyLabel = new JLabel("Enter Secret Key");
+        //name
+        JLabel nameKeyLabel = new JLabel(Constants.Description.ENTER_SECRET);
         nameKeyLabel.setFont(new Font("Arial", Font.BOLD, 16));
         keyNamePanel.add(nameKeyLabel);
-            //button copy
-        keyNamePanel.add(new JLabel(" "));
-        JButton copyKeyButton = new JButton(new ImageIcon(copyIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
-        copyKeyButton.setPreferredSize(new Dimension(22, 22));
-        copyKeyButton.setToolTipText("Copy Key");
-        copyKeyButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        copyKeyButton.setFocusable(false);
-        copyKeyButton.setBorderPainted(false);
-        copyKeyButton.setBackground(Color.WHITE);
+        //button copy
+        keyNamePanel.add(new JLabel(Constants.Description.BLANK));
+        JButton copyKeyButton = new CustomIconButton(new ImageIcon(copyIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)), new Dimension(22, 22), Color.WHITE);
+        copyKeyButton.setToolTipText(Constants.Description.COPY);
         keyNamePanel.add(copyKeyButton);
-        keyNamePanel.add(new JLabel("  "));
-            //size
-        if(absSymmetricEncryption.name.equals(Constants.Cipher.AES)){
+        keyNamePanel.add(new JLabel(Constants.Description.BLANK));
+        //size
+        if (absSymmetricEncryption.name.equals(Constants.Cipher.AES)) {
             JPanel linePanel = new JPanel();
             linePanel.setBackground(Color.BLACK);
             linePanel.setPreferredSize(new Dimension(2, 22));
             keyNamePanel.add(linePanel);
-
-            JLabel sizeLabel = new JLabel(" Size ");
+            JLabel sizeLabel = new JLabel(Constants.Description.SIZE);
             sizeLabel.setFont(new Font("Arial", Font.BOLD, 16));
             keyNamePanel.add(sizeLabel);
-
-            JComboBox sizesKeyComboBox = new JComboBox(Constants.List_Size.SIZE_AES);
-            sizesKeyComboBox.setPreferredSize(new Dimension(85, 34));
-            sizesKeyComboBox.setBackground(Color.WHITE);
-            sizesKeyComboBox.setFont(new Font("Arial", Font.BOLD, 16));
-            sizesKeyComboBox.setFocusable(false);
+            keyNamePanel.add(new JLabel(Constants.Description.BLANK));
+            //combobox
+            JComboBox sizesKeyComboBox = new CustomComboBox(Constants.List_Size.SIZE_AES, new Dimension(85, 34), new Font("Arial", Font.BOLD, 16), Color.WHITE);
             keyNamePanel.add(sizesKeyComboBox);
-            keyNamePanel.add(new JLabel("  "));
+            keyNamePanel.add(new JLabel(Constants.Description.BLANK));
             //event
             sizesKeyComboBox.addActionListener(e -> {
                 JComboBox cb = (JComboBox) e.getSource();
-                String method = (String)cb.getSelectedItem();
-                if(method.contains(Constants.Size.BITS128)){
+                String method = (String) cb.getSelectedItem();
+                if (method.contains(Constants.Size.BITS128)) {
                     absSymmetricEncryption.size = 16;
-                }
-                else if (method.contains(Constants.Size.BITS192)){
+                } else if (method.contains(Constants.Size.BITS192)) {
                     absSymmetricEncryption.size = 24;
-                }
-                else if (method.contains(Constants.Size.BITS256)){
+                } else if (method.contains(Constants.Size.BITS256)) {
                     absSymmetricEncryption.size = 32;
                 }
                 revalidate();
             });
         }
-
-            //generate Key
-        JButton generateKeyButton = new JButton("Generate Key");
-        generateKeyButton.setPreferredSize(new Dimension(140, 34));
-        generateKeyButton.setFont(new Font("Arial", Font.BOLD, 14));
-        generateKeyButton.setBackground(new Color(35, 128, 251));
-        generateKeyButton.setForeground(Color.WHITE);
-        generateKeyButton.setFocusable(false);
-        generateKeyButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        //generate Key
+        JButton generateKeyButton = new CustomButton(Constants.Description.GENERATE_KEY, new Dimension(150, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
         keyNamePanel.add(generateKeyButton);
-
         encryptionPanel.add(keyNamePanel);
         //key
         JTextField keyTextArea = new JTextField() {
@@ -820,51 +579,34 @@ public class SymmetricEncryptionGUI extends JFrame {
                 super.paintComponent(g);
                 if (getText().isEmpty()) {
                     g.setColor(Color.GRAY);
-                    g.drawString("Enter Secret Key", getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
+                    g.drawString(Constants.Description.ENTER_SECRET, getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
                 }
             }
         };
         keyTextArea.setBorder(new LineBorder(Color.WHITE, 8));
         keyTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
         keyTextArea.setPreferredSize(new Dimension(450, 34));
-
         JScrollPane keyScrollPane = new JScrollPane(keyTextArea);
         keyScrollPane.setForeground(Color.WHITE);
         encryptionPanel.add(keyScrollPane);
-
         //Name iv
         JPanel ivPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         ivPanel.setBackground(Color.WHITE);
-            //name iv
-        JLabel ivLabel = new JLabel("Enter IV (Optional)");
+        //name iv
+        JLabel ivLabel = new JLabel(Constants.Description.ENTER_IV);
         ivLabel.setFont(new Font("Arial", Font.BOLD, 16));
         ivPanel.add(ivLabel);
-
-            //button copy
-        ivPanel.add(new JLabel(" "));
-        JButton copyIvButton = new JButton(new ImageIcon(copyIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
-        copyIvButton.setPreferredSize(new Dimension(22, 22));
-        copyIvButton.setToolTipText("Copy IV");
-        copyIvButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        copyIvButton.setFocusable(false);
-        copyIvButton.setBorderPainted(false);
-        copyIvButton.setBackground(Color.WHITE);
+        //button copy
+        ivPanel.add(new JLabel(Constants.Description.BLANK));
+        JButton copyIvButton = new CustomIconButton(new ImageIcon(copyIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)), new Dimension(22, 22), Color.WHITE);
+        copyIvButton.setToolTipText(Constants.Description.COPY);
         ivPanel.add(copyIvButton);
-        ivPanel.add(new JLabel("   "));
-
-            //generate iv
-        JButton generateIvButton = new JButton("Generate IV");
-        generateIvButton.setPreferredSize(new Dimension(120, 34));
-        generateIvButton.setFont(new Font("Arial", Font.BOLD, 14));
-        generateIvButton.setBackground(new Color(35, 128, 251));
-        generateIvButton.setForeground(Color.WHITE);
-        generateIvButton.setFocusable(false);
-        generateIvButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        ivPanel.add(new JLabel(Constants.Description.BLANK));
+        //generate iv
+        JButton generateIvButton = new CustomButton(Constants.Description.GENERATE_IV, new Dimension(120, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
         ivPanel.add(generateIvButton);
-
         ivPanel.setVisible(false);
         encryptionPanel.add(ivPanel);
-
         //iv
         JTextField ivTextArea = new JTextField() {
             @Override
@@ -872,100 +614,70 @@ public class SymmetricEncryptionGUI extends JFrame {
                 super.paintComponent(g);
                 if (getText().isEmpty()) {
                     g.setColor(Color.GRAY);
-                    g.drawString("Enter Initialization Vector", getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
+                    g.drawString(Constants.Description.ENTER_INIT_VECTOR, getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
                 }
             }
         };
         ivTextArea.setBorder(new LineBorder(Color.WHITE, 8));
         ivTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
         ivTextArea.setPreferredSize(new Dimension(450, 34));
-
         JScrollPane ivScrollPane = new JScrollPane(ivTextArea);
         ivScrollPane.setForeground(Color.WHITE);
         ivScrollPane.setVisible(false);
-
         encryptionPanel.add(ivScrollPane);
-
         //button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         buttonPanel.setBackground(Color.WHITE);
-        JButton encryptButton = new JButton("Encrypt");
+        JButton encryptButton = new CustomButton(Constants.Description.ENCRYPT, new Dimension(100, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
         encryptButton.setPreferredSize(new Dimension(100, 34));
-        encryptButton.setFont(new Font("Arial", Font.BOLD, 14));
-        encryptButton.setBackground(new Color(35, 128, 251));
-        encryptButton.setForeground(Color.WHITE);
-        encryptButton.setFocusable(false);
-        encryptButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         buttonPanel.add(encryptButton);
         encryptionPanel.add(buttonPanel);
-
         //name output
         JPanel outputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         outputPanel.setBackground(Color.WHITE);
-            //name
-        JLabel nameOutputLabel = new JLabel("Encrypted Output ");
+        //name
+        JLabel nameOutputLabel = new JLabel(Constants.Description.ENCRYPT_OUTPUT);
         nameOutputLabel.setFont(new Font("Arial", Font.BOLD, 16));
         outputPanel.add(nameOutputLabel);
-
-        outputPanel.add(new JLabel(" "));
-
-
-        JButton copyButton = new JButton(new ImageIcon(copyIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
-        copyButton.setPreferredSize(new Dimension(22, 22));
-        copyButton.setToolTipText("Copy Encrypted");
-        copyButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        copyButton.setFocusable(false);
-        copyButton.setBorderPainted(false);
-        copyButton.setBackground(Color.WHITE);
+        outputPanel.add(new JLabel(Constants.Description.BLANK));
+        //copy button
+        JButton copyButton = new CustomIconButton(new ImageIcon(copyIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)), new Dimension(22, 22), Color.WHITE);
+        copyButton.setToolTipText(Constants.Description.COPY);
         outputPanel.add(copyButton);
-
         encryptionPanel.add(outputPanel);
-
         //output
-        JTextArea outTextArea = new JTextArea() {
+        JTextArea outTextArea = new CustomTextArea(new Font("Arial", Font.PLAIN, 16)) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (getText().isEmpty()) {
                     g.setColor(Color.GRAY);
-                    g.drawString("Result goes here", getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
+                    g.drawString(Constants.Description.RESULT_TEXT, getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
                 }
             }
         };
         outTextArea.setEditable(false);
         outTextArea.setBorder(new LineBorder(Color.WHITE, 8));
-        outTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
-        outTextArea.setLineWrap(true);
-        outTextArea.setWrapStyleWord(true);
-
-        JScrollPane outScrollPane = new JScrollPane(outTextArea);
-        outScrollPane.setPreferredSize(new Dimension(450, 160));
-        outScrollPane.setForeground(Color.WHITE);
+        JScrollPane outScrollPane = new CustomScrollPanel(outTextArea, new Dimension(450, 160), Color.WHITE);
         outScrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI());
         encryptionPanel.add(outScrollPane);
-
         panel.add(encryptionPanel);
-
         //event
-
         //combobox
         modeComboBox.addActionListener(e -> {
             JComboBox cb = (JComboBox) e.getSource();
-            String method = (String)cb.getSelectedItem();
-            if(method.contains(Constants.Mode.ECB)||method.contains(Constants.Cipher.HILL)||method.contains(Constants.Cipher.VIGENERE)){
+            String method = (String) cb.getSelectedItem();
+            if (method.contains(Constants.Mode.ECB) || method.contains(Constants.Cipher.HILL) || method.contains(Constants.Cipher.VIGENERE)) {
                 ivPanel.setVisible(false);
                 ivScrollPane.setVisible(false);
-            }
-            else {
+            } else {
                 ivPanel.setVisible(true);
                 ivScrollPane.setVisible(true);
             }
             this.pack();
             this.setLocationRelativeTo(null);
             repaint();
-
         });
-
         //key
         keyTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -992,7 +704,6 @@ public class SymmetricEncryptionGUI extends JFrame {
                 }
             }
         });
-
         //iv
         ivTextArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -1019,176 +730,71 @@ public class SymmetricEncryptionGUI extends JFrame {
                 }
             }
         });
-
         //create key
-        generateKeyButton.addActionListener(e->{
-                if(absSymmetricEncryption.name.equals(Constants.Cipher.HILL) || absSymmetricEncryption.name.equals(Constants.Cipher.VIGENERE)){
-                    absSymmetricEncryption.instance((String)modeComboBox.getSelectedItem());
-                }
-                String key = absSymmetricEncryption.createKey();
-                keyTextArea.setText(key);
-
+        generateKeyButton.addActionListener(e -> {
+            if (absSymmetricEncryption.name.equals(Constants.Cipher.HILL) || absSymmetricEncryption.name.equals(Constants.Cipher.VIGENERE)) {
+                absSymmetricEncryption.instance((String) modeComboBox.getSelectedItem());
+            }
+            String key = absSymmetricEncryption.createKey();
+            keyTextArea.setText(key);
         });
-
         //create iv
-        generateIvButton.addActionListener(e ->{
-
-                String key = absSymmetricEncryption.createIv();
-                ivTextArea.setText(key);
-
-
+        generateIvButton.addActionListener(e -> {
+            String key = absSymmetricEncryption.createIv();
+            ivTextArea.setText(key);
         });
-
         //encrypt
         encryptButton.addActionListener(e -> {
-            if(inputTextArea.getText().isEmpty()){
-                JOptionPane.showMessageDialog(SymmetricEncryptionGUI.this, "Empty Input!!!", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            else if(keyTextArea.getText().isEmpty()){
-                JOptionPane.showMessageDialog(SymmetricEncryptionGUI.this, "Empty Key!!! You can create a key by clicking on the createKey button", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            else {
+            if (inputTextArea.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(SymmetricEncryptionGUI.this, Constants.Description.ENTER_ENCRYPT, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
+            } else if (keyTextArea.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(SymmetricEncryptionGUI.this, Constants.Description.EMPTY_KEY, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
+            } else {
                 String cipherText;
-                absSymmetricEncryption.instance((String)modeComboBox.getSelectedItem());
-                SecretKey key = absSymmetricEncryption.convertKey(keyTextArea.getText());
-                IvParameterSpec iv = absSymmetricEncryption.convertIv(ivTextArea.getText());
+                absSymmetricEncryption.instance((String) modeComboBox.getSelectedItem());
+                absSymmetricEncryption.convertKey(keyTextArea.getText());
+                absSymmetricEncryption.convertIv(ivTextArea.getText());
                 cipherText = absSymmetricEncryption.encrypt(inputTextArea.getText());
                 outTextArea.setText(cipherText);
             }
         });
-
-
         //copy Key
         copyKeyButton.addActionListener(e -> {
             String textToCopy = keyTextArea.getText();
-            if(!textToCopy.isEmpty()) {
+            if (!textToCopy.isEmpty()) {
                 // Copy the text to the clipboard
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                StringSelection selection = new StringSelection(textToCopy);
-                clipboard.setContents(selection, null);
-                // Tạo một JDialog cho toast
-                JDialog toast = new JDialog();
-                toast.setUndecorated(true);
-                toast.setBackground(new Color(0, 0, 0, 0)); // Để làm cho nền trong suốt
-                toast.setLayout(new BorderLayout());
-                JLabel label = new JLabel("Copied Key: " + textToCopy);
-                label.setForeground(Color.BLACK);
-                toast.add(label, BorderLayout.CENTER);
-                toast.pack();
-                Point frameLocation = getLocationOnScreen();
-                int frameHeight = getHeight();
-                int toastWidth = 300; // Độ rộng của toast
-                int toastHeight = 25; // Độ cao của toast
-                toast.setSize(toastWidth, toastHeight);
-                int toastX = (int) (frameLocation.getX() + 30);
-                int toastY = (int) (frameLocation.getY() + frameHeight - toastHeight);
-                toast.setLocation(toastX, toastY);
-
-                // Tự động ẩn toast sau 2 giây (2000 ms)
-                Timer timer = new Timer(1000, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        toast.dispose();
-                    }
-                });
-
-                timer.setRepeats(false);
-                timer.start();
-
-                toast.setVisible(true);
+                model.Toolkit.copy(textToCopy);
+                ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + textToCopy);
+                showToast.showToast(1000);
             }
         });
-
         //copy Iv
         copyIvButton.addActionListener(e -> {
             String textToCopy = ivTextArea.getText();
-            if(!textToCopy.isEmpty()) {
+            if (!textToCopy.isEmpty()) {
                 // Copy the text to the clipboard
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                StringSelection selection = new StringSelection(textToCopy);
-                clipboard.setContents(selection, null);
-                // Tạo một JDialog cho toast
-                JDialog toast = new JDialog();
-                toast.setUndecorated(true);
-                toast.setBackground(new Color(0, 0, 0, 0)); // Để làm cho nền trong suốt
-                toast.setLayout(new BorderLayout());
-                JLabel label = new JLabel("Copied IV: " + textToCopy);
-                label.setForeground(Color.BLACK);
-                toast.add(label, BorderLayout.CENTER);
-                toast.pack();
-                Point frameLocation = getLocationOnScreen();
-                int frameHeight = getHeight();
-                int toastWidth = 300; // Độ rộng của toast
-                int toastHeight = 25; // Độ cao của toast
-                toast.setSize(toastWidth, toastHeight);
-                int toastX = (int) (frameLocation.getX() + 30);
-                int toastY = (int) (frameLocation.getY() + frameHeight - toastHeight);
-                toast.setLocation(toastX, toastY);
-
-                // Tự động ẩn toast sau 2 giây (2000 ms)
-                Timer timer = new Timer(1000, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        toast.dispose();
-                    }
-                });
-
-                timer.setRepeats(false);
-                timer.start();
-
-                toast.setVisible(true);
+                model.Toolkit.copy(textToCopy);
+                ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + textToCopy);
+                showToast.showToast(1000);
             }
         });
-
         //copy output
         copyButton.addActionListener(e -> {
             String textToCopy = outTextArea.getText();
-            if(!textToCopy.isEmpty()) {
+            if (!textToCopy.isEmpty()) {
                 // Copy the text to the clipboard
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                StringSelection selection = new StringSelection(textToCopy);
-                clipboard.setContents(selection, null);
-                // Tạo một JDialog cho toast
-                JDialog toast = new JDialog();
-                toast.setUndecorated(true);
-                toast.setBackground(new Color(0, 0, 0, 0)); // Để làm cho nền trong suốt
-                toast.setLayout(new BorderLayout());
-                JLabel label = new JLabel("Copied Output: " + textToCopy);
-                label.setForeground(Color.BLACK);
-                toast.add(label, BorderLayout.CENTER);
-                toast.pack();
-                Point frameLocation = getLocationOnScreen();
-                int frameHeight = getHeight();
-                int toastWidth = 300; // Độ rộng của toast
-                int toastHeight = 25; // Độ cao của toast
-                toast.setSize(toastWidth, toastHeight);
-                int toastX = (int) (frameLocation.getX() + 30);
-                int toastY = (int) (frameLocation.getY() + frameHeight - toastHeight);
-                toast.setLocation(toastX, toastY);
-
-                // Tự động ẩn toast sau 2 giây (2000 ms)
-                Timer timer = new Timer(1000, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        toast.dispose();
-                    }
-                });
-
-                timer.setRepeats(false);
-                timer.start();
-
-                toast.setVisible(true);
+                model.Toolkit.copy(textToCopy);
+                ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + textToCopy);
+                showToast.showToast(1000);
             }
         });
-
         //popup
-            //popup input
+        //popup input
         JPopupMenu inputPopup = new JPopupMenu();
-        JMenuItem pasteInputItem = new JMenuItem("Paste");
-        JMenuItem clearInputItem = new JMenuItem("Clear");
+        JMenuItem pasteInputItem = new JMenuItem(Constants.Description.PASTE);
+        JMenuItem clearInputItem = new JMenuItem(Constants.Description.CLEAR);
         inputPopup.add(pasteInputItem);
         inputPopup.add(clearInputItem);
-
         inputTextArea.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -1200,16 +806,16 @@ public class SymmetricEncryptionGUI extends JFrame {
         pasteInputItem.addActionListener(e -> {
             inputTextArea.paste();
         });
-        clearInputItem.addActionListener(e ->{
-            inputTextArea.setText("");
-            outTextArea.setText("");
+        clearInputItem.addActionListener(e -> {
+            inputTextArea.setText(Constants.Description.EMPTY);
+            outTextArea.setText(Constants.Description.EMPTY);
         });
-            //popup key
+        //popup key
         JPopupMenu keyPopup = new JPopupMenu();
-        JMenuItem pasteKeyItem = new JMenuItem("Paste");
-        JMenuItem clearKeyItem = new JMenuItem("Clear");
-        JMenuItem generateKeyItem = new JMenuItem("GenerateKey");
-        JMenuItem copyAllKeyItem = new JMenuItem("Copy All");
+        JMenuItem pasteKeyItem = new JMenuItem(Constants.Description.PASTE);
+        JMenuItem clearKeyItem = new JMenuItem(Constants.Description.CLEAR);
+        JMenuItem generateKeyItem = new JMenuItem(Constants.Description.GENERATE_KEY);
+        JMenuItem copyAllKeyItem = new JMenuItem(Constants.Description.COPY_ALL);
         keyPopup.add(pasteKeyItem);
         keyPopup.add(clearKeyItem);
         keyPopup.add(generateKeyItem);
@@ -1226,29 +832,27 @@ public class SymmetricEncryptionGUI extends JFrame {
             keyTextArea.paste();
         });
         clearKeyItem.addActionListener(e -> {
-            keyTextArea.setText("");
+            keyTextArea.setText(Constants.Description.EMPTY);
         });
-        generateKeyItem.addActionListener(e-> {
-            if(absSymmetricEncryption.name.equals(Constants.Cipher.HILL) || absSymmetricEncryption.name.equals(Constants.Cipher.VIGENERE)){
-                absSymmetricEncryption.instance((String)modeComboBox.getSelectedItem());
+        generateKeyItem.addActionListener(e -> {
+            if (absSymmetricEncryption.name.equals(Constants.Cipher.HILL) || absSymmetricEncryption.name.equals(Constants.Cipher.VIGENERE)) {
+                absSymmetricEncryption.instance((String) modeComboBox.getSelectedItem());
             }
             String key = absSymmetricEncryption.createKey();
             keyTextArea.setText(key);
         });
         copyAllKeyItem.addActionListener(e -> {
             String textToCopy = keyTextArea.getText();
-                // Copy the text to the clipboard
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                StringSelection selection = new StringSelection(textToCopy);
-                clipboard.setContents(selection, null);
+            // Copy the text to the clipboard
+            model.Toolkit.copy(textToCopy);
         });
-            //popup iv
+        //popup iv
         //popup key
         JPopupMenu ivPopup = new JPopupMenu();
-        JMenuItem pasteIvItem = new JMenuItem("Paste");
-        JMenuItem clearIvItem = new JMenuItem("Clear");
-        JMenuItem generateIvItem = new JMenuItem("GenerateKey");
-        JMenuItem copyAllIvItem = new JMenuItem("Copy All");
+        JMenuItem pasteIvItem = new JMenuItem(Constants.Description.PASTE);
+        JMenuItem clearIvItem = new JMenuItem(Constants.Description.CLEAR);
+        JMenuItem generateIvItem = new JMenuItem(Constants.Description.GENERATE_IV);
+        JMenuItem copyAllIvItem = new JMenuItem(Constants.Description.COPY_ALL);
         ivPopup.add(pasteIvItem);
         ivPopup.add(clearIvItem);
         ivPopup.add(generateIvItem);
@@ -1265,23 +869,20 @@ public class SymmetricEncryptionGUI extends JFrame {
             ivTextArea.paste();
         });
         clearIvItem.addActionListener(e -> {
-            ivTextArea.setText("");
+            ivTextArea.setText(Constants.Description.EMPTY);
         });
-        generateIvItem.addActionListener(e-> {
+        generateIvItem.addActionListener(e -> {
             String key = absSymmetricEncryption.createIv();
             ivTextArea.setText(key);
         });
         copyAllIvItem.addActionListener(e -> {
             String textToCopy = ivTextArea.getText();
             // Copy the text to the clipboard
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            StringSelection selection = new StringSelection(textToCopy);
-            clipboard.setContents(selection, null);
+            model.Toolkit.copy(textToCopy);
         });
-
-            //popup output
+        //popup output
         JPopupMenu outputPopupMenu = new JPopupMenu();
-        JMenuItem copyAllOutputItem = new JMenuItem("Copy All");
+        JMenuItem copyAllOutputItem = new JMenuItem(Constants.Description.COPY_ALL);
         outputPopupMenu.add(copyAllOutputItem);
         outTextArea.addMouseListener(new MouseAdapter() {
             @Override
@@ -1294,64 +895,7 @@ public class SymmetricEncryptionGUI extends JFrame {
         copyAllOutputItem.addActionListener(e -> {
             String textToCopy = outTextArea.getText();
             // Copy the text to the clipboard
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            StringSelection selection = new StringSelection(textToCopy);
-            clipboard.setContents(selection, null);
+            model.Toolkit.copy(textToCopy);
         });
-
-    }
-
-    private void renderCustomTitleBar() {
-        JPanel customTitleBar = new JPanel(new BorderLayout());
-        customTitleBar.setBackground(Color.WHITE);
-
-        JPanel algorithmPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 0));
-        algorithmPanel.setBackground(Color.WHITE);
-//        algorithmPanel.setPreferredSize(new Dimension(600, 50));
-
-        JLabel nameLabel = new JLabel("Algorithm");
-        nameLabel.setFont(new Font("SansSerif", Font.BOLD, 20));
-        algorithmPanel.add(nameLabel);
-
-        JLabel algorithmLabel = new JLabel(absSymmetricEncryptionEncrypt.name);
-        algorithmLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
-        algorithmPanel.add(algorithmLabel);
-
-        customTitleBar.add(algorithmPanel, BorderLayout.WEST);
-
-
-        ImageButton minimizeButton = new ImageButton(new ImageIcon("assets/Images/minimize-sign-black.png"), 25, 25);
-        minimizeButton.setToolTipText("Minimize");
-        ImageButton closeButton = new ImageButton(new ImageIcon("assets/Images/close-black.png"), 25, 25);
-        closeButton.setToolTipText("Close");
-        //event
-        minimizeButton.addActionListener(e -> setState(Frame.ICONIFIED));
-        closeButton.addActionListener(e -> {
-            JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
-            currentFrame.dispose();
-        });
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-        buttonPanel.setBackground(Color.WHITE);
-        buttonPanel.add(minimizeButton);
-        buttonPanel.add(new JLabel(" "));
-        buttonPanel.add(closeButton);
-
-        customTitleBar.add(buttonPanel, BorderLayout.EAST);
-
-        customTitleBar.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                mouseDownCompCoords = e.getPoint();
-            }
-        });
-
-        customTitleBar.addMouseMotionListener(new MouseAdapter() {
-            public void mouseDragged(MouseEvent e) {
-                Point currCoords = e.getLocationOnScreen();
-                setLocation(currCoords.x - mouseDownCompCoords.x, currCoords.y - mouseDownCompCoords.y);
-            }
-        });
-
-        this.add(customTitleBar, BorderLayout.NORTH);
     }
 }

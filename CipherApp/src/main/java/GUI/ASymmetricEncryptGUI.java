@@ -4,14 +4,11 @@ import GUI.Component.*;
 import constant.Constants;
 import model.ASysmmetricEncryption.AbsASymmetricEncryption;
 import model.ASysmmetricEncryption.CreateKeyRSA;
-import model.ASysmmetricEncryption.RSA;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 
 public class ASymmetricEncryptGUI extends JFrame {
@@ -277,10 +274,12 @@ public class ASymmetricEncryptGUI extends JFrame {
             if (!textToCopy.isEmpty()) {
                 // Copy the text to the clipboard
                 model.Toolkit.copy(textToCopy);
-                new ShowToast(this,Constants.Description.COPIED+ textToCopy);
+                ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + textToCopy);
+                showToast.showToast(1000);
             }
         });
     }
+
     private void renderEncryption(JPanel cipherPanel) {
         JPanel encryptionPanel = new JPanel();
         encryptionPanel.setLayout(new BoxLayout(encryptionPanel, BoxLayout.Y_AXIS));
@@ -346,15 +345,15 @@ public class ASymmetricEncryptGUI extends JFrame {
         JRadioButton privateKeyRadioButton = new CustomRadioButton(Constants.Description.PRIVATE_KEY, Color.WHITE, new Font("Arial", Font.PLAIN, 16));
         typePanel.add(privateKeyRadioButton);
         encryptionPanel.add(typePanel);
-        publicKeyRadioButton.addItemListener(e->{
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    keyEncrypt = Constants.Description.PUBLIC_KEY;
-                }
+        publicKeyRadioButton.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                keyEncrypt = Constants.Description.PUBLIC_KEY;
+            }
         });
-        privateKeyRadioButton.addItemListener(e->{
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    keyEncrypt = Constants.Description.PRIVATE_KEY;
-                }
+        privateKeyRadioButton.addItemListener(e -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                keyEncrypt = Constants.Description.PRIVATE_KEY;
+            }
         });
         ButtonGroup buttonGroup = new ButtonGroup();
         buttonGroup.add(privateKeyRadioButton);
@@ -367,7 +366,7 @@ public class ASymmetricEncryptGUI extends JFrame {
         typeCipherNamePanel.add(typeCipherLabel);
         encryptionPanel.add(typeCipherNamePanel);
         //combobox
-        JComboBox cipherTypeComboBox = new CustomComboBox(methods,new Dimension(400, 34), new Font("Arial", Font.BOLD, 16), Color.WHITE);
+        JComboBox cipherTypeComboBox = new CustomComboBox(methods, new Dimension(400, 34), new Font("Arial", Font.BOLD, 16), Color.WHITE);
         encryptionPanel.add(cipherTypeComboBox);
         //button encrypt
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
@@ -480,7 +479,8 @@ public class ASymmetricEncryptGUI extends JFrame {
             if (!textToCopy.isEmpty()) {
                 // Copy the text to the clipboard
                 model.Toolkit.copy(textToCopy);
-                new ShowToast(this, Constants.Description.COPIED+textToCopy);
+                ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + textToCopy);
+                showToast.showToast(1000);
             }
         });
     }
@@ -534,7 +534,8 @@ public class ASymmetricEncryptGUI extends JFrame {
             if (!textToCopy.isEmpty()) {
                 // Copy the text to the clipboard
                 model.Toolkit.copy(textToCopy);
-                new ShowToast(this, Constants.Description.COPIED+textToCopy);
+                ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + textToCopy);
+                showToast.showToast(1000);
             }
         });
         //left
@@ -592,7 +593,8 @@ public class ASymmetricEncryptGUI extends JFrame {
             if (!textToCopy.isEmpty()) {
                 // Copy the text to the clipboard
                 model.Toolkit.copy(textToCopy);
-                new ShowToast(this, Constants.Description.COPIED+textToCopy);
+                ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + textToCopy);
+                showToast.showToast(1000);
             }
         });
         inputPanel.add(keyPanel);
@@ -605,21 +607,21 @@ public class ASymmetricEncryptGUI extends JFrame {
         JButton generateKeysButton = new CustomButton(Constants.Description.GENERATE_KEY, new Dimension(150, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
         buttonPanel.add(generateKeysButton);
         //event
-        generateKeysButton.addActionListener(e->{
-                if ((sizeKeyCombobox.getSelectedItem()).equals(Constants.Size.BIT515)) {
-                    createKeyRSA.createKey(515);
-                } else if ((sizeKeyCombobox.getSelectedItem()).equals(Constants.Size.BIT1024)) {
-                    createKeyRSA.createKey(1024);
-                } else if ((sizeKeyCombobox.getSelectedItem()).equals(Constants.Size.BIT2048)) {
-                    createKeyRSA.createKey(2048);
-                } else if ((sizeKeyCombobox.getSelectedItem()).equals(Constants.Size.BIT4096)) {
-                    createKeyRSA.createKey(4096);
-                } else if ((sizeKeyCombobox.getSelectedItem()).equals(Constants.Size.BIT3072)) {
-                    createKeyRSA.createKey(3072);
-                }
-                publicKeyTextArea.setText(createKeyRSA.getPublicKey());
-                privateKeyTextArea.setText(createKeyRSA.getPrivateKey());
-                repaint();
+        generateKeysButton.addActionListener(e -> {
+            if ((sizeKeyCombobox.getSelectedItem()).equals(Constants.Size.BIT515)) {
+                createKeyRSA.createKey(515);
+            } else if ((sizeKeyCombobox.getSelectedItem()).equals(Constants.Size.BIT1024)) {
+                createKeyRSA.createKey(1024);
+            } else if ((sizeKeyCombobox.getSelectedItem()).equals(Constants.Size.BIT2048)) {
+                createKeyRSA.createKey(2048);
+            } else if ((sizeKeyCombobox.getSelectedItem()).equals(Constants.Size.BIT4096)) {
+                createKeyRSA.createKey(4096);
+            } else if ((sizeKeyCombobox.getSelectedItem()).equals(Constants.Size.BIT3072)) {
+                createKeyRSA.createKey(3072);
+            }
+            publicKeyTextArea.setText(createKeyRSA.getPublicKey());
+            privateKeyTextArea.setText(createKeyRSA.getPrivateKey());
+            repaint();
         });
         inputPanel.add(buttonPanel);
         panelBody.add(inputPanel);

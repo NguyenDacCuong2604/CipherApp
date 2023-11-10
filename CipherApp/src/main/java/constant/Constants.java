@@ -65,7 +65,7 @@ public class Constants {
         String OPEN_FILE = "Open File";
         String RESULT_TEXT = "Result goes here";
         String RESULT = "Result";
-        String  VERIFY_FILE ="Verify File";
+        String VERIFY_FILE ="Verify File";
         String ERROR = "Error";
         String CHOOSE_FILE_VERIFY = "Choose File is verify!!!";
         String ENTER_HASHCODE = "Enter to your hashcode";
@@ -99,7 +99,15 @@ public class Constants {
         String KEY_TYPE = "Key Type: ";
         String BLANK = "  ";
         String TYPE_CIPHER = "Select Cipher Type";
+        String TYPE_MODE = "Select Mode";
         String GENERATE_KEY = "Generate Keys ";
+        String ENCRYPTION = "Encryption";
+        String DECRYPTION = "Decryption";
+        String ENTER_SECRET = "Enter Secret Key";
+        String ENTER_IV = "Enter IV (Optional)";
+        String GENERATE_IV = "Generate IV";
+        String ENTER_INIT_VECTOR = "Enter Initialization Vector";
+        String EMPTY_KEY = "Empty Key!!! You can create a key by clicking on the createKey button";
     }
     public interface Method{
         //DES

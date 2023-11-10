@@ -24,7 +24,8 @@ public class HomeGUI extends JFrame implements ActionListener {
     Font font;
     Dimension btnDimension;
     JPanel maHoaDoiXungPanel, maHoaBatDoiXungPanel, hashAlgorithmPanel, chuKyDienTuPanel;
-    public HomeGUI(){
+
+    public HomeGUI() {
         this.setLayout(new FlowLayout());
         this.setUndecorated(true);
         this.setLayout(new BorderLayout());
@@ -54,6 +55,7 @@ public class HomeGUI extends JFrame implements ActionListener {
         this.setVisible(true);
         this.setLocationRelativeTo(null);
     }
+
     private void renderChuKyDienTu(JPanel panel) {
         chuKyDienTuPanel = new JPanel();
         chuKyDienTuPanel.setPreferredSize(new Dimension(480, 80));
@@ -67,6 +69,7 @@ public class HomeGUI extends JFrame implements ActionListener {
         chuKyDienTuPanel.setBorder(titledBorder);
         panel.add(chuKyDienTuPanel);
     }
+
     private void renderHash(JPanel panel) {
         hashAlgorithmPanel = new JPanel();
         hashAlgorithmPanel.setPreferredSize(new Dimension(480, 180));
@@ -122,6 +125,7 @@ public class HomeGUI extends JFrame implements ActionListener {
         hashAlgorithmPanel.setBorder(titledBorder);
         panel.add(hashAlgorithmPanel);
     }
+
     private void renderMaHoaBatDoiXung(JPanel panel) {
         maHoaBatDoiXungPanel = new JPanel();
         maHoaBatDoiXungPanel.setPreferredSize(new Dimension(480, 80));
@@ -137,6 +141,7 @@ public class HomeGUI extends JFrame implements ActionListener {
         maHoaBatDoiXungPanel.setBorder(titledBorder);
         panel.add(maHoaBatDoiXungPanel);
     }
+
     private void renderUI() {
         //mahoadoixung
         renderUIButton(desButton, new Color(198, 81, 50), new Color(147, 58, 60));
@@ -148,7 +153,7 @@ public class HomeGUI extends JFrame implements ActionListener {
         renderUIButton(hillButton, new Color(172, 69, 55), new Color(123, 47, 64));
         renderUIButton(vigenereButton, new Color(117, 44, 64), new Color(43, 13, 52));
         //mahoabatdoixung
-        renderUIButton(rsaButton,new Color(146, 57, 60), new Color(94, 34, 68) );
+        renderUIButton(rsaButton, new Color(146, 57, 60), new Color(94, 34, 68));
         //hash
         renderUIButton(md4Button, new Color(198, 81, 50), new Color(147, 58, 60));
         renderUIButton(md5Button, new Color(146, 57, 60), new Color(94, 34, 68));
@@ -162,10 +167,11 @@ public class HomeGUI extends JFrame implements ActionListener {
         //chu ky dien tu
         renderUIButton(chuKyDienTuButton, new Color(146, 57, 60), new Color(94, 34, 68));
     }
+
     private void renderMaHoaDoiXung(JPanel panel) {
         maHoaDoiXungPanel = new JPanel();
         maHoaDoiXungPanel.setPreferredSize(new Dimension(480, 180));
-        maHoaDoiXungPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10,10));
+        maHoaDoiXungPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         //des
         desButton = new CustomButton(Constants.Cipher.DES, btnDimension, font);
         desButton.setMnemonic(KeyEvent.VK_D);
@@ -212,24 +218,26 @@ public class HomeGUI extends JFrame implements ActionListener {
         maHoaDoiXungPanel.setBorder(titledBorder);
         panel.add(maHoaDoiXungPanel);
     }
-    private void renderUIButton(JButton gradientButton, Color left, Color right){
+
+    private void renderUIButton(JButton gradientButton, Color left, Color right) {
         gradientButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         gradientButton.setForeground(Color.WHITE);
         GradientPaint gradient = new GradientPaint(0, 0, left, gradientButton.getWidth(), (float) gradientButton.getHeight(), right);
         gradientButton.setUI(new javax.swing.plaf.basic.BasicButtonUI() {
-                    @Override
-                    public void paint(Graphics g, JComponent c) {
-                        Graphics2D g2d = (Graphics2D) g;
-                        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                        g2d.setPaint(gradient);
-                        g2d.fill(new Rectangle2D.Float(0, 0, gradientButton.getWidth(), gradientButton.getHeight()));
-                        super.paint(g, c);
-                    }
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2d.setPaint(gradient);
+                g2d.fill(new Rectangle2D.Float(0, 0, gradientButton.getWidth(), gradientButton.getHeight()));
+                super.paint(g, c);
+            }
         });
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        switch (e.getActionCommand()){
+        switch (e.getActionCommand()) {
             //symmetric encryption
             case Constants.Cipher.DES -> {
                 new SymmetricEncryptionGUI(new DES(), new DES(), Constants.List_Method.METHODS_DES);
