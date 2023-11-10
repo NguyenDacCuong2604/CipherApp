@@ -50,7 +50,7 @@ public class ASymmetricEncryptGUI extends JFrame {
     private void renderCipher(JPanel panelBody) {
         JPanel cipherPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         cipherPanel.setBackground(Color.WHITE);
-        TitledBorder cipherBorder = BorderFactory.createTitledBorder(null, Constants.Description.ENCRYPT_DECRYPT, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.PLAIN, 16), Color.BLACK);
+        TitledBorder cipherBorder = BorderFactory.createTitledBorder(null, Constants.Description.ENCRYPT_DECRYPT, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, Constants.Font_Text.PLAIN_16, Color.BLACK);
         cipherBorder.setBorder(new LineBorder(Color.BLACK, 1));
         cipherPanel.setBorder(cipherBorder);
         //render Encryption
@@ -82,17 +82,17 @@ public class ASymmetricEncryptGUI extends JFrame {
         JPanel decryptNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 3));
         decryptNamePanel.setBackground(Color.WHITE);
         JLabel decryptLabel = new JLabel(Constants.Description.RSA_DE);
-        decryptLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        decryptLabel.setFont(Constants.Font_Text.BOLD_22);
         decryptNamePanel.add(decryptLabel);
         decryptionPanel.add(decryptNamePanel);
         //input
         JPanel inputNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         inputNamePanel.setBackground(Color.WHITE);
         JLabel inputLabel = new JLabel(Constants.Description.ENTER_DECRYPT);
-        inputLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        inputLabel.setFont(Constants.Font_Text.BOLD_16);
         inputNamePanel.add(inputLabel);
         decryptionPanel.add(inputNamePanel);
-        JTextArea inputTextArea = new CustomTextArea(new Font("Arial", Font.PLAIN, 16)) {
+        JTextArea inputTextArea = new CustomTextArea(Constants.Font_Text.PLAIN_16) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -110,10 +110,10 @@ public class ASymmetricEncryptGUI extends JFrame {
         JPanel keyNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         keyNamePanel.setBackground(Color.WHITE);
         JLabel keyLabel = new JLabel(Constants.Description.ENTER_PUBLIC_PRIVATE);
-        keyLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        keyLabel.setFont(Constants.Font_Text.BOLD_16);
         keyNamePanel.add(keyLabel);
         decryptionPanel.add(keyNamePanel);
-        JTextArea keyTextArea = new CustomTextArea(new Font("Arial", Font.PLAIN, 16)) {
+        JTextArea keyTextArea = new CustomTextArea(Constants.Font_Text.PLAIN_16) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -131,12 +131,12 @@ public class ASymmetricEncryptGUI extends JFrame {
         JPanel typePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         typePanel.setBackground(Color.WHITE);
         JLabel typeLabel = new JLabel(Constants.Description.KEY_TYPE);
-        typeLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        typeLabel.setFont(Constants.Font_Text.BOLD_16);
         typePanel.add(typeLabel);
-        JRadioButton publicKeyRadioButton = new CustomRadioButton(Constants.Description.PUBLIC_KEY, Color.WHITE, new Font("Arial", Font.PLAIN, 16));
+        JRadioButton publicKeyRadioButton = new CustomRadioButton(Constants.Description.PUBLIC_KEY, Color.WHITE, Constants.Font_Text.PLAIN_16);
         typePanel.add(publicKeyRadioButton);
         typeLabel.add(new JLabel(Constants.Description.BLANK));
-        JRadioButton privateKeyRadioButton = new CustomRadioButton(Constants.Description.PRIVATE_KEY, Color.WHITE, new Font("Arial", Font.PLAIN, 16));
+        JRadioButton privateKeyRadioButton = new CustomRadioButton(Constants.Description.PRIVATE_KEY, Color.WHITE, Constants.Font_Text.PLAIN_16);
         privateKeyRadioButton.setSelected(true);
         typePanel.add(privateKeyRadioButton);
         decryptionPanel.add(typePanel);
@@ -157,23 +157,23 @@ public class ASymmetricEncryptGUI extends JFrame {
         JPanel typeCipherNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         typeCipherNamePanel.setBackground(Color.WHITE);
         JLabel typeCipherLabel = new JLabel(Constants.Description.TYPE_CIPHER);
-        typeCipherLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        typeCipherLabel.setFont(Constants.Font_Text.BOLD_16);
         typeCipherNamePanel.add(typeCipherLabel);
         decryptionPanel.add(typeCipherNamePanel);
         //combobox
-        JComboBox cipherTypeComboBox = new CustomComboBox(methods, new Dimension(400, 34), new Font("Arial", Font.BOLD, 16), Color.WHITE);
+        JComboBox cipherTypeComboBox = new CustomComboBox(methods, new Dimension(400, 34), Constants.Font_Text.BOLD_16, Color.WHITE);
         decryptionPanel.add(cipherTypeComboBox);
         //button decrypt
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         buttonPanel.setBackground(Color.WHITE);
-        JButton decryptButton = new CustomButton(Constants.Description.DECRYPT, new Dimension(100, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
+        JButton decryptButton = new CustomButton(Constants.Description.DECRYPT, new Dimension(100, 34), Constants.Font_Text.BOLD_14, Constants.ColorUI.BUTTON_CLICK, Color.WHITE);
         buttonPanel.add(decryptButton);
         decryptionPanel.add(buttonPanel);
         //output
         JPanel outputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         outputPanel.setBackground(Color.WHITE);
         JLabel decryptOutputLabel = new JLabel(Constants.Description.DECRYPT_OUTPUT);
-        decryptOutputLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        decryptOutputLabel.setFont(Constants.Font_Text.BOLD_16);
         outputPanel.add(decryptOutputLabel);
         outputPanel.add(new JLabel(Constants.Description.BLANK));
         //copy
@@ -182,7 +182,7 @@ public class ASymmetricEncryptGUI extends JFrame {
         copyButton.setToolTipText(Constants.Description.COPY);
         outputPanel.add(copyButton);
         decryptionPanel.add(outputPanel);
-        JTextArea outTextArea = new CustomTextArea(new Font("Arial", Font.PLAIN, 16)) {
+        JTextArea outTextArea = new CustomTextArea(Constants.Font_Text.PLAIN_16) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -287,17 +287,17 @@ public class ASymmetricEncryptGUI extends JFrame {
         JPanel encryptNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 3));
         encryptNamePanel.setBackground(Color.WHITE);
         JLabel encryptLabel = new JLabel(Constants.Description.RSA_EN);
-        encryptLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        encryptLabel.setFont(Constants.Font_Text.BOLD_22);
         encryptNamePanel.add(encryptLabel);
         encryptionPanel.add(encryptNamePanel);
         //input
         JPanel inputNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         inputNamePanel.setBackground(Color.WHITE);
         JLabel inputLabel = new JLabel(Constants.Description.ENTER_ENCRYPT);
-        inputLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        inputLabel.setFont(Constants.Font_Text.BOLD_16);
         inputNamePanel.add(inputLabel);
         encryptionPanel.add(inputNamePanel);
-        JTextArea inputTextArea = new CustomTextArea(new Font("Arial", Font.PLAIN, 16)) {
+        JTextArea inputTextArea = new CustomTextArea(Constants.Font_Text.PLAIN_16) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -315,10 +315,10 @@ public class ASymmetricEncryptGUI extends JFrame {
         JPanel keyNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         keyNamePanel.setBackground(Color.WHITE);
         JLabel keyLabel = new JLabel(Constants.Description.ENTER_PUBLIC_PRIVATE);
-        keyLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        keyLabel.setFont(Constants.Font_Text.BOLD_16);
         keyNamePanel.add(keyLabel);
         encryptionPanel.add(keyNamePanel);
-        JTextArea keyTextArea = new CustomTextArea(new Font("Arial", Font.PLAIN, 16)) {
+        JTextArea keyTextArea = new CustomTextArea(Constants.Font_Text.PLAIN_16) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -336,13 +336,13 @@ public class ASymmetricEncryptGUI extends JFrame {
         JPanel typePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         typePanel.setBackground(Color.WHITE);
         JLabel typeLabel = new JLabel(Constants.Description.KEY_TYPE);
-        typeLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        typeLabel.setFont(Constants.Font_Text.BOLD_16);
         typePanel.add(typeLabel);
-        JRadioButton publicKeyRadioButton = new CustomRadioButton(Constants.Description.PUBLIC_KEY, Color.WHITE, new Font("Arial", Font.PLAIN, 16));
+        JRadioButton publicKeyRadioButton = new CustomRadioButton(Constants.Description.PUBLIC_KEY, Color.WHITE, Constants.Font_Text.PLAIN_16);
         publicKeyRadioButton.setSelected(true);
         typePanel.add(publicKeyRadioButton);
         typeLabel.add(new JLabel(Constants.Description.BLANK));
-        JRadioButton privateKeyRadioButton = new CustomRadioButton(Constants.Description.PRIVATE_KEY, Color.WHITE, new Font("Arial", Font.PLAIN, 16));
+        JRadioButton privateKeyRadioButton = new CustomRadioButton(Constants.Description.PRIVATE_KEY, Color.WHITE, Constants.Font_Text.PLAIN_16);
         typePanel.add(privateKeyRadioButton);
         encryptionPanel.add(typePanel);
         publicKeyRadioButton.addItemListener(e -> {
@@ -362,23 +362,23 @@ public class ASymmetricEncryptGUI extends JFrame {
         JPanel typeCipherNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         typeCipherNamePanel.setBackground(Color.WHITE);
         JLabel typeCipherLabel = new JLabel(Constants.Description.TYPE_CIPHER);
-        typeCipherLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        typeCipherLabel.setFont(Constants.Font_Text.BOLD_16);
         typeCipherNamePanel.add(typeCipherLabel);
         encryptionPanel.add(typeCipherNamePanel);
         //combobox
-        JComboBox cipherTypeComboBox = new CustomComboBox(methods, new Dimension(400, 34), new Font("Arial", Font.BOLD, 16), Color.WHITE);
+        JComboBox cipherTypeComboBox = new CustomComboBox(methods, new Dimension(400, 34), Constants.Font_Text.BOLD_16, Color.WHITE);
         encryptionPanel.add(cipherTypeComboBox);
         //button encrypt
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         buttonPanel.setBackground(Color.WHITE);
-        JButton encryptButton = new CustomButton(Constants.Description.ENCRYPT, new Dimension(100, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
+        JButton encryptButton = new CustomButton(Constants.Description.ENCRYPT, new Dimension(100, 34), Constants.Font_Text.BOLD_14, Constants.ColorUI.BUTTON_CLICK, Color.WHITE);
         buttonPanel.add(encryptButton);
         encryptionPanel.add(buttonPanel);
         //output
         JPanel outputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         outputPanel.setBackground(Color.WHITE);
         JLabel encryptOutputLabel = new JLabel(Constants.Description.ENCRYPT_OUTPUT);
-        encryptOutputLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        encryptOutputLabel.setFont(Constants.Font_Text.BOLD_16);
         outputPanel.add(encryptOutputLabel);
         outputPanel.add(new JLabel(Constants.Description.BLANK));
         ImageIcon copyIcon = new ImageIcon(Constants.Image.COPY);
@@ -386,7 +386,7 @@ public class ASymmetricEncryptGUI extends JFrame {
         copyButton.setToolTipText(Constants.Description.COPY);
         outputPanel.add(copyButton);
         encryptionPanel.add(outputPanel);
-        JTextArea outTextArea = new CustomTextArea(new Font("Arial", Font.PLAIN, 16)) {
+        JTextArea outTextArea = new CustomTextArea(Constants.Font_Text.PLAIN_16) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -489,7 +489,7 @@ public class ASymmetricEncryptGUI extends JFrame {
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.Y_AXIS));
         inputPanel.setBackground(Color.WHITE);
-        TitledBorder keyBorder = BorderFactory.createTitledBorder(null, Constants.Description.GENERATE_KEY, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.PLAIN, 16), Color.BLACK);
+        TitledBorder keyBorder = BorderFactory.createTitledBorder(null, Constants.Description.GENERATE_KEY, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, Constants.Font_Text.PLAIN_16, Color.BLACK);
         keyBorder.setBorder(new LineBorder(Color.BLACK, 1));
         inputPanel.setBorder(keyBorder);
         //create KEY
@@ -500,7 +500,7 @@ public class ASymmetricEncryptGUI extends JFrame {
         JTextField publicKeyTextArea = new JTextField();
         publicKeyTextArea.setBackground(Color.WHITE);
         publicKeyTextArea.setBorder(new LineBorder(new Color(122, 138, 153), 1));
-        publicKeyTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
+        publicKeyTextArea.setFont(Constants.Font_Text.PLAIN_16);
         publicKeyTextArea.setPreferredSize(new Dimension(290, 38));
         publicKeyTextArea.setEditable(false);
         //popup publicKey
@@ -521,7 +521,7 @@ public class ASymmetricEncryptGUI extends JFrame {
             model.Toolkit.copy(textToCopy);
         });
         JLabel publicKeyLabel = new JLabel(Constants.Description.PUBLIC_KEY);
-        publicKeyLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        publicKeyLabel.setFont(Constants.Font_Text.BOLD_16);
         keyPanel.add(publicKeyLabel);
         keyPanel.add(publicKeyTextArea);
         ImageIcon copyIcon = new ImageIcon(Constants.Image.COPY);
@@ -557,7 +557,7 @@ public class ASymmetricEncryptGUI extends JFrame {
         JTextField privateKeyTextArea = new JTextField();
         privateKeyTextArea.setBackground(Color.WHITE);
         privateKeyTextArea.setBorder(new LineBorder(new Color(122, 138, 153), 1));
-        privateKeyTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
+        privateKeyTextArea.setFont(Constants.Font_Text.PLAIN_16);
         privateKeyTextArea.setPreferredSize(new Dimension(285, 38));
         privateKeyTextArea.setEditable(false);
         //popup private
@@ -580,7 +580,7 @@ public class ASymmetricEncryptGUI extends JFrame {
             }
         });
         JLabel privateKeyLabel = new JLabel(Constants.Description.PRIVATE_KEY);
-        privateKeyLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        privateKeyLabel.setFont(Constants.Font_Text.BOLD_16);
         keyPanel.add(privateKeyLabel);
         keyPanel.add(privateKeyTextArea);
         //button
@@ -601,10 +601,10 @@ public class ASymmetricEncryptGUI extends JFrame {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 4, 4));
         buttonPanel.setBackground(Color.WHITE);
         //combobox
-        JComboBox sizeKeyCombobox = new CustomComboBox(Constants.List_Size.SIZE_RSA, new Dimension(100, 34), new Font("Arial", Font.BOLD, 16), Color.WHITE);
+        JComboBox sizeKeyCombobox = new CustomComboBox(Constants.List_Size.SIZE_RSA, new Dimension(100, 34), Constants.Font_Text.BOLD_16, Color.WHITE);
         sizeKeyCombobox.setSelectedIndex(1);
         buttonPanel.add(sizeKeyCombobox);
-        JButton generateKeysButton = new CustomButton(Constants.Description.GENERATE_KEY, new Dimension(150, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
+        JButton generateKeysButton = new CustomButton(Constants.Description.GENERATE_KEY, new Dimension(150, 34), Constants.Font_Text.BOLD_14, Constants.ColorUI.BUTTON_CLICK, Color.WHITE);
         buttonPanel.add(generateKeysButton);
         //event
         generateKeysButton.addActionListener(e -> {

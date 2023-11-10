@@ -27,9 +27,9 @@ public class TitleBar {
         customTitleBar.add(algorithmPanel, BorderLayout.WEST);
 
 
-        ImageButton minimizeButton = new ImageButton(new ImageIcon("assets/Images/minimize-sign-black.png"), 25, 25);
+        ImageButton minimizeButton = new ImageButton(new ImageIcon(Constants.Image.MINIMIZE_BLACK), 25, 25);
         minimizeButton.setToolTipText("Minimize");
-        ImageButton closeButton = new ImageButton(new ImageIcon("assets/Images/close-black.png"), 25, 25);
+        ImageButton closeButton = new ImageButton(new ImageIcon(Constants.Image.CLOSE_BLACK), 25, 25);
         closeButton.setToolTipText("Close");
         //event
         minimizeButton.addActionListener(e -> jFrame.setState(Frame.ICONIFIED));
@@ -65,15 +65,15 @@ public class TitleBar {
         JPanel customTitleBar = new JPanel(new BorderLayout());
         customTitleBar.setBackground(new Color(50, 27, 140));
 
-        ImageButton minimizeButton = new ImageButton(new ImageIcon("assets/Images/minimize-sign.png"), 25, 25);
-        minimizeButton.setToolTipText("Minimize");
-        ImageButton closeButton = new ImageButton(new ImageIcon("assets/Images/close.png"), 25, 25);
-        closeButton.setToolTipText("Close");
+        ImageButton minimizeButton = new ImageButton(new ImageIcon(Constants.Image.MINIMIZE), 25, 25);
+        minimizeButton.setToolTipText(Constants.Description.MINIMIZE);
+        ImageButton closeButton = new ImageButton(new ImageIcon(Constants.Image.CLOSE), 25, 25);
+        closeButton.setToolTipText(Constants.Description.CLOSE);
         //event
         minimizeButton.addActionListener(e -> jFrame.setState(Frame.ICONIFIED));
         closeButton.addActionListener(e -> System.exit(0));
         // Add title text
-        JLabel titleText = new JLabel("   CipherApp");
+        JLabel titleText = new JLabel(Constants.Description.CIPHER_APP);
         titleText.setForeground(Color.WHITE);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 5));

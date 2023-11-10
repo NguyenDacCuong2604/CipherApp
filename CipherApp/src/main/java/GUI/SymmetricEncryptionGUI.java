@@ -35,7 +35,7 @@ public class SymmetricEncryptionGUI extends JFrame {
         //body
         JPanel panelBody = new JPanel();
         panelBody.setBackground(Color.WHITE);
-        TitledBorder cipherBorder = BorderFactory.createTitledBorder(null, Constants.Description.ENCRYPT_DECRYPT, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.PLAIN, 16), Color.BLACK);
+        TitledBorder cipherBorder = BorderFactory.createTitledBorder(null, Constants.Description.ENCRYPT_DECRYPT, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, Constants.Font_Text.PLAIN_16, Color.BLACK);
         cipherBorder.setBorder(new LineBorder(Color.BLACK, 1));
         panelBody.setBorder(cipherBorder);
         //renderEncryption
@@ -76,18 +76,18 @@ public class SymmetricEncryptionGUI extends JFrame {
         JPanel titleNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 3));
         titleNamePanel.setBackground(Color.WHITE);
         JLabel titleNameLabel = new JLabel(Constants.Description.DECRYPTION);
-        titleNameLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        titleNameLabel.setFont(Constants.Font_Text.BOLD_22);
         titleNamePanel.add(titleNameLabel);
         decryptionPanel.add(titleNamePanel);
         //name input
         JPanel inputNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         inputNamePanel.setBackground(Color.WHITE);
         JLabel inputNameLabel = new JLabel(Constants.Description.ENTER_DECRYPT);
-        inputNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        inputNameLabel.setFont(Constants.Font_Text.BOLD_16);
         inputNamePanel.add(inputNameLabel);
         decryptionPanel.add(inputNamePanel);
         //input
-        JTextArea inputTextArea = new CustomTextArea(new Font("Arial", Font.PLAIN, 16)) {
+        JTextArea inputTextArea = new CustomTextArea(Constants.Font_Text.PLAIN_16) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -105,18 +105,18 @@ public class SymmetricEncryptionGUI extends JFrame {
         JPanel selectModePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         selectModePanel.setBackground(Color.WHITE);
         JLabel selectModeLabel = new JLabel(Constants.Description.TYPE_MODE);
-        selectModeLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        selectModeLabel.setFont(Constants.Font_Text.BOLD_16);
         selectModePanel.add(selectModeLabel);
         decryptionPanel.add(selectModePanel);
         //mode
-        JComboBox modeComboBox = new CustomComboBox(methods, new Dimension(450, 34), new Font("Arial", Font.BOLD, 16), Color.WHITE);
+        JComboBox modeComboBox = new CustomComboBox(methods, new Dimension(450, 34), Constants.Font_Text.BOLD_16, Color.WHITE);
         decryptionPanel.add(modeComboBox);
         //Name Key
         JPanel keyNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         keyNamePanel.setBackground(Color.WHITE);
         //name
         JLabel nameKeyLabel = new JLabel(Constants.Description.ENTER_SECRET);
-        nameKeyLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        nameKeyLabel.setFont(Constants.Font_Text.BOLD_16);
         keyNamePanel.add(nameKeyLabel);
         //button copy
         keyNamePanel.add(new JLabel(Constants.Description.BLANK));
@@ -131,11 +131,11 @@ public class SymmetricEncryptionGUI extends JFrame {
             linePanel.setPreferredSize(new Dimension(2, 22));
             keyNamePanel.add(linePanel);
             JLabel sizeLabel = new JLabel(Constants.Description.SIZE);
-            sizeLabel.setFont(new Font("Arial", Font.BOLD, 16));
+            sizeLabel.setFont(Constants.Font_Text.BOLD_16);
             keyNamePanel.add(sizeLabel);
             keyNamePanel.add(new JLabel(Constants.Description.BLANK));
             //combobox
-            JComboBox sizesKeyComboBox = new CustomComboBox(Constants.List_Size.SIZE_AES, new Dimension(85, 34), new Font("Arial", Font.BOLD, 16), Color.WHITE);
+            JComboBox sizesKeyComboBox = new CustomComboBox(Constants.List_Size.SIZE_AES, new Dimension(85, 34), Constants.Font_Text.BOLD_16, Color.WHITE);
             keyNamePanel.add(sizesKeyComboBox);
             keyNamePanel.add(new JLabel(Constants.Description.BLANK));
             //event
@@ -153,7 +153,7 @@ public class SymmetricEncryptionGUI extends JFrame {
             });
         }
         //generate Key
-        JButton generateKeyButton = new CustomButton(Constants.Description.GENERATE_KEY, new Dimension(150, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
+        JButton generateKeyButton = new CustomButton(Constants.Description.GENERATE_KEY, new Dimension(150, 34), Constants.Font_Text.BOLD_14, Constants.ColorUI.BUTTON_CLICK, Color.WHITE);
         keyNamePanel.add(generateKeyButton);
         decryptionPanel.add(keyNamePanel);
         //key
@@ -168,7 +168,7 @@ public class SymmetricEncryptionGUI extends JFrame {
             }
         };
         keyTextArea.setBorder(new LineBorder(Color.WHITE, 8));
-        keyTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
+        keyTextArea.setFont(Constants.Font_Text.PLAIN_16);
         keyTextArea.setPreferredSize(new Dimension(450, 34));
         JScrollPane keyScrollPane = new JScrollPane(keyTextArea);
         keyScrollPane.setForeground(Color.WHITE);
@@ -178,7 +178,7 @@ public class SymmetricEncryptionGUI extends JFrame {
         ivPanel.setBackground(Color.WHITE);
         //name iv
         JLabel ivLabel = new JLabel(Constants.Description.ENTER_IV);
-        ivLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        ivLabel.setFont(Constants.Font_Text.BOLD_16);
         ivPanel.add(ivLabel);
         //button copy
         ivPanel.add(new JLabel(Constants.Description.BLANK));
@@ -187,7 +187,7 @@ public class SymmetricEncryptionGUI extends JFrame {
         ivPanel.add(copyIvButton);
         ivPanel.add(new JLabel(Constants.Description.BLANK));
         //generate iv
-        JButton generateIvButton = new CustomButton(Constants.Description.GENERATE_IV, new Dimension(120, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
+        JButton generateIvButton = new CustomButton(Constants.Description.GENERATE_IV, new Dimension(120, 34), Constants.Font_Text.BOLD_14, Constants.ColorUI.BUTTON_CLICK, Color.WHITE);
         ivPanel.add(generateIvButton);
         ivPanel.setVisible(false);
         decryptionPanel.add(ivPanel);
@@ -203,7 +203,7 @@ public class SymmetricEncryptionGUI extends JFrame {
             }
         };
         ivTextArea.setBorder(new LineBorder(Color.WHITE, 8));
-        ivTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
+        ivTextArea.setFont(Constants.Font_Text.PLAIN_16);
         ivTextArea.setPreferredSize(new Dimension(450, 34));
         JScrollPane ivScrollPane = new JScrollPane(ivTextArea);
         ivScrollPane.setForeground(Color.WHITE);
@@ -212,7 +212,7 @@ public class SymmetricEncryptionGUI extends JFrame {
         //button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         buttonPanel.setBackground(Color.WHITE);
-        JButton decryptButton = new CustomButton(Constants.Description.DECRYPT, new Dimension(100, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
+        JButton decryptButton = new CustomButton(Constants.Description.DECRYPT, new Dimension(100, 34), Constants.Font_Text.BOLD_14, Constants.ColorUI.BUTTON_CLICK, Color.WHITE);
         decryptButton.setPreferredSize(new Dimension(100, 34));
         buttonPanel.add(decryptButton);
         decryptionPanel.add(buttonPanel);
@@ -221,7 +221,7 @@ public class SymmetricEncryptionGUI extends JFrame {
         outputPanel.setBackground(Color.WHITE);
         //name
         JLabel nameOutputLabel = new JLabel(Constants.Description.DECRYPT_OUTPUT);
-        nameOutputLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        nameOutputLabel.setFont(Constants.Font_Text.BOLD_16);
         outputPanel.add(nameOutputLabel);
         outputPanel.add(new JLabel(Constants.Description.BLANK));
         //copy button
@@ -230,7 +230,7 @@ public class SymmetricEncryptionGUI extends JFrame {
         outputPanel.add(copyButton);
         decryptionPanel.add(outputPanel);
         //output
-        JTextArea outTextArea = new CustomTextArea(new Font("Arial", Font.PLAIN, 16)) {
+        JTextArea outTextArea = new CustomTextArea(Constants.Font_Text.PLAIN_16) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -492,18 +492,18 @@ public class SymmetricEncryptionGUI extends JFrame {
         JPanel titleNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 3));
         titleNamePanel.setBackground(Color.WHITE);
         JLabel titleNameLabel = new JLabel(Constants.Description.ENCRYPTION);
-        titleNameLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        titleNameLabel.setFont(Constants.Font_Text.BOLD_22);
         titleNamePanel.add(titleNameLabel);
         encryptionPanel.add(titleNamePanel);
         //name input
         JPanel inputNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         inputNamePanel.setBackground(Color.WHITE);
         JLabel inputNameLabel = new JLabel(Constants.Description.ENTER_ENCRYPT);
-        inputNameLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        inputNameLabel.setFont(Constants.Font_Text.BOLD_16);
         inputNamePanel.add(inputNameLabel);
         encryptionPanel.add(inputNamePanel);
         //input
-        JTextArea inputTextArea = new CustomTextArea(new Font("Arial", Font.PLAIN, 16)) {
+        JTextArea inputTextArea = new CustomTextArea(Constants.Font_Text.PLAIN_16) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -521,18 +521,18 @@ public class SymmetricEncryptionGUI extends JFrame {
         JPanel selectModePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         selectModePanel.setBackground(Color.WHITE);
         JLabel selectModeLabel = new JLabel(Constants.Description.TYPE_MODE);
-        selectModeLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        selectModeLabel.setFont(Constants.Font_Text.BOLD_16);
         selectModePanel.add(selectModeLabel);
         encryptionPanel.add(selectModePanel);
         //mode
-        JComboBox modeComboBox = new CustomComboBox(methods, new Dimension(450, 34), new Font("Arial", Font.BOLD, 16), Color.WHITE);
+        JComboBox modeComboBox = new CustomComboBox(methods, new Dimension(450, 34), Constants.Font_Text.BOLD_16, Color.WHITE);
         encryptionPanel.add(modeComboBox);
         //Name Key
         JPanel keyNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         keyNamePanel.setBackground(Color.WHITE);
         //name
         JLabel nameKeyLabel = new JLabel(Constants.Description.ENTER_SECRET);
-        nameKeyLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        nameKeyLabel.setFont(Constants.Font_Text.BOLD_16);
         keyNamePanel.add(nameKeyLabel);
         //button copy
         keyNamePanel.add(new JLabel(Constants.Description.BLANK));
@@ -547,11 +547,11 @@ public class SymmetricEncryptionGUI extends JFrame {
             linePanel.setPreferredSize(new Dimension(2, 22));
             keyNamePanel.add(linePanel);
             JLabel sizeLabel = new JLabel(Constants.Description.SIZE);
-            sizeLabel.setFont(new Font("Arial", Font.BOLD, 16));
+            sizeLabel.setFont(Constants.Font_Text.BOLD_16);
             keyNamePanel.add(sizeLabel);
             keyNamePanel.add(new JLabel(Constants.Description.BLANK));
             //combobox
-            JComboBox sizesKeyComboBox = new CustomComboBox(Constants.List_Size.SIZE_AES, new Dimension(85, 34), new Font("Arial", Font.BOLD, 16), Color.WHITE);
+            JComboBox sizesKeyComboBox = new CustomComboBox(Constants.List_Size.SIZE_AES, new Dimension(85, 34), Constants.Font_Text.BOLD_16, Color.WHITE);
             keyNamePanel.add(sizesKeyComboBox);
             keyNamePanel.add(new JLabel(Constants.Description.BLANK));
             //event
@@ -569,7 +569,7 @@ public class SymmetricEncryptionGUI extends JFrame {
             });
         }
         //generate Key
-        JButton generateKeyButton = new CustomButton(Constants.Description.GENERATE_KEY, new Dimension(150, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
+        JButton generateKeyButton = new CustomButton(Constants.Description.GENERATE_KEY, new Dimension(150, 34), Constants.Font_Text.BOLD_14, Constants.ColorUI.BUTTON_CLICK, Color.WHITE);
         keyNamePanel.add(generateKeyButton);
         encryptionPanel.add(keyNamePanel);
         //key
@@ -584,7 +584,7 @@ public class SymmetricEncryptionGUI extends JFrame {
             }
         };
         keyTextArea.setBorder(new LineBorder(Color.WHITE, 8));
-        keyTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
+        keyTextArea.setFont(Constants.Font_Text.PLAIN_16);
         keyTextArea.setPreferredSize(new Dimension(450, 34));
         JScrollPane keyScrollPane = new JScrollPane(keyTextArea);
         keyScrollPane.setForeground(Color.WHITE);
@@ -594,7 +594,7 @@ public class SymmetricEncryptionGUI extends JFrame {
         ivPanel.setBackground(Color.WHITE);
         //name iv
         JLabel ivLabel = new JLabel(Constants.Description.ENTER_IV);
-        ivLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        ivLabel.setFont(Constants.Font_Text.BOLD_16);
         ivPanel.add(ivLabel);
         //button copy
         ivPanel.add(new JLabel(Constants.Description.BLANK));
@@ -603,7 +603,7 @@ public class SymmetricEncryptionGUI extends JFrame {
         ivPanel.add(copyIvButton);
         ivPanel.add(new JLabel(Constants.Description.BLANK));
         //generate iv
-        JButton generateIvButton = new CustomButton(Constants.Description.GENERATE_IV, new Dimension(120, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
+        JButton generateIvButton = new CustomButton(Constants.Description.GENERATE_IV, new Dimension(120, 34), Constants.Font_Text.BOLD_14, Constants.ColorUI.BUTTON_CLICK, Color.WHITE);
         ivPanel.add(generateIvButton);
         ivPanel.setVisible(false);
         encryptionPanel.add(ivPanel);
@@ -619,7 +619,7 @@ public class SymmetricEncryptionGUI extends JFrame {
             }
         };
         ivTextArea.setBorder(new LineBorder(Color.WHITE, 8));
-        ivTextArea.setFont(new Font("Arial", Font.PLAIN, 16));
+        ivTextArea.setFont(Constants.Font_Text.PLAIN_16);
         ivTextArea.setPreferredSize(new Dimension(450, 34));
         JScrollPane ivScrollPane = new JScrollPane(ivTextArea);
         ivScrollPane.setForeground(Color.WHITE);
@@ -628,7 +628,7 @@ public class SymmetricEncryptionGUI extends JFrame {
         //button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         buttonPanel.setBackground(Color.WHITE);
-        JButton encryptButton = new CustomButton(Constants.Description.ENCRYPT, new Dimension(100, 34), new Font("Arial", Font.BOLD, 14), new Color(35, 128, 251), Color.WHITE);
+        JButton encryptButton = new CustomButton(Constants.Description.ENCRYPT, new Dimension(100, 34), Constants.Font_Text.BOLD_14, Constants.ColorUI.BUTTON_CLICK, Color.WHITE);
         encryptButton.setPreferredSize(new Dimension(100, 34));
         buttonPanel.add(encryptButton);
         encryptionPanel.add(buttonPanel);
@@ -637,7 +637,7 @@ public class SymmetricEncryptionGUI extends JFrame {
         outputPanel.setBackground(Color.WHITE);
         //name
         JLabel nameOutputLabel = new JLabel(Constants.Description.ENCRYPT_OUTPUT);
-        nameOutputLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        nameOutputLabel.setFont(Constants.Font_Text.BOLD_16);
         outputPanel.add(nameOutputLabel);
         outputPanel.add(new JLabel(Constants.Description.BLANK));
         //copy button
@@ -646,7 +646,7 @@ public class SymmetricEncryptionGUI extends JFrame {
         outputPanel.add(copyButton);
         encryptionPanel.add(outputPanel);
         //output
-        JTextArea outTextArea = new CustomTextArea(new Font("Arial", Font.PLAIN, 16)) {
+        JTextArea outTextArea = new CustomTextArea(Constants.Font_Text.PLAIN_16) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);

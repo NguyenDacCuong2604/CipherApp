@@ -32,7 +32,7 @@ public class HomeGUI extends JFrame implements ActionListener {
         //render custom title bar
         new TitleBar(this);
         btnDimension = new Dimension(140, 35);
-        font = new Font("Arial", Font.BOLD, 16);
+        font = Constants.Font_Text.BOLD_16;
         Image icon = Toolkit.getDefaultToolkit().getImage(Constants.Image.ICON);
         this.setIconImage(icon);
         JPanel panel = new JPanel();
@@ -64,7 +64,7 @@ public class HomeGUI extends JFrame implements ActionListener {
         chuKyDienTuButton.setMnemonic(KeyEvent.VK_E);
         chuKyDienTuPanel.add(chuKyDienTuButton);
         chuKyDienTuButton.addActionListener(this);
-        TitledBorder titledBorder = BorderFactory.createTitledBorder(null, Constants.Description.E_SIGNATURE, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 20), Color.BLACK);
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(null, Constants.Description.E_SIGNATURE, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, Constants.Font_Text.BOLD_16, Color.BLACK);
         titledBorder.setBorder(new LineBorder(Color.BLACK, 4));
         chuKyDienTuPanel.setBorder(titledBorder);
         panel.add(chuKyDienTuPanel);
@@ -120,7 +120,7 @@ public class HomeGUI extends JFrame implements ActionListener {
         hashAlgorithmPanel.add(ripemd_256Button);
         ripemd_256Button.addActionListener(this);
         //border
-        TitledBorder titledBorder = BorderFactory.createTitledBorder(null, Constants.Description.HASH, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 20), Color.BLACK);
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(null, Constants.Description.HASH, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, Constants.Font_Text.BOLD_16, Color.BLACK);
         titledBorder.setBorder(new LineBorder(Color.BLACK, 4));
         hashAlgorithmPanel.setBorder(titledBorder);
         panel.add(hashAlgorithmPanel);
@@ -136,7 +136,7 @@ public class HomeGUI extends JFrame implements ActionListener {
         rsaButton.addActionListener(this);
         maHoaBatDoiXungPanel.add(rsaButton);
         //border
-        TitledBorder titledBorder = BorderFactory.createTitledBorder(null, Constants.Description.ASYMMETRIC, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 20), Color.BLACK);
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(null, Constants.Description.ASYMMETRIC, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, Constants.Font_Text.BOLD_16, Color.BLACK);
         titledBorder.setBorder(new LineBorder(Color.BLACK, 4));
         maHoaBatDoiXungPanel.setBorder(titledBorder);
         panel.add(maHoaBatDoiXungPanel);
@@ -213,7 +213,7 @@ public class HomeGUI extends JFrame implements ActionListener {
         vigenereButton.addActionListener(this);
         maHoaDoiXungPanel.add(vigenereButton);
         //border
-        TitledBorder titledBorder = BorderFactory.createTitledBorder(null, Constants.Description.SYMMETRIC, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.ITALIC, 20), Color.BLACK);
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(null, Constants.Description.SYMMETRIC, TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION, Constants.Font_Text.BOLD_16, Color.BLACK);
         titledBorder.setBorder(new LineBorder(Color.BLACK, 4));
         maHoaDoiXungPanel.setBorder(titledBorder);
         panel.add(maHoaDoiXungPanel);

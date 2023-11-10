@@ -12,10 +12,22 @@ public class Constants {
     public interface Image{
         String ICON = "assets/images/icon.png";
         String COPY = "assets/Images/copy_output.png";
+        String CLOSE = "assets/Images/close.png";
+        String CLOSE_BLACK = "assets/Images/close-black.png";
+        String MINIMIZE_BLACK = "assets/Images/minimize-sign-black.png";
+        String MINIMIZE = "assets/Images/minimize-sign.png";
     }
     public interface ColorUI{
         Color BUTTON = new Color(239, 239, 239);
         Color TEXT_WHITE = new Color(255, 255, 255);
+        Color BUTTON_CLICK = new Color(35, 128, 251);
+    }
+    public interface Font_Text{
+        Font BOLD_16 = new Font("Arial", Font.BOLD, 16);
+        Font BOLD_14 = new Font("Arial", Font.BOLD, 14);
+        Font BOLD_22 = new Font("Arial", Font.BOLD, 22);
+        Font PLAIN_16 = new Font("Arial", Font.PLAIN, 16);
+        Font PLAIN_20 = new Font("Arial", Font.PLAIN, 20);
     }
     public interface Cipher{
         String MD4 = "MD4";
@@ -108,6 +120,9 @@ public class Constants {
         String GENERATE_IV = "Generate IV";
         String ENTER_INIT_VECTOR = "Enter Initialization Vector";
         String EMPTY_KEY = "Empty Key!!! You can create a key by clicking on the createKey button";
+        String CLOSE = "Close";
+        String MINIMIZE = "Minimize";
+        String CIPHER_APP = "  CipherApp";
     }
     public interface Method{
         //DES
