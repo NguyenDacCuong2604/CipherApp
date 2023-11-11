@@ -21,18 +21,15 @@ public class CRC_32 extends AbsHash{
     }
 
     @Override
-    public String hashFile(String pathSource) {
+    public String hashFile(File file) {
         try {
             crc32.reset();
-            File file = new File(pathSource);
             FileInputStream fileInputStream =  new FileInputStream(file);
             byte[] buffer = new byte[1024];
             int bytesRead;
-
             while ((bytesRead = fileInputStream.read(buffer)) != -1) {
                 crc32.update(buffer, 0, bytesRead);
             }
-
             fileInputStream.close();
             return String.format(Locale.US,"%08x", crc32.getValue());
         } catch (IOException e) {

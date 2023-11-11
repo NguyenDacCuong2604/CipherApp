@@ -19,7 +19,7 @@ public class HashGUI extends JFrame {
     AbsHash absHash;
     boolean isAuto = true;
     JTextArea outputTextArea, inputTextArea;
-    String filePath = null;
+    File file = null;
 
     public HashGUI(AbsHash absHash) {
         this.absHash = absHash;
@@ -63,8 +63,8 @@ public class HashGUI extends JFrame {
                 String text = inputTextArea.getText();
                 outputTextArea.setText(absHash.hashText(text));
             } else {
-                if (filePath != null) {
-                    String hashFile = absHash.hashFile(filePath);
+                if (file != null) {
+                    String hashFile = absHash.hashFile(file);
                     outputTextArea.setText(hashFile);
                 }
             }
@@ -82,8 +82,8 @@ public class HashGUI extends JFrame {
                     String text = inputTextArea.getText();
                     outputTextArea.setText(absHash.hashText(text));
                 } else {
-                    if (filePath != null) {
-                        String hashFile = absHash.hashFile(filePath);
+                    if (file != null) {
+                        String hashFile = absHash.hashFile(file);
                         outputTextArea.setText(hashFile);
                     }
                 }
@@ -245,13 +245,13 @@ public class HashGUI extends JFrame {
         nameFileLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON3 && filePath != null) {
+                if (e.getButton() == MouseEvent.BUTTON3 && file != null) {
                     filePopupMenu.show(nameFileLabel, e.getX(), e.getY());
                 }
             }
         });
         deleteItem.addActionListener(e -> {
-            filePath = null;
+            file = null;
             nameFileLabel.setText(Constants.Description.NO_FILE_CHOSEN);
             outputTextArea.setText(Constants.Description.EMPTY);
         });
@@ -263,9 +263,9 @@ public class HashGUI extends JFrame {
                 File selectedFile = fileChooser.getSelectedFile();
                 if (selectedFile.exists()) {
                     nameFileLabel.setText(selectedFile.getName());
-                    filePath = selectedFile.getPath();
+                    file = selectedFile;
                     if (isAuto) {
-                        String textHash = absHash.hashFile(filePath);
+                        String textHash = absHash.hashFile(file);
                         outputTextArea.setText(textHash);
                     }
                 } else
@@ -296,8 +296,8 @@ public class HashGUI extends JFrame {
             scrollPane.setVisible(false);
             setChooseButton(fileInputButton, true);
             setChooseButton(textInputButton, false);
-            if (filePath != null) {
-                String hashFile = absHash.hashFile(filePath);
+            if (file != null) {
+                String hashFile = absHash.hashFile(file);
                 outputTextArea.setText(hashFile);
             } else {
                 outputTextArea.setText(Constants.Description.EMPTY);

@@ -141,7 +141,7 @@ public class HashScreen extends JFrame {
                 File selectedFile = fileChooser.getSelectedFile();
                 if (selectedFile.exists()) {
                     fileNameLabel.setText(selectedFile.getName());
-                    String textHash = absHash.hashFile(selectedFile.getPath());
+                    String textHash = absHash.hashFile(selectedFile);
                     outputTextArea.setText(textHash);
                 } else JOptionPane.showMessageDialog(null, "File is not exists!!!", "Error", JOptionPane.ERROR_MESSAGE);
             }

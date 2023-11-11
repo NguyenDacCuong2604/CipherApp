@@ -20,9 +20,8 @@ public class SHAKE256 extends AbsHash{
     }
 
     @Override
-    public String hashFile(String pathSource) {
+    public String hashFile(File file) {
         try {
-            File file = new File(pathSource);
             FileInputStream fileInputStream =  new FileInputStream(file);
             byte[] buffer = new byte[1024];
             int bytesRead;
@@ -36,7 +35,6 @@ public class SHAKE256 extends AbsHash{
             byte[] hashBytes = new byte[512];
             digest.doFinal(hashBytes, 0);
             digest.reset();
-
             // Convert the byte array to a hexadecimal string
             StringBuilder hexString = new StringBuilder();
             for (byte b : hashBytes) {
@@ -48,7 +46,6 @@ public class SHAKE256 extends AbsHash{
             return null;
         }
     }
-
     @Override
     public String hashText(String plainText) {
         byte[] bytesText = plainText.getBytes();
