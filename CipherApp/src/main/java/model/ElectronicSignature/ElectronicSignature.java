@@ -34,15 +34,11 @@ public class ElectronicSignature {
             FileInputStream fileInputStream =  new FileInputStream(file);
             byte[] buffer = new byte[8192];
             int bytesRead;
-
             while ((bytesRead = fileInputStream.read(buffer)) != -1) {
                 this.messageDigest.update(buffer, 0, bytesRead);
             }
-
             fileInputStream.close();
-
             byte[] hashBytes = this.messageDigest.digest();
-
             // Convert the byte array to a hexadecimal string
             StringBuilder hexString = new StringBuilder();
             for (byte b : hashBytes) {

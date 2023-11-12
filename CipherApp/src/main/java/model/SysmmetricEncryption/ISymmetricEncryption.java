@@ -11,7 +11,7 @@ public interface ISymmetricEncryption {
     public String encrypt(String plainText);
     public String decrypt(String cipherText);
     public String createKey();
-    public SecretKey convertKey(String key);
+    public void convertKey(String key);
     public String createIv();
-    public IvParameterSpec convertIv(String ivSpec);
+    public void convertIv(String ivSpec);
 }

@@ -68,6 +68,7 @@ public class SymmetricEncryptionGUI extends JFrame {
     }
 
     private void renderDecryption(JPanel panel, AbsSymmetricEncryption absSymmetricEncryption) {
+        JComboBox sizesKeyComboBox = new CustomComboBox(Constants.List_Size.SIZE_AES, new Dimension(85, 34), Constants.Font_Text.BOLD_16, Color.WHITE);;
         ImageIcon copyIcon = new ImageIcon(Constants.Image.COPY);
         JPanel decryptionPanel = new JPanel();
         decryptionPanel.setBackground(Color.WHITE);
@@ -135,22 +136,8 @@ public class SymmetricEncryptionGUI extends JFrame {
             keyNamePanel.add(sizeLabel);
             keyNamePanel.add(new JLabel(Constants.Description.BLANK));
             //combobox
-            JComboBox sizesKeyComboBox = new CustomComboBox(Constants.List_Size.SIZE_AES, new Dimension(85, 34), Constants.Font_Text.BOLD_16, Color.WHITE);
             keyNamePanel.add(sizesKeyComboBox);
             keyNamePanel.add(new JLabel(Constants.Description.BLANK));
-            //event
-            sizesKeyComboBox.addActionListener(e -> {
-                JComboBox cb = (JComboBox) e.getSource();
-                String method = (String) cb.getSelectedItem();
-                if (method.contains(Constants.Size.BITS128)) {
-                    absSymmetricEncryption.size = 16;
-                } else if (method.contains(Constants.Size.BITS192)) {
-                    absSymmetricEncryption.size = 24;
-                } else if (method.contains(Constants.Size.BITS256)) {
-                    absSymmetricEncryption.size = 32;
-                }
-                revalidate();
-            });
         }
         //generate Key
         JButton generateKeyButton = new CustomButton(Constants.Description.GENERATE_KEY, new Dimension(150, 34), Constants.Font_Text.BOLD_14, Constants.ColorUI.BUTTON_CLICK, Color.WHITE);
@@ -259,7 +246,6 @@ public class SymmetricEncryptionGUI extends JFrame {
                 ivScrollPane.setVisible(true);
             }
             this.pack();
-            this.setLocationRelativeTo(null);
             repaint();
         });
         //key
@@ -286,6 +272,25 @@ public class SymmetricEncryptionGUI extends JFrame {
                         keyTextArea.setText(text);
                     });
                 }
+            }
+        });
+        //combobox size
+        sizesKeyComboBox.addActionListener(e -> {
+            JComboBox cb = (JComboBox) e.getSource();
+            String method = (String) cb.getSelectedItem();
+            if (method.contains(Constants.Size.BITS128)) {
+                absSymmetricEncryption.size = 16;
+            } else if (method.contains(Constants.Size.BITS192)) {
+                absSymmetricEncryption.size = 24;
+            } else if (method.contains(Constants.Size.BITS256)) {
+                absSymmetricEncryption.size = 32;
+            }
+            String currentText = keyTextArea.getText();
+            if (currentText.length() > absSymmetricEncryption.size) {
+                EventQueue.invokeLater(() -> {
+                    String newText = currentText.substring(0, absSymmetricEncryption.size);
+                    keyTextArea.setText(newText);
+                });
             }
         });
         //iv
@@ -484,6 +489,7 @@ public class SymmetricEncryptionGUI extends JFrame {
     }
 
     private void renderEncryption(JPanel panel, AbsSymmetricEncryption absSymmetricEncryption) {
+        JComboBox sizesKeyComboBox = new CustomComboBox(Constants.List_Size.SIZE_AES, new Dimension(85, 34), Constants.Font_Text.BOLD_16, Color.WHITE);
         ImageIcon copyIcon = new ImageIcon(Constants.Image.COPY);
         JPanel encryptionPanel = new JPanel();
         encryptionPanel.setBackground(Color.WHITE);
@@ -551,22 +557,8 @@ public class SymmetricEncryptionGUI extends JFrame {
             keyNamePanel.add(sizeLabel);
             keyNamePanel.add(new JLabel(Constants.Description.BLANK));
             //combobox
-            JComboBox sizesKeyComboBox = new CustomComboBox(Constants.List_Size.SIZE_AES, new Dimension(85, 34), Constants.Font_Text.BOLD_16, Color.WHITE);
             keyNamePanel.add(sizesKeyComboBox);
             keyNamePanel.add(new JLabel(Constants.Description.BLANK));
-            //event
-            sizesKeyComboBox.addActionListener(e -> {
-                JComboBox cb = (JComboBox) e.getSource();
-                String method = (String) cb.getSelectedItem();
-                if (method.contains(Constants.Size.BITS128)) {
-                    absSymmetricEncryption.size = 16;
-                } else if (method.contains(Constants.Size.BITS192)) {
-                    absSymmetricEncryption.size = 24;
-                } else if (method.contains(Constants.Size.BITS256)) {
-                    absSymmetricEncryption.size = 32;
-                }
-                revalidate();
-            });
         }
         //generate Key
         JButton generateKeyButton = new CustomButton(Constants.Description.GENERATE_KEY, new Dimension(150, 34), Constants.Font_Text.BOLD_14, Constants.ColorUI.BUTTON_CLICK, Color.WHITE);
@@ -675,7 +667,6 @@ public class SymmetricEncryptionGUI extends JFrame {
                 ivScrollPane.setVisible(true);
             }
             this.pack();
-            this.setLocationRelativeTo(null);
             repaint();
         });
         //key
@@ -702,6 +693,25 @@ public class SymmetricEncryptionGUI extends JFrame {
                         keyTextArea.setText(text);
                     });
                 }
+            }
+        });
+        //combobox size
+        sizesKeyComboBox.addActionListener(e -> {
+            JComboBox cb = (JComboBox) e.getSource();
+            String method = (String) cb.getSelectedItem();
+            if (method.contains(Constants.Size.BITS128)) {
+                absSymmetricEncryption.size = 16;
+            } else if (method.contains(Constants.Size.BITS192)) {
+                absSymmetricEncryption.size = 24;
+            } else if (method.contains(Constants.Size.BITS256)) {
+                absSymmetricEncryption.size = 32;
+            }
+            String currentText = keyTextArea.getText();
+            if (currentText.length() > absSymmetricEncryption.size) {
+                EventQueue.invokeLater(() -> {
+                    String newText = currentText.substring(0, absSymmetricEncryption.size);
+                    keyTextArea.setText(newText);
+                });
             }
         });
         //iv

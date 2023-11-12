@@ -66,28 +66,26 @@ public class RSA extends AbsASymmetricEncryption{
     }
 
     @Override
-    public PublicKey convertPublicKey(String key) {
+    public void convertPublicKey(String key) {
         try {
             byte[] publicKeyBytes = Base64.getDecoder().decode(key);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
-            return this.publicKey = keyFactory.generatePublic(publicKeySpec);
+            this.publicKey = keyFactory.generatePublic(publicKeySpec);
         } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            return null;
         }
     }
 
     @Override
-    public PrivateKey convertPrivateKey(String key) {
+    public void convertPrivateKey(String key) {
         try {
             byte[] privateKeyBytes = Base64.getDecoder().decode(key);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
-            return this.privateKey = keyFactory.generatePrivate(privateKeySpec);
+            this.privateKey = keyFactory.generatePrivate(privateKeySpec);
         } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            return null;
         }
     }
 

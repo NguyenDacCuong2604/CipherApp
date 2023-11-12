@@ -39,16 +39,17 @@ public class Constants {
         String CRC_32 = "CRC-32";
         String SHAKE_256 = "SHAKE256";
         String RIPEMD_256 = "RIPEMD256";
+
         String DES = "DES";
         String AES = "AES";
-        String TRIPLE_DES = "TRIPLE-DES";
-
-        String BLOWFISH = "BLOWFISH";
+        String TRIPLE_DES = "DESede";
+        String BLOWFISH = "Blowfish";
         String CAST_6 = "CAST6";
-        String TWOFISH = "TWOFISH";
-        String RSA = "RSA";
+        String TWOFISH = "Twofish";
         String HILL = "Hill";
         String VIGENERE = "Vigenere";
+
+        String RSA = "RSA";
     }
     public interface Matrix{
         String MATRIX_3x3 = "3x3";

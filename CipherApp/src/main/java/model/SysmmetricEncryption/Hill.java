@@ -246,9 +246,8 @@ public class Hill extends AbsSymmetricEncryption {
     }
 
     @Override
-    public SecretKey convertKey(String key) {
+    public void convertKey(String key) {
         convertKeyMatrix(key);
-        return null;
     }
 
     public int[][] convertKeyMatrix(String key) {
@@ -299,7 +298,6 @@ public class Hill extends AbsSymmetricEncryption {
     }
 
     @Override
-    public IvParameterSpec convertIv(String ivSpec) {
-        return null;
+    public void convertIv(String ivSpec) {
     }
 }

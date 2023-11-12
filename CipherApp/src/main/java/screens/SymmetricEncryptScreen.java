@@ -390,8 +390,8 @@ public class SymmetricEncryptScreen extends JFrame {
                 else {
                     String cipherText;
                     symmetricEncryption.instance((String)methodsComboBox.getSelectedItem());
-                    SecretKey key = symmetricEncryption.convertKey(keyTextField.getText());
-                    IvParameterSpec iv = symmetricEncryption.convertIv(ivTextField.getText());
+                    symmetricEncryption.convertKey(keyTextField.getText());
+                    symmetricEncryption.convertIv(ivTextField.getText());
                     if (temp.equals(Constants.Description.ENCRYPT)) {
                             cipherText = symmetricEncryption.encrypt(inputTextArea.getText());
                     } else {

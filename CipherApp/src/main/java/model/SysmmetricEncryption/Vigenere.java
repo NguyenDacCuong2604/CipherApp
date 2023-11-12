@@ -26,6 +26,7 @@ public class Vigenere extends AbsSymmetricEncryption{
         }
         this.length = alphaBet.length;
     }
+
     private static int indexOf(char[] array, char target) {
         for (int i = 0; i < array.length; i++) {
             if (array[i] == target) {
@@ -156,18 +157,16 @@ public class Vigenere extends AbsSymmetricEncryption{
         return result.toString();
     }
     @Override
-    public SecretKey convertKey(String key) {
+    public void convertKey(String key) {
         if(key.length()<2){
             JOptionPane.showMessageDialog(null, "The value must be at least 2 characters long", "Error", JOptionPane.ERROR_MESSAGE);
-            return null;
+            return;
         }
         String keyText = key.toUpperCase();
         if(!isValid(keyText)){
             JOptionPane.showMessageDialog(null, "Invalid Key!!", "Error", JOptionPane.ERROR_MESSAGE);
-            return null;
         }else {
             this.key = keyText;
-            return null;
         }
     }
     private boolean checkAlpha(char c){
@@ -193,7 +192,6 @@ public class Vigenere extends AbsSymmetricEncryption{
     }
 
     @Override
-    public IvParameterSpec convertIv(String ivSpec) {
-        return null;
+    public void convertIv(String ivSpec) {
     }
 }
