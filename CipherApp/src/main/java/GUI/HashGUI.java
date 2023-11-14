@@ -22,6 +22,7 @@ public class HashGUI extends JFrame {
     File file = null;
 
     public HashGUI(AbsHash absHash) {
+        this.setTitle(Constants.Description.COPYRIGHT);
         this.absHash = absHash;
         this.setUndecorated(true);
         Image icon = Toolkit.getDefaultToolkit().getImage(Constants.Image.ICON);

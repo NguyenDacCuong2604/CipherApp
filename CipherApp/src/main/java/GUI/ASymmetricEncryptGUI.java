@@ -18,6 +18,7 @@ public class ASymmetricEncryptGUI extends JFrame {
     String[] methods;
 
     public ASymmetricEncryptGUI(AbsASymmetricEncryption aSymmetricEncryption, String[] methods) {
+        this.setTitle(Constants.Description.COPYRIGHT);
         this.methods = methods;
         this.aSymmetricEncryption = aSymmetricEncryption;
         this.setUndecorated(true);

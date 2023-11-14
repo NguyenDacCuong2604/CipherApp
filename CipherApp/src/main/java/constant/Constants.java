@@ -60,11 +60,9 @@ public class Constants {
         String ENG = "Eng";
     }
     public interface Description{
-        String PLAINTEXT = "PlainText";
-        String CIPHERTEXT = "CipherText";
+        String COPYRIGHT = "CipherApp of TONYNGUYEN";
         String ENCRYPT = "Encrypt";
         String DECRYPT = "Decrypt";
-        String KEY = "Key";
         String SIZE = "Size";
         String IV = "InitializationVector";
         String PUBLIC_KEY = "Public Key";
@@ -75,7 +73,6 @@ public class Constants {
         String OUTPUT = "Output";
         String E_SIGNATURE = "Verify";
         String VERIFY = "Verify";
-        String OPEN_FILE = "Open File";
         String RESULT_TEXT = "Result goes here";
         String RESULT = "Result";
         String VERIFY_FILE ="Verify File";

@@ -8,13 +8,13 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 public interface ISymmetricEncryption {
-    public void instance(String method);
-    public String encrypt(String plainText);
-    public String decrypt(String cipherText);
-    public String encryptFile(File file);
-    public String decryptFile(File file);
-    public String createKey();
-    public void convertKey(String key);
-    public String createIv();
-    public void convertIv(String ivSpec);
+    void instance(String method);
+    String encrypt(String plainText);
+    String decrypt(String cipherText);
+    String encryptFile(File file);
+    String decryptFile(File file);
+    String createKey();
+    void convertKey(String key);
+    String createIv();
+    void convertIv(String ivSpec);
 }

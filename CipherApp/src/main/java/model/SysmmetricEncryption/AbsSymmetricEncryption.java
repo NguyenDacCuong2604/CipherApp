@@ -1,12 +1,14 @@
 package model.SysmmetricEncryption;
 
 import constant.Constants;
+import model.ASysmmetricEncryption.AbsASymmetricEncryption;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -25,10 +27,13 @@ public abstract class AbsSymmetricEncryption implements ISymmetricEncryption {
     SecretKey secretKey;
     IvParameterSpec ivSpec;
 
+    public AbsSymmetricEncryption(){
+        Security.addProvider(new BouncyCastleProvider());
+    }
+
     @Override
     public void instance(String method) {
         try {
-            Security.addProvider(new BouncyCastleProvider());
             this.method = method;
             if (method.contains(Constants.Padding.ZEROPADDING)) {
                 String type = method;
@@ -50,17 +55,10 @@ public abstract class AbsSymmetricEncryption implements ISymmetricEncryption {
             if (method.contains(Constants.Padding.ZEROPADDING)) {
                 int blockSize = sizeBlock;
                 int padding = blockSize - (messageBytes.length % blockSize);
-                if (padding != blockSize) {
-                    int newLength = messageBytes.length + padding;
-                    byte[] paddedMessage = new byte[newLength];
-                    System.arraycopy(messageBytes, 0, paddedMessage, 0, messageBytes.length);
-                    messageBytes = paddedMessage;
-                } else {
-                    int newLength = messageBytes.length + padding;
-                    byte[] paddedMessage = new byte[newLength];
-                    System.arraycopy(messageBytes, 0, paddedMessage, 0, messageBytes.length);
-                    messageBytes = paddedMessage;
-                }
+                int newLength = messageBytes.length + padding;
+                byte[] paddedMessage = new byte[newLength];
+                System.arraycopy(messageBytes, 0, paddedMessage, 0, messageBytes.length);
+                messageBytes = paddedMessage;
             }
             byte[] byteEncrypt = cipher.doFinal(messageBytes);
             return Base64.getEncoder().encodeToString(byteEncrypt);
@@ -138,6 +136,7 @@ public abstract class AbsSymmetricEncryption implements ISymmetricEncryption {
             if (method.contains(Constants.Mode.ECB)) {
                 cipher.init(Cipher.ENCRYPT_MODE, this.secretKey);
             } else cipher.init(Cipher.ENCRYPT_MODE, this.secretKey, this.ivSpec);
+            long startTime = System.currentTimeMillis();
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
             String desFile = fileName(file.getAbsolutePath(), "_encrypt_"+name);
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(desFile));
@@ -152,7 +151,13 @@ public abstract class AbsSymmetricEncryption implements ISymmetricEncryption {
             bis.close();
             bos.flush();
             bos.close();
-            return "Encrypted From " + file.getName() + " to " + desFile;
+            long endTime = System.currentTimeMillis();
+            long encryptTime = endTime - startTime;
+            //show Desktop
+            File fileDesktop = new File(file.getParent());
+            Desktop.getDesktop().open(fileDesktop);
+            String nameFile = desFile.lastIndexOf("\\")==-1? desFile : desFile.substring(desFile.lastIndexOf("\\")+1);
+            return String.format("Encrypted: %s in %d ms", nameFile, encryptTime);
         } catch (IllegalBlockSizeException | IOException | BadPaddingException | InvalidKeyException |
                  InvalidAlgorithmParameterException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -168,10 +173,11 @@ public abstract class AbsSymmetricEncryption implements ISymmetricEncryption {
             if (method.contains(Constants.Mode.ECB)) {
                 cipher.init(Cipher.DECRYPT_MODE, this.secretKey);
             } else cipher.init(Cipher.DECRYPT_MODE, this.secretKey, this.ivSpec);
+            long startTime = System.currentTimeMillis();
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-            String desFile=file.getName();
+            String desFile=file.getAbsolutePath();
             if(desFile.contains("_encrypt_"+name)){
-                desFile = file.getParent()+desFile.replace("_encrypt_"+name, "_decrypt_"+name);
+                desFile = desFile.replace("_encrypt_"+name, "_decrypt_"+name);
             }
             else {
                 desFile = fileName(file.getAbsolutePath(), "_decrypt_"+name);
@@ -188,7 +194,13 @@ public abstract class AbsSymmetricEncryption implements ISymmetricEncryption {
             bis.close();
             bos.flush();
             bos.close();
-            return "Decrypted From " + file.getName() + " to " + desFile;
+            long endTime = System.currentTimeMillis();
+            long encryptTime = endTime - startTime;
+            //show Desktop
+            File fileDesktop = new File(file.getParent());
+            Desktop.getDesktop().open(fileDesktop);
+            String nameFile = desFile.lastIndexOf("\\")==-1? desFile : desFile.substring(desFile.lastIndexOf("\\")+1);
+            return String.format("Decrypted: %s in %d ms", nameFile, encryptTime);
         } catch (IllegalBlockSizeException | IOException | BadPaddingException | InvalidKeyException |
                  InvalidAlgorithmParameterException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -258,7 +270,7 @@ public abstract class AbsSymmetricEncryption implements ISymmetricEncryption {
         byte[] data = new byte[iv];
         for (int i = 0; i < data.length; i++) {
             //char 0
-            data[i] = 48;
+            data[i] = (byte)'0';
         }
         return data;
     }

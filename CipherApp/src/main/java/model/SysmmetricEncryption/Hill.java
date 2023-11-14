@@ -19,7 +19,7 @@ public class Hill extends AbsSymmetricEncryption {
 
     public Hill() {
         this.name = Constants.Cipher.HILL;
-        this.size = 24;
+        this.size = 26;
     }
 
     @Override
@@ -289,7 +289,11 @@ public class Hill extends AbsSymmetricEncryption {
         // Kiểm tra tính nghịch đảo của ma trận
         SingularValueDecomposition svd = new SingularValueDecomposition(matrixReal);
         RealMatrix inverseMatrix = svd.getSolver().getInverse();
-        return inverseMatrix!=null;
+        if(inverseMatrix==null) return false;
+        LUDecomposition luDecomposition = new LUDecomposition(matrixReal);
+        double determinant = luDecomposition.getDeterminant();
+        int intDeterminant = (int)(Math.round(determinant)) % length;
+        return intDeterminant%2==1;
     }
 
     @Override

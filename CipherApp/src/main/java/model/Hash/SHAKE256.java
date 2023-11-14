@@ -32,7 +32,7 @@ public class SHAKE256 extends AbsHash{
 
             fileInputStream.close();
 
-            byte[] hashBytes = new byte[512];
+            byte[] hashBytes = new byte[64];
             digest.doFinal(hashBytes, 0);
             digest.reset();
             // Convert the byte array to a hexadecimal string
@@ -50,7 +50,7 @@ public class SHAKE256 extends AbsHash{
     public String hashText(String plainText) {
         byte[] bytesText = plainText.getBytes();
 
-        byte[] hashBytes = new byte[512];
+        byte[] hashBytes = new byte[64];
         digest.update(bytesText, 0, bytesText.length);
         digest.doFinal(hashBytes, 0);
         digest.reset();

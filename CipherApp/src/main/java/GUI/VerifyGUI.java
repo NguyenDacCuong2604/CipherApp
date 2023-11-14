@@ -20,6 +20,7 @@ public class VerifyGUI extends JFrame {
     JTextField hashTextArea;
 
     public VerifyGUI(ElectronicSignature electronicSignature) {
+        this.setTitle(Constants.Description.COPYRIGHT);
         this.electronicSignature = electronicSignature;
         this.setUndecorated(true);
         Image icon = Toolkit.getDefaultToolkit().getImage(Constants.Image.ICON);

@@ -20,8 +20,9 @@ public class SymmetricEncryptionGUI extends JFrame {
     boolean isFileSelected;
 
     public SymmetricEncryptionGUI(AbsSymmetricEncryption absSymmetricEncryptionEncrypt, AbsSymmetricEncryption absSymmetricEncryptionDecrypt, String[] methods) {
+        this.setTitle(Constants.Description.COPYRIGHT);
         this.absSymmetricEncryptionEncrypt = absSymmetricEncryptionEncrypt;
-        this.absSymmetricEncryptionDecrypt = absSymmetricEncryptionEncrypt;
+        this.absSymmetricEncryptionDecrypt = absSymmetricEncryptionDecrypt;
         this.methods = methods;
         this.setUndecorated(true);
         Image icon = Toolkit.getDefaultToolkit().getImage(Constants.Image.ICON);
@@ -382,7 +383,7 @@ public class SymmetricEncryptionGUI extends JFrame {
                 }
                 else {
                     if (fileDecryption==null) {
-                        JOptionPane.showMessageDialog(SymmetricEncryptionGUI.this, Constants.Description.CHOOSE_FILE_ENCRYPTION, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(SymmetricEncryptionGUI.this, Constants.Description.CHOOSE_FILE_DECRYPTION, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
                     } else if (keyTextArea.getText().isEmpty()) {
                         JOptionPane.showMessageDialog(SymmetricEncryptionGUI.this, Constants.Description.EMPTY_KEY, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
                     }
@@ -553,7 +554,7 @@ public class SymmetricEncryptionGUI extends JFrame {
             //event radio button
             fileRadioButton.addItemListener(e -> {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    inputNameLabel.setText(Constants.Description.CHOOSE_FILE_ENCRYPTION);
+                    inputNameLabel.setText(Constants.Description.CHOOSE_FILE_DECRYPTION);
                     inputScrollPane.setVisible(false);
                     filePanel.setVisible(true);
                     replaceComboBoxValues(modeComboBox, Constants.List_Method.METHODS_FILE);

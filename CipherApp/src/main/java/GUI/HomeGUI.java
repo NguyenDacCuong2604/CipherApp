@@ -26,6 +26,7 @@ public class HomeGUI extends JFrame implements ActionListener {
     JPanel maHoaDoiXungPanel, maHoaBatDoiXungPanel, hashAlgorithmPanel, chuKyDienTuPanel;
 
     public HomeGUI() {
+        this.setTitle(Constants.Description.COPYRIGHT);
         this.setLayout(new FlowLayout());
         this.setUndecorated(true);
         this.setLayout(new BorderLayout());
