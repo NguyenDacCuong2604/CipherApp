@@ -275,7 +275,7 @@ public class ASymmetricEncryptGUI extends JFrame {
                 // Copy the text to the clipboard
                 model.Toolkit.copy(textToCopy);
                 ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + textToCopy);
-                showToast.showToast(1000);
+                showToast.showToast(500);
             }
         });
     }
@@ -480,7 +480,7 @@ public class ASymmetricEncryptGUI extends JFrame {
                 // Copy the text to the clipboard
                 model.Toolkit.copy(textToCopy);
                 ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + textToCopy);
-                showToast.showToast(1000);
+                showToast.showToast(500);
             }
         });
     }
@@ -535,7 +535,7 @@ public class ASymmetricEncryptGUI extends JFrame {
                 // Copy the text to the clipboard
                 model.Toolkit.copy(textToCopy);
                 ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + textToCopy);
-                showToast.showToast(1000);
+                showToast.showToast(500);
             }
         });
         //left
@@ -594,7 +594,7 @@ public class ASymmetricEncryptGUI extends JFrame {
                 // Copy the text to the clipboard
                 model.Toolkit.copy(textToCopy);
                 ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + textToCopy);
-                showToast.showToast(1000);
+                showToast.showToast(500);
             }
         });
         inputPanel.add(keyPanel);

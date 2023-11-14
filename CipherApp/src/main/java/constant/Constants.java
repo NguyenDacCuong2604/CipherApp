@@ -204,6 +204,13 @@ public class Constants {
         String RSA_ECB_PKCS1PADDING = "RSA/ECB/PKCS1Padding";
         String RSA_ECB_OAE = "RSA/ECB/OAEPWithSHA-1AndMGF1Padding";
         String RSA = "RSA";
+
+        //File
+        String ECB_PKCS5PADDING = "ECB/PKCS5Padding";
+        String ECB_ISO10126PADDING = "ECB/ISO10126Padding";
+        String CBC_PKCS5PADDING = "CBC/PKCS5Padding";
+        String CBC_ISO10126PADDING = "CBC/ISO10126Padding";
+
     }
     public interface Type{
         String[] TYPE_KEY = {Description.PUBLIC_KEY, Description.PRIVATE_KEY};
@@ -294,6 +301,13 @@ public class Constants {
                 Method.RSA,
                 Method.RSA_ECB_PKCS1PADDING,
                 Method.RSA_ECB_OAE
+        };
+
+        String[] METHODS_FILE = {
+                Method.ECB_PKCS5PADDING,
+                Method.ECB_ISO10126PADDING,
+                Method.CBC_PKCS5PADDING,
+                Method.CBC_ISO10126PADDING
         };
     }
     public interface Mode{

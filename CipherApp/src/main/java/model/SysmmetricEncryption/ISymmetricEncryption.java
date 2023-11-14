@@ -12,6 +12,7 @@ public interface ISymmetricEncryption {
     public String encrypt(String plainText);
     public String decrypt(String cipherText);
     public String encryptFile(File file);
+    public String decryptFile(File file);
     public String createKey();
     public void convertKey(String key);
     public String createIv();

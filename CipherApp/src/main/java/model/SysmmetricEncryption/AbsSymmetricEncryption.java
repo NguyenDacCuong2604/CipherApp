@@ -99,7 +99,7 @@ public abstract class AbsSymmetricEncryption implements ISymmetricEncryption {
         }
     }
 
-    private String fileName(String originalPath) {
+    private String fileName(String originalPath, String mode) {
         // Chuyển đổi đường dẫn thành đối tượng Path
         Path path = Paths.get(originalPath);
 
@@ -122,7 +122,7 @@ public abstract class AbsSymmetricEncryption implements ISymmetricEncryption {
         }
 
         // Thêm "_encrypt" vào tên file
-        String encryptedFilename = name + "_encrypt" + extension;
+        String encryptedFilename = name + mode + extension;
 
         // Kết hợp đường dẫn và tên file mới để tạo ra đường dẫn mới
         Path encryptedPath = directory.resolve(encryptedFilename);
@@ -139,9 +139,9 @@ public abstract class AbsSymmetricEncryption implements ISymmetricEncryption {
                 cipher.init(Cipher.ENCRYPT_MODE, this.secretKey);
             } else cipher.init(Cipher.ENCRYPT_MODE, this.secretKey, this.ivSpec);
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-            String desFile = fileName(file.getAbsolutePath());
+            String desFile = fileName(file.getAbsolutePath(), "_encrypt_"+name);
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(desFile));
-            byte[] arr = new byte[2304];
+            byte[] arr = new byte[2048];
             int byteRead;
             while ((byteRead = bis.read(arr)) != -1) {
                 byte[] byteEncrypt = this.cipher.update(arr, 0, byteRead);
@@ -153,6 +153,42 @@ public abstract class AbsSymmetricEncryption implements ISymmetricEncryption {
             bos.flush();
             bos.close();
             return "Encrypted From " + file.getName() + " to " + desFile;
+        } catch (IllegalBlockSizeException | IOException | BadPaddingException | InvalidKeyException |
+                 InvalidAlgorithmParameterException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+
+    @Override
+    public String decryptFile(File file){
+        if (secretKey == null) return null;
+        if (!file.exists()) return null;
+        try {
+            if (method.contains(Constants.Mode.ECB)) {
+                cipher.init(Cipher.DECRYPT_MODE, this.secretKey);
+            } else cipher.init(Cipher.DECRYPT_MODE, this.secretKey, this.ivSpec);
+            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+            String desFile=file.getName();
+            if(desFile.contains("_encrypt_"+name)){
+                desFile = file.getParent()+desFile.replace("_encrypt_"+name, "_decrypt_"+name);
+            }
+            else {
+                desFile = fileName(file.getAbsolutePath(), "_decrypt_"+name);
+            }
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(desFile));
+            byte[] arr = new byte[2048];
+            int byteRead;
+            while ((byteRead = bis.read(arr)) != -1) {
+                byte[] byteEncrypt = this.cipher.update(arr, 0, byteRead);
+                bos.write(byteEncrypt);
+            }
+            byte[] output = this.cipher.doFinal();
+            if (output != null) bos.write(output);
+            bis.close();
+            bos.flush();
+            bos.close();
+            return "Decrypted From " + file.getName() + " to " + desFile;
         } catch (IllegalBlockSizeException | IOException | BadPaddingException | InvalidKeyException |
                  InvalidAlgorithmParameterException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

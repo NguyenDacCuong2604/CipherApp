@@ -111,7 +111,7 @@ public class HashGUI extends JFrame {
                 // Copy the text to the clipboard
                 model.Toolkit.copy(hash);
                 ShowToast showToast = new ShowToast(this, Constants.Description.COPIED + hash);
-                showToast.showToast(1000);
+                showToast.showToast(500);
             }
         });
         panelBody.add(titleOutputPanel);
