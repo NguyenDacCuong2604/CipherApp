@@ -4,6 +4,7 @@ import constant.Constants;
 
 public class Blowfish extends AbsSymmetricEncryption {
     public Blowfish(){
+        super();
         this.size = 8;
         this.iv = 8;
         this.sizeBlock = 8;
