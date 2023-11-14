@@ -124,6 +124,8 @@ public class Constants {
         String CLOSE = "Close";
         String MINIMIZE = "Minimize";
         String CIPHER_APP = "  CipherApp";
+        String CHOOSE_FILE_ENCRYPTION = "Choose File to Encrypt";
+        String CHOOSE_FILE_DECRYPTION = "Choose File to Decrypt";
     }
     public interface Method{
         //DES
