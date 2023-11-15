@@ -23,7 +23,7 @@ public class VerifyGUI extends JFrame {
         this.setTitle(Constants.Description.COPYRIGHT);
         this.electronicSignature = electronicSignature;
         this.setUndecorated(true);
-        Image icon = Toolkit.getDefaultToolkit().getImage(Constants.Image.ICON);
+        Image icon = new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.ICON)).getImage();
         this.setIconImage(icon);
         JPanel mainPanel = new JPanel();
         mainPanel.setBorder(new LineBorder(Color.BLACK, 1));

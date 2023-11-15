@@ -22,7 +22,7 @@ public class ASymmetricEncryptGUI extends JFrame {
         this.methods = methods;
         this.aSymmetricEncryption = aSymmetricEncryption;
         this.setUndecorated(true);
-        Image icon = Toolkit.getDefaultToolkit().getImage(Constants.Image.ICON);
+        Image icon = new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.ICON)).getImage();
         this.setIconImage(icon);
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
@@ -178,7 +178,7 @@ public class ASymmetricEncryptGUI extends JFrame {
         outputPanel.add(decryptOutputLabel);
         outputPanel.add(new JLabel(Constants.Description.BLANK));
         //copy
-        ImageIcon copyIcon = new ImageIcon(Constants.Image.COPY);
+        ImageIcon copyIcon = new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.COPY));
         JButton copyButton = new CustomIconButton(new ImageIcon(copyIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)), new Dimension(22, 22), Color.WHITE);
         copyButton.setToolTipText(Constants.Description.COPY);
         outputPanel.add(copyButton);
@@ -382,7 +382,7 @@ public class ASymmetricEncryptGUI extends JFrame {
         encryptOutputLabel.setFont(Constants.Font_Text.BOLD_16);
         outputPanel.add(encryptOutputLabel);
         outputPanel.add(new JLabel(Constants.Description.BLANK));
-        ImageIcon copyIcon = new ImageIcon(Constants.Image.COPY);
+        ImageIcon copyIcon = new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.COPY));
         JButton copyButton = new CustomIconButton(new ImageIcon(copyIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)), new Dimension(22, 22), Color.WHITE);
         copyButton.setToolTipText(Constants.Description.COPY);
         outputPanel.add(copyButton);
@@ -525,7 +525,7 @@ public class ASymmetricEncryptGUI extends JFrame {
         publicKeyLabel.setFont(Constants.Font_Text.BOLD_16);
         keyPanel.add(publicKeyLabel);
         keyPanel.add(publicKeyTextArea);
-        ImageIcon copyIcon = new ImageIcon(Constants.Image.COPY);
+        ImageIcon copyIcon = new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.COPY));
         JButton copyPublicKeyButton = new CustomIconButton(new ImageIcon(copyIcon.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH)), new Dimension(25, 25), Color.WHITE);
         copyPublicKeyButton.setToolTipText(Constants.Description.COPY);
         keyPanel.add(copyPublicKeyButton);

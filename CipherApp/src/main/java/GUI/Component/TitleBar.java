@@ -27,9 +27,9 @@ public class TitleBar {
         customTitleBar.add(algorithmPanel, BorderLayout.WEST);
 
 
-        ImageButton minimizeButton = new ImageButton(new ImageIcon(Constants.Image.MINIMIZE_BLACK), 25, 25);
+        ImageButton minimizeButton = new ImageButton(new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.MINIMIZE_BLACK)), 25, 25);
         minimizeButton.setToolTipText("Minimize");
-        ImageButton closeButton = new ImageButton(new ImageIcon(Constants.Image.CLOSE_BLACK), 25, 25);
+        ImageButton closeButton = new ImageButton(new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.CLOSE_BLACK)), 25, 25);
         closeButton.setToolTipText("Close");
         //event
         minimizeButton.addActionListener(e -> jFrame.setState(Frame.ICONIFIED));
@@ -65,9 +65,9 @@ public class TitleBar {
         JPanel customTitleBar = new JPanel(new BorderLayout());
         customTitleBar.setBackground(new Color(50, 27, 140));
 
-        ImageButton minimizeButton = new ImageButton(new ImageIcon(Constants.Image.MINIMIZE), 25, 25);
+        ImageButton minimizeButton = new ImageButton(new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.MINIMIZE)), 25, 25);
         minimizeButton.setToolTipText(Constants.Description.MINIMIZE);
-        ImageButton closeButton = new ImageButton(new ImageIcon(Constants.Image.CLOSE), 25, 25);
+        ImageButton closeButton = new ImageButton(new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.CLOSE)), 25, 25);
         closeButton.setToolTipText(Constants.Description.CLOSE);
         //event
         minimizeButton.addActionListener(e -> jFrame.setState(Frame.ICONIFIED));

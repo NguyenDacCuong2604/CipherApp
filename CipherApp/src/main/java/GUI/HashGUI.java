@@ -25,7 +25,7 @@ public class HashGUI extends JFrame {
         this.setTitle(Constants.Description.COPYRIGHT);
         this.absHash = absHash;
         this.setUndecorated(true);
-        Image icon = Toolkit.getDefaultToolkit().getImage(Constants.Image.ICON);
+        Image icon = new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.ICON)).getImage();
         this.setIconImage(icon);
         JPanel mainPanel = new JPanel();
         mainPanel.setBorder(new LineBorder(Color.BLACK, 1));
@@ -102,7 +102,7 @@ public class HashGUI extends JFrame {
         JLabel outputLabel = new JLabel(Constants.Description.OUTPUT);
         outputLabel.setFont(Constants.Font_Text.BOLD_22);
         titleOutputPanel.add(outputLabel);
-        ImageIcon copyIcon = new ImageIcon(Constants.Image.COPY);
+        ImageIcon copyIcon = new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.COPY));
         JButton copyButton = new CustomIconButton(new ImageIcon(copyIcon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH)), new Dimension(25, 25), Constants.ColorUI.TEXT_WHITE);
         titleOutputPanel.add(copyButton);
         //event

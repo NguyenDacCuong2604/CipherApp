@@ -10,12 +10,12 @@ public class Constants {
         char[] VIE_ALPHABET = "aáàảãạăắằẳẵặâấầẩẫậbcdđeéèẻẽẹêếềểễệghiíìỉĩịklmnoóòỏõọôốồổỗộơớờởỡợpqrstuúùủũụưứừửữựvxyýỳỷỹỵ".toUpperCase().toCharArray();
     }
     public interface Image{
-        String ICON = "assets/images/icon.png";
-        String COPY = "assets/Images/copy_output.png";
-        String CLOSE = "assets/Images/close.png";
-        String CLOSE_BLACK = "assets/Images/close-black.png";
-        String MINIMIZE_BLACK = "assets/Images/minimize-sign-black.png";
-        String MINIMIZE = "assets/Images/minimize-sign.png";
+        String ICON = "Images/icon.png";
+        String COPY = "Images/copy_output.png";
+        String CLOSE = "Images/close.png";
+        String CLOSE_BLACK = "Images/close-black.png";
+        String MINIMIZE_BLACK = "Images/minimize-sign-black.png";
+        String MINIMIZE = "Images/minimize-sign.png";
     }
     public interface ColorUI{
         Color BUTTON = new Color(239, 239, 239);
@@ -208,9 +208,6 @@ public class Constants {
         String CBC_PKCS5PADDING = "CBC/PKCS5Padding";
         String CBC_ISO10126PADDING = "CBC/ISO10126Padding";
 
-    }
-    public interface Type{
-        String[] TYPE_KEY = {Description.PUBLIC_KEY, Description.PRIVATE_KEY};
     }
     public interface List_Method{
         String[] METHODS_DES = {

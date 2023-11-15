@@ -25,7 +25,7 @@ public class SymmetricEncryptionGUI extends JFrame {
         this.absSymmetricEncryptionDecrypt = absSymmetricEncryptionDecrypt;
         this.methods = methods;
         this.setUndecorated(true);
-        Image icon = Toolkit.getDefaultToolkit().getImage(Constants.Image.ICON);
+        Image icon = new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.ICON)).getImage();
         this.setIconImage(icon);
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
@@ -72,7 +72,7 @@ public class SymmetricEncryptionGUI extends JFrame {
 
     private void renderDecryption(JPanel panel, AbsSymmetricEncryption absSymmetricEncryption) {
         JComboBox sizesKeyComboBox = new CustomComboBox(Constants.List_Size.SIZE_AES, new Dimension(85, 34), Constants.Font_Text.BOLD_16, Color.WHITE);
-        ImageIcon copyIcon = new ImageIcon(Constants.Image.COPY);
+        ImageIcon copyIcon = new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.COPY));
         JPanel decryptionPanel = new JPanel();
         decryptionPanel.setBackground(Color.WHITE);
         decryptionPanel.setLayout(new BoxLayout(decryptionPanel, BoxLayout.Y_AXIS));
@@ -594,7 +594,7 @@ public class SymmetricEncryptionGUI extends JFrame {
 
     private void renderEncryption(JPanel panel, AbsSymmetricEncryption absSymmetricEncryption) {
         JComboBox sizesKeyComboBox = new CustomComboBox(Constants.List_Size.SIZE_AES, new Dimension(85, 34), Constants.Font_Text.BOLD_16, Color.WHITE);
-        ImageIcon copyIcon = new ImageIcon(Constants.Image.COPY);
+        ImageIcon copyIcon = new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.COPY));
         JPanel encryptionPanel = new JPanel();
         encryptionPanel.setBackground(Color.WHITE);
         encryptionPanel.setLayout(new BoxLayout(encryptionPanel, BoxLayout.Y_AXIS));

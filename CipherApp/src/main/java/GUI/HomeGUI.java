@@ -34,7 +34,7 @@ public class HomeGUI extends JFrame implements ActionListener {
         new TitleBar(this);
         btnDimension = new Dimension(140, 35);
         font = Constants.Font_Text.BOLD_16;
-        Image icon = Toolkit.getDefaultToolkit().getImage(Constants.Image.ICON);
+        Image icon = new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.ICON)).getImage();
         this.setIconImage(icon);
         JPanel panel = new JPanel();
         panel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -240,66 +240,67 @@ public class HomeGUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             //symmetric encryption
-            case Constants.Cipher.DES -> {
+            case Constants.Cipher.DES:
                 new SymmetricEncryptionGUI(new DES(), new DES(), Constants.List_Method.METHODS_DES);
-            }
-            case Constants.Cipher.AES -> {
+                break;
+
+            case Constants.Cipher.AES:
                 new SymmetricEncryptionGUI(new AES(), new AES(), Constants.List_Method.METHODS_AES);
-            }
-            case Constants.Cipher.TRIPLE_DES -> {
+                break;
+            case Constants.Cipher.TRIPLE_DES:
                 new SymmetricEncryptionGUI(new TripleDES(), new TripleDES(), Constants.List_Method.METHODS_TRIPLEDES);
-            }
-            case Constants.Cipher.BLOWFISH -> {
+                break;
+            case Constants.Cipher.BLOWFISH:
                 new SymmetricEncryptionGUI(new Blowfish(), new Blowfish(), Constants.List_Method.METHODS_BLOWFISH);
-            }
-            case Constants.Cipher.CAST_6 -> {
+                break;
+            case Constants.Cipher.CAST_6:
                 new SymmetricEncryptionGUI(new Cast6(), new Cast6(), Constants.List_Method.METHODS_CAST6);
-            }
-            case Constants.Cipher.TWOFISH -> {
+                break;
+            case Constants.Cipher.TWOFISH:
                 new SymmetricEncryptionGUI(new Twofish(), new Twofish(), Constants.List_Method.METHODS_TWOFISH);
-            }
-            case Constants.Cipher.HILL -> {
+                break;
+            case Constants.Cipher.HILL:
                 new SymmetricEncryptionGUI(new Hill(), new Hill(), Constants.List_Method.METHODS_HILL);
-            }
-            case Constants.Cipher.VIGENERE -> {
+                break;
+            case Constants.Cipher.VIGENERE:
                 new SymmetricEncryptionGUI(new Vigenere(), new Vigenere(), Constants.List_Method.METHODS_VIGENERE);
-            }
+                break;
             //hash
-            case Constants.Cipher.SHA_1 -> {
+            case Constants.Cipher.SHA_1:
                 new HashGUI(new SHA1());
-            }
-            case Constants.Cipher.SHA_256 -> {
+                break;
+            case Constants.Cipher.SHA_256:
                 new HashGUI(new SHA256());
-            }
-            case Constants.Cipher.SHA_512 -> {
+                break;
+            case Constants.Cipher.SHA_512:
                 new HashGUI(new SHA512());
-            }
-            case Constants.Cipher.SHA3_224 -> {
+                break;
+            case Constants.Cipher.SHA3_224:
                 new HashGUI(new SHA3_224());
-            }
-            case Constants.Cipher.MD4 -> {
+                break;
+            case Constants.Cipher.MD4:
                 new HashGUI(new MD4());
-            }
-            case Constants.Cipher.MD5 -> {
+                break;
+            case Constants.Cipher.MD5:
                 new HashGUI(new MD5());
-            }
-            case Constants.Cipher.CRC_32 -> {
+                break;
+            case Constants.Cipher.CRC_32:
                 new HashGUI(new CRC_32());
-            }
-            case Constants.Cipher.SHAKE_256 -> {
+                break;
+            case Constants.Cipher.SHAKE_256:
                 new HashGUI(new SHAKE256());
-            }
-            case Constants.Cipher.RIPEMD_256 -> {
+                break;
+            case Constants.Cipher.RIPEMD_256:
                 new HashGUI(new RIPEMD_256());
-            }
+                break;
             //asymmetric encryption
-            case Constants.Cipher.RSA -> {
+            case Constants.Cipher.RSA:
                 new ASymmetricEncryptGUI(new RSA(), Constants.List_Method.METHODS_RSA);
-            }
+                break;
             //verify
-            case Constants.Description.E_SIGNATURE -> {
+            case Constants.Description.E_SIGNATURE:
                 new VerifyGUI(new ElectronicSignature());
-            }
+                break;
         }
     }
 }
