@@ -369,7 +369,7 @@ public class SymmetricEncryptionGUI extends JFrame {
             decryptButton.addActionListener(e -> {
                 if(!isFileSelected) {
                     if (inputTextArea.getText().isEmpty()) {
-                        JOptionPane.showMessageDialog(SymmetricEncryptionGUI.this, Constants.Description.ENTER_ENCRYPT, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(SymmetricEncryptionGUI.this, Constants.Description.ENTER_DECRYPT, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
                     } else if (keyTextArea.getText().isEmpty()) {
                         JOptionPane.showMessageDialog(SymmetricEncryptionGUI.this, Constants.Description.EMPTY_KEY, Constants.Description.ERROR, JOptionPane.ERROR_MESSAGE);
                     } else {
