@@ -120,7 +120,16 @@ public class HashGUI extends JFrame {
         outPanel.setBackground(Constants.ColorUI.TEXT_WHITE);
         outPanel.setBorder(new LineBorder(Color.BLACK, 3));
         //Text
-        outputTextArea = new CustomTextArea(Constants.Font_Text.PLAIN_20);
+        outputTextArea = new CustomTextArea(Constants.Font_Text.PLAIN_20) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (getText().isEmpty()) {
+                    g.setColor(Color.GRAY);
+                    g.drawString(Constants.Description.RESULT_TEXT, getInsets().left, g.getFontMetrics().getAscent() + getInsets().top);
+                }
+            }
+        };
         outputTextArea.setBorder(new LineBorder(Constants.ColorUI.TEXT_WHITE, 8));
         outputTextArea.setEditable(false);
         //popup
