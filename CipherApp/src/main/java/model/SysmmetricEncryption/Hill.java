@@ -6,8 +6,6 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
 import javax.swing.*;
 import java.util.Random;
 
@@ -105,8 +103,8 @@ public class Hill extends AbsSymmetricEncryption {
     }
 
     private boolean isContain(char character, char[] alphabet) {
-        for (int i = 0; i < alphabet.length; i++) {
-            if (Character.toUpperCase(character) == alphabet[i]) return true;
+        for (char c : alphabet) {
+            if (Character.toUpperCase(character) == c) return true;
         }
         return false;
     }

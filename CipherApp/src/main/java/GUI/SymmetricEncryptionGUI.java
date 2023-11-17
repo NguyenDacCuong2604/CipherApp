@@ -28,6 +28,7 @@ public class SymmetricEncryptionGUI extends JFrame {
         Image icon = new ImageIcon(getClass().getClassLoader().getResource(Constants.Image.ICON)).getImage();
         this.setIconImage(icon);
         JPanel mainPanel = new JPanel();
+        mainPanel.setBorder(new LineBorder(Color.BLACK, 1));
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
         //titleBar

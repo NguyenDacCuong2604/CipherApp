@@ -2,8 +2,6 @@ package model.SysmmetricEncryption;
 
 import constant.Constants;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -160,10 +158,12 @@ public class Vigenere extends AbsSymmetricEncryption{
     public void convertKey(String key) {
         if(key.length()<2){
             JOptionPane.showMessageDialog(null, "The value must be at least 2 characters long", "Error", JOptionPane.ERROR_MESSAGE);
+            this.key = null;
             return;
         }
         String keyText = key.toUpperCase();
         if(!isValid(keyText)){
+            this.key = null;
             JOptionPane.showMessageDialog(null, "Invalid Key!!", "Error", JOptionPane.ERROR_MESSAGE);
         }else {
             this.key = keyText;
